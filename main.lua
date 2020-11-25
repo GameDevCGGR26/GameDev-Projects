@@ -136,7 +136,6 @@ function love.load()
     -- 9. 'pause' (pauses the game)
     gameState = 'open'
 
-    pause = false           --pausing the game
 end
 
 --[[
@@ -330,7 +329,7 @@ function love.update(dt)
         check_width = 0
 
         if difficulty == 'easy' then
-            check_width = VIRTUAL_WIDTH/6
+            check_width = VIRTUAL_WIDTH/4
         elseif difficulty == 'hard' then
             check_width = VIRTUAL_WIDTH/3
         elseif difficulty == 'imp' then
@@ -394,16 +393,6 @@ function love.keypressed(key)
         else
             love.event.quit()
         end
-
-    elseif key == '' then
-        if gameState == 'play' then
-            gameState = 'pause'
-        elseif gameState == 'pause' then
-            gameState = 'play'
-        else
-            gameState = 'play'
-        end
-
     -- if we press enter during either the start or serve phase, it should
     -- transition to the next appropriate state
     elseif key == 'enter' or key == 'return' then
@@ -581,7 +570,7 @@ love.graphics.clear(40/255, 45/255, 52/255, 255/255)
 
  if gameMode == '2player' then
 
- love.graphics.printf('diff: '..difficulty..' side: '..side..' controls: '..controls, 0, 10, VIRTUAL_WIDTH, 'center')
+ love.graphics.printf('difficulty: '..difficulty..' side: '..side..' controls: '..controls, 0, 10, VIRTUAL_WIDTH, 'center')
 
  end
 
@@ -655,7 +644,7 @@ elseif gameState == 'open' then
 
  love.graphics.printf('Press the corresponding number on your keyboard.',0, 70, VIRTUAL_WIDTH, 'center')
 
- love.graphics.printf('1. 2 player \n\n\n2. 1 player', 0, 105, VIRTUAL_WIDTH, 'center')
+ love.graphics.printf('1. Player VS Player \n\n\n2. Player VS Computer', 0, 105, VIRTUAL_WIDTH, 'center')
 
  love.graphics.printf('Press escape key to quit.\t', 0, VIRTUAL_HEIGHT - 20, VIRTUAL_WIDTH, 'right')
 
