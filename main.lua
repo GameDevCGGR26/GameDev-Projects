@@ -556,143 +556,271 @@ end
     drawing all of our game objects and more to the screen.
 ]]
 function love.draw()
-    -- begin drawing with push, in our virtual resolution
-    push:apply('start')
 
-    love.graphics.clear(40/255, 45/255, 52/255, 255/255)
+ -- begin drawing with push, in our virtual resolution
 
-    -- render different things depending on which part of the game we're in
-    if gameState == 'start' then
-        -- UI messages
-        love.graphics.setFont(smallFont)
-        love.graphics.printf('Welcome to Pong!', 0, 10, VIRTUAL_WIDTH, 'center')
-        love.graphics.printf('Press Enter to begin!', 0, 20, VIRTUAL_WIDTH, 'center')
-     elseif gameState == 'serve' then
-        -- UI messages
-        if gameMode == 'pvp' then
-         love.graphics.setFont(smallFont)
-         love.graphics.printf('Player ' .. tostring(servingPlayer) .. "'s serve!",
-            0, 10, VIRTUAL_WIDTH, 'center')
-         love.graphics.printf('Press Enter to serve!', 0, 20, VIRTUAL_WIDTH, 'center')
-         elseif gameMode == 'pvc' then
-            if (side == 'left' and servingPlayer == 1) or (side == 'right' and servingPlayer == 2) then
-                love.graphics.setFont(smallFont)
-             love.graphics.printf("Player's serve!", 0, 10, VIRTUAL_WIDTH, 'center')
-             love.graphics.printf('Press Enter to serve!', 0, 20, VIRTUAL_WIDTH, 'center')
-             elseif (side == 'left' and servingPlayer == 2) or (side == 'right' and servingPlayer == 1) then
-             love.graphics.setFont(smallFont)
-             love.graphics.printf("Computer's serve",  0, 10, VIRTUAL_WIDTH, 'center')
-             love.graphics.printf('Press Enter to serve!', 0, 20, VIRTUAL_WIDTH, 'center')
-           end
-        end
-     elseif gameState == 'play' then
-        love.graphics.setFont(smallFont)
-        if gameMode == 'pvc' then
-         love.graphics.printf('diff: '..difficulty..' side: '..side..' controls: '..controls, 0, 10, VIRTUAL_WIDTH, 'center')
-        end
-        -- no UI messages to display in play
-     elseif gameState == 'done' then
-        -- UI messages
-
-
-       if gameMode == 'pvp' then
-    love.graphics.setFont(largeFont)
-        love.graphics.printf('Player ' .. tostring(winningPlayer) .. ' wins!',
-            0, 10, VIRTUAL_WIDTH, 'center')
-        love.graphics.setFont(smallFont)
-        love.graphics.printf('Press Enter to restart!', 0, 50, VIRTUAL_WIDTH, 'center')
-
-       elseif gameMode == 'cvc' then
-        love.graphics.setFont(largeFont)
-        love.graphics.printf('Computer wins!',
-            0, 10, VIRTUAL_WIDTH, 'center')
-        love.graphics.setFont(smallFont)
-        love.graphics.printf('Press Enter to restart!', 0, 50, VIRTUAL_WIDTH, 'center')
-
-         elseif gameMode == 'pvc' then
-         if (side == 'left' and winningPlayer == 1) or (side == 'right' and winningPlayer == 2) then
-           love.graphics.setFont(largeFont)
-         love.graphics.printf("Player wins", 0, 10, VIRTUAL_WIDTH, 'center')
-         love.graphics.setFont(smallFont)
-         love.graphics.printf('Press Enter to restart', 0, 30, VIRTUAL_WIDTH, 'center')
-         elseif (side == 'left' and winningPlayer == 2) or (side == 'right' and winningPlayer == 1) then
-         love.graphics.setFont(largeFont)
-         love.graphics.printf("Computer wins",  0, 10, VIRTUAL_WIDTH, 'center')
-         love.graphics.setFont(smallFont)
-         love.graphics.printf('Press Enter to restart!', 0, 30, VIRTUAL_WIDTH, 'center')
-         end
-       end
-
-     elseif gameState == 'menu_title' then
-        love.graphics.setFont(titleFont)
-        love.graphics.printf('Pong',0, 10, VIRTUAL_WIDTH, 'center')
-        love.graphics.setFont(smallFont)
-        love.graphics.printf('Press ESC to quit.', 0, VIRTUAL_HEIGHT - 20, VIRTUAL_WIDTH, 'center')
+ push:apply('start')
 
 
 
-     elseif gameState == 'menu_mode' then
-        love.graphics.setFont(largeFont)
-        love.graphics.printf('Choose a mode. Press up or down to choose the game mode.',0, 10, VIRTUAL_WIDTH, 'center')
-        love.graphics.setFont(smallFont)
-        love.graphics.printf('1. Player vs Player \n 2. Player vs Computer ', 0, 50, VIRTUAL_WIDTH, 'center')
-        love.graphics.printf('Press ESC to quit.', 0, VIRTUAL_HEIGHT - 20, VIRTUAL_WIDTH, 'center')
+love.graphics.clear(40/255, 45/255, 52/255, 255/255)
 
 
-     elseif gameState == 'menu_diff' then
-        love.graphics.setFont(largeFont)
-        love.graphics.printf('Choose a difficulty. Press the corresponding number on your keyboard.',0, 10, VIRTUAL_WIDTH, 'center')
-        love.graphics.setFont(smallFont)
-        love.graphics.printf('1. Easy \n \n \n 2. Hard \n \n \n 3. Impossible' , 0, 50, VIRTUAL_WIDTH, 'center')
 
-    elseif gameState == 'menu_side' then
-        love.graphics.setFont(largeFont)
-        love.graphics.printf('Choose a side. Press left or right on your keyboard to choose a side.',0, 10, VIRTUAL_WIDTH, 'center')
-        love.graphics.setFont(largeFont)
-        love.graphics.printf('\t <- Left \t\t\t\t\t\t\t Right ->', 0, 125, VIRTUAL_WIDTH, 'left')
+-- render different things depending on which part of the game we're in
 
-    elseif gameState == 'menu_ctrl' then
-        love.graphics.setFont(largeFont)
-        love.graphics.printf('Choose your controls. Press the corresponding number on your keyboard.',0, 10, VIRTUAL_WIDTH, 'center')
-        love.graphics.setFont(smallFont)
-        love.graphics.printf('1. W-S keys \n \n 2. Arrow keys', 0, 50, VIRTUAL_WIDTH, 'center')
+ if gameState == 'start' then
+
+ -- UI messages
+
+ love.graphics.setFont(smallFont)
+
+ love.graphics.printf('Welcome to Pong!', 0, 10, VIRTUAL_WIDTH, 'center')
+
+ love.graphics.printf('Press Enter to begin!', 0, 20, VIRTUAL_WIDTH, 'center')
+
+ elseif gameState == 'serve' then
+
+ -- UI messages
+
+ if gameMode == '1player' then
+
+ love.graphics.setFont(smallFont)
+
+ love.graphics.printf('Player ' .. tostring(servingPlayer) .. "'s serve!",
+
+ 0, 10, VIRTUAL_WIDTH, 'center')
+
+ love.graphics.printf('Press Enter to serve!', 0, 20, VIRTUAL_WIDTH, 'center')
+
+ elseif gameMode == '2player' then
+
+ if (side == 'left' and servingPlayer == 1) or (side == 'right' and servingPlayer == 2) then
+
+ love.graphics.setFont(smallFont)
+
+ love.graphics.printf("Player's serve!", 0, 10, VIRTUAL_WIDTH, 'center')
+
+ love.graphics.printf('Press Enter to serve!', 0, 20, VIRTUAL_WIDTH, 'center')
+
+ elseif (side == 'left' and servingPlayer == 2) or (side == 'right' and servingPlayer == 1) then
+
+ love.graphics.setFont(smallFont)
+
+ love.graphics.printf("Computer's serve", 0, 10, VIRTUAL_WIDTH, 'center')
+
+ love.graphics.printf('Press Enter to serve!', 0, 20, VIRTUAL_WIDTH, 'center')
+
  end
 
-    -- show the score before ball is rendered so it can move over the text
-    displayScore()
-    if gameState ~= 'menu_mode' and gameState ~= 'menu_diff' and gameState ~= 'menu_side' and gameState ~= 'menu_ctrl' then
-     player1:render()
-     player2:render()
-     ball:render()
-    end
+ end
 
-    -- display FPS for debugging; simply comment out to remove
-    displayFPS()
+ elseif gameState == 'play' then
 
-    -- end our drawing to push
-    push:apply('end')
-end
+ love.graphics.setFont(smallFont)
 
---[[
-    Simple function for rendering the scores.
-]]
+ if gameMode == '2player' then
+
+ love.graphics.printf('diff: '..difficulty..' side: '..side..' controls: '..controls, 0, 10, VIRTUAL_WIDTH, 'center')
+
+ end
+
+ -- no UI messages to display in play
+
+ elseif gameState == 'done' then
+
+ -- UI messages
+
+ if gameMode == '1player' then
+
+ love.graphics.setFont(largeFont)
+
+ love.graphics.printf('Player ' .. tostring(winningPlayer) .. ' wins!',
+
+ 0, 10, VIRTUAL_WIDTH, 'center')
+
+ love.graphics.setFont(smallFont)
+
+ love.graphics.printf('Press Enter to restart!', 0, 50, VIRTUAL_WIDTH, 'center')
+
+ elseif gameMode == '2player' then
+
+ if (side == 'left' and winningPlayer == 1) or (side == 'right' and winningPlayer == 2) then
+
+ love.graphics.setFont(largeFont)
+
+ love.graphics.printf("You Wins", 0, 10, VIRTUAL_WIDTH, 'center')
+
+ love.graphics.setFont(smallFont)
+
+ love.graphics.printf('Press Enter to restart', 0, 30, VIRTUAL_WIDTH, 'center')
+
+ elseif (side == 'left' and winningPlayer == 2) or (side == 'right' and winningPlayer == 1) then
+
+ love.graphics.setFont(largeFont)
+
+ love.graphics.printf("Computer Wins", 0, 10, VIRTUAL_WIDTH, 'center')
+
+ love.graphics.setFont(smallFont)
+
+ love.graphics.printf('Press Enter to restart!', 0, 30, VIRTUAL_WIDTH, 'center')
+
+ end
+
+ end
 
 
-function displayScore()
-    -- score display
-    if gameState ~= 'menu_mode' and gameState ~= 'menu_diff' and gameState ~= 'menu_side' and gameState ~= 'menu_ctrl' then
-     love.graphics.setFont(scoreFont)
-     love.graphics.print(tostring(player1Score), VIRTUAL_WIDTH / 2 - 50,VIRTUAL_HEIGHT / 3)
-     love.graphics.print(tostring(player2Score), VIRTUAL_WIDTH / 2 + 30,VIRTUAL_HEIGHT / 3)
-    end
-end
 
---[[
-    Renders the current FPS.
-]]
-function displayFPS()
-    -- simple FPS display across all states
-    love.graphics.setFont(smallFont)
-    love.graphics.setColor(0, 255, 0, 255)
-    love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()), 10, 10)
-end
+elseif gameState == 'open' then
+
+ love.graphics.setFont(scoreFont)
+
+ love.graphics.printf('Pong!', 0, 100, VIRTUAL_WIDTH, 'center')
+
+ love.graphics.setFont(smallFont)
+
+ love.graphics.printf('Press Enter key to start', 0, VIRTUAL_HEIGHT - 20, VIRTUAL_WIDTH, 'center')
+
+
+
+
+
+ elseif gameState == 'menu_mode' then
+
+ love.graphics.setFont(largeFont)
+
+ love.graphics.printf('Choose a Mode:',0, 30, VIRTUAL_WIDTH, 'center')
+
+ love.graphics.setFont(smallFont)
+
+ love.graphics.printf('Press the corresponding number on your keyboard.',0, 70, VIRTUAL_WIDTH, 'center')
+
+ love.graphics.printf('1. 2 player \n\n\n2. 1 player', 0, 105, VIRTUAL_WIDTH, 'center')
+
+ love.graphics.printf('Press escape key to quit.\t', 0, VIRTUAL_HEIGHT - 20, VIRTUAL_WIDTH, 'right')
+
+ love.graphics.setColor(62/255, 65/255, 64/255, 1)
+
+ love.graphics.rectangle('line', 100, 80, 230, 90)
+
+
+
+elseif gameState == 'menu_diff' then
+
+ love.graphics.setFont(largeFont)
+
+ love.graphics.printf('Choose a Difficulty:',0, 30, VIRTUAL_WIDTH, 'center')
+
+ love.graphics.setFont(smallFont)
+
+ love.graphics.printf('Press the corresponding number on your keyboard.',0, 70, VIRTUAL_WIDTH, 'center')
+
+ love.graphics.printf('1. Easy \n\n 2. Hard \n\n 3. Impossible' , 0, 100, VIRTUAL_WIDTH, 'center')
+
+ love.graphics.setColor(62/255, 65/255, 64/255, 1)
+
+ love.graphics.rectangle('line', 100, 80, 230, 90)
+
+
+
+elseif gameState == 'menu_side' then
+
+ love.graphics.setFont(largeFont)
+
+ love.graphics.printf('Choose a Side:',0, 30, VIRTUAL_WIDTH, 'center')
+
+ love.graphics.setFont(smallFont)
+
+ love.graphics.printf('Press the corresponding number on your keyboard.',0, 70, VIRTUAL_WIDTH, 'center')
+
+ love.graphics.printf(' 1. Left \t\t\t\t 2. Right', 145, 125, VIRTUAL_WIDTH, 'left')
+
+ love.graphics.setColor(62/255, 65/255, 64/255, 1)
+
+ love.graphics.rectangle('line', 100, 80, 230, 90)
+
+
+
+elseif gameState == 'menu_ctrl' then
+
+ love.graphics.setFont(largeFont)
+
+ love.graphics.printf('Choose your Controls:',0, 30, VIRTUAL_WIDTH, 'center')
+
+ love.graphics.setFont(smallFont)
+
+ love.graphics.printf('Press the corresponding number on your keyboard.',0, 70, VIRTUAL_WIDTH, 'center')
+
+ love.graphics.printf('1. W-S keys \n\n\n2. Arrow keys', 0, 105, VIRTUAL_WIDTH, 'center')
+
+ love.graphics.setColor(62/255, 65/255, 64/255, 1)
+
+ love.graphics.rectangle('line', 100, 80, 230, 90)
+
+ end
+
+
+
+-- show the score before ball is rendered so it can move over the text
+
+ displayScore()
+
+ if gameState ~= 'open' and gameState ~= 'menu_mode' and gameState ~= 'menu_diff' and gameState ~= 'menu_side' and gameState ~= 'menu_ctrl' then
+
+ player1:render()
+
+ player2:render()
+
+ ball:render()
+
+ end
+
+
+
+-- display FPS for debugging; simply comment out to remove
+
+ displayFPS()
+
+
+
+-- end our drawing to push
+
+ push:apply('end')
+
+ end
+
+
+
+--Simple function for rendering the scores.
+
+ function displayScore()
+
+ -- score display
+
+ if gameState ~= 'open' and gameState ~= 'menu_mode' and gameState ~= 'menu_diff' and gameState ~= 'menu_side' and gameState ~= 'menu_ctrl' then
+
+ love.graphics.setFont(scoreFont)
+
+ love.graphics.print(tostring(player1Score), VIRTUAL_WIDTH / 2 - 50,VIRTUAL_HEIGHT / 3)
+
+ love.graphics.print(tostring(player2Score), VIRTUAL_WIDTH / 2 + 30,VIRTUAL_HEIGHT / 3)
+
+ end
+
+ end
+
+
+
+--Renders the current FPS.
+
+ function displayFPS()
+
+ -- simple FPS display across all states
+
+ love.graphics.setFont(smallFont)
+
+ love.graphics.setColor(0, 255, 0, 255)
+
+ love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()), 10, 10)
+
+ end
