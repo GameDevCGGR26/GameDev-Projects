@@ -13,7 +13,7 @@
 
     This version is built to more closely resemble the NES than
     the original Pong machines or the Atari 2600 in terms of
-    resolution, though in widescreen (16:9) so it looks nicer on
+    resolution, though in widescreen (16:9) so it looks nicer on 
     modern systems.
 ]]
 
@@ -69,7 +69,6 @@ function love.load()
 
     -- initialize our nice-looking retro text fonts
     smallFont = love.graphics.newFont('font.ttf', 8)
-    titleFont = love.graphics.newFont('font.ttf', 64)
     largeFont = love.graphics.newFont('font.ttf', 16)
     scoreFont = love.graphics.newFont('font.ttf', 32)
     love.graphics.setFont(smallFont)
@@ -80,9 +79,10 @@ function love.load()
         ['paddle_hit'] = love.audio.newSource('sounds/paddle_hit.wav', 'static'),
         ['score'] = love.audio.newSource('sounds/score.wav', 'static'),
         ['wall_hit'] = love.audio.newSource('sounds/wall_hit.wav', 'static'),
-        
+        ['select'] = love.audio.newSource('sounds/select.wav','static'),
+        ['back'] = love.audio.newSource('sounds/back.wav','static'),
     }
-
+    
     -- initialize our virtual resolution, which will be rendered within our
     -- actual window no matter its dimensions
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
@@ -93,11 +93,11 @@ function love.load()
 
     -- initialize our player paddles; make them global so that they can be
     -- detected by other functions and modules
-
-
+    
+    
     player1 = Paddle(10, 30, 5, 20)
     player2 = Paddle(VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 30, 5, 20)
-
+    
 
     -- place a ball in the middle of the screen
     ball = Ball(VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
@@ -106,8 +106,8 @@ function love.load()
     player2Score = 0
 
     -- the game modes can be any of the following:
-    -- 1. Player vs Player: standard. Uses old code. 'pvp'
-    -- 2. PLayer vs AI : uses new added code. Also asks for difficulty. 'pvc'
+    -- 1. Player vs Player: standard. Uses old code. '1player'
+    -- 2. PLayer vs AI : uses new added code. Also asks for difficulty. '2player'
     -- 3. AI vs AI: uses new code with both players AI. 'cvc'
     gameMode = ''
 
@@ -130,16 +130,13 @@ function love.load()
     -- 3. 'play' (the ball is in play, bouncing between paddles)
     -- 4. 'done' (the game is over, with a victor, ready for restart)
     -- 5. 'menu_mode' (before the game starts, choose mode)
-    -- 6. 'menu_diff' (before the game starts, if the chosen mode is 'pvc', select difficulty)
-    -- 7. 'menu_side' (before the game starts, if the chosen mode is 'pvc', select side)
-    -- 8. 'menu_ctrl' (before the game starts, if the chosen mode is 'pvc', select controls)
+    -- 6. 'menu_diff' (before the game starts, if the chosen mode is '2player', select difficulty)
+    -- 7. 'menu_side' (before the game starts, if the chosen mode is '2player', select side)
+    -- 8. 'menu_ctrl' (before the game starts, if the chosen mode is '2player', select controls)
     -- 9. 'pause' (pauses the game)
-    gameState = 'menu_title'
+    gameState = 'open'
 
-    gameState = 'menu_mode'
-
-
-
+    pause = false           --pausing the game
 end
 
 --[[
@@ -161,59 +158,54 @@ end
     across system hardware.
 ]]
 function love.update(dt)
-    if (gameState ~= 'menu_title' and gameState ~= 'menu_mode' and gameState ~= 'menu_diff' and gameState ~= 'menu_side' and gameState ~= 'menu_ctrl') == false then
-      --  sounds['bgm']:setLooping(true)--
-      --  sounds['bgm']:play()--
-    end
+   -- if (gameState ~= 'open' and gameState ~= 'menu_mode' and gameState ~= 'menu_diff' and gameState ~= 'menu_side' and gameState ~= 'menu_ctrl') == false then
+   --     sounds['bgm']:setLooping(true)
+    --    sounds['bgm']:play()
+    --end
 
-    if (gameState ~= 'menu_title' and gameState ~= 'menu_mode' and gameState ~= 'menu_diff' and gameState ~= 'menu_side' and gameState ~= 'menu_ctrl') == true then
-        --sounds['bgm']:setLooping(true)--
-      --  love.audio.stop(sounds['bgm'])--
-    end
-
+   --- if (gameState ~= 'open' and gameState ~= 'menu_mode' and gameState ~= 'menu_diff' and gameState ~= 'menu_side' and gameState ~= 'menu_ctrl') == true then
+    --    sounds['bgm']:setLooping(true)
+    --    love.audio.stop(sounds['bgm'])
+   -- end
     if gameState == 'serve' then
         -- before switching to play, initialize ball's velocity based
         -- on player who last scored
-
-        if gameMode == 'pvp' then                   ---pvp rules
+        
+        if gameMode == '1player' then                   ---1player rules
             if servingPlayer == 1 then
                 ball.dx = math.random(140, 200)
                 ball.dy = math.random(-50, 50)
-             elseif servingPlayer == 2 then  --changes
+            elseif servingPlayer == 2 then  --changes
                 ball.dx = -math.random(140, 200)
                 ball.dy = math.random(-50, 50)
-            end
-        end
+            end 
+        end 
 
-        if gameMode == 'cvc' then                   ---cvc rules
+        if gameMode == '2player' then
             if servingPlayer == 1 then
-                ball.dx = math.random(140, 200)
-                ball.dy = math.random(-50, 50)
-                gameState = 'play'
-             elseif servingPlayer == 2 then  --changes
-                ball.dx = -math.random(140, 200)
-                ball.dy = math.random(-50, 50)
-                gameState = 'play'
+                if side == 'left' then
+                    ball.dx = math.random(140, 200)
+                    ball.dy = math.random(-50, 50)
+                    --gameState = 'play'
+                elseif side == 'right' then
+                    ball.dx = math.random(140, 200)
+                    ball.dy = math.random(-50, 50)
+                    --gameState = 'play'
+                end
+            elseif servingPlayer == 2 then
+                if side == 'left' then
+                    ball.dx = -math.random(140, 200)
+                    ball.dy = math.random(-50, 50)
+                    --gameState = 'play'
+                elseif side == 'right' then
+                    ball.dx = -math.random(140, 200)
+                    ball.dy = math.random(-50, 50)
+                    --gameState = 'play'
+                end
             end
         end
 
-
-        if servingPlayer == 1 and side == 'left' and gameMode == 'pvc' then
-            ball.dx = math.random(140, 200)
-            ball.dy = math.random(-50, 50)
-         elseif servingPlayer == 2 and side == 'left' and gameMode == 'pvc' then  --changes
-            ball.dx = -math.random(140, 200)
-            ball.dy = math.random(-50, 50)
-            gameState = 'play'
-         elseif servingPlayer == 1 and side == 'right' and gameMode == 'pvc'  then
-                ball.dx = math.random(140, 200)
-                ball.dy = math.random(-50, 50)
-                gameState = 'play'
-             elseif servingPlayer == 2 and side == 'right' and gameMode == 'pvc' then  --changes
-                ball.dx = -math.random(140, 200)
-                ball.dy = math.random(-50, 50)
-        end
-     elseif gameState == 'play' then
+    elseif gameState == 'play' then
         -- detect ball collision with paddles, reversing dx if true and
         -- slightly increasing it, then altering the dy based on the position
         -- at which it collided, then playing a sound effect
@@ -230,6 +222,7 @@ function love.update(dt)
 
             sounds['paddle_hit']:play()
         end
+
         if ball:collides(player2) then
             ball.dx = -ball.dx * 1.03
             ball.x = player2.x - 4
@@ -239,9 +232,10 @@ function love.update(dt)
                 ball.dy = -math.random(10, 150)
             else
                 ball.dy = math.random(10, 150)
-            end
+            end 
 
             sounds['paddle_hit']:play()
+
         end
 
         -- detect upper and lower screen boundary collision, playing a sound
@@ -301,99 +295,74 @@ function love.update(dt)
     --
     -- paddles can move no matter what state we're in
     --
-    -- player 1          ------------------------------------------- pvp
-    if gameMode == 'pvp' then
-     if love.keyboard.isDown('w') then
-        player1.dy = -PADDLE_SPEED
-     elseif love.keyboard.isDown('s') then
-        player1.dy = PADDLE_SPEED
-     else
-        player1.dy = 0
-     end
-
+    -- player 1          ------------------------------------------- 1player                 
+    if gameMode == '1player' then
+        if love.keyboard.isDown('w') then
+            player1.dy = -PADDLE_SPEED
+        elseif love.keyboard.isDown('s') then
+            player1.dy = PADDLE_SPEED
+        else
+            player1.dy = 0
+        end
+     
 
      -- player 2
-     if love.keyboard.isDown('up') then
-        player2.dy = -PADDLE_SPEED
-     elseif love.keyboard.isDown('down') then
-        player2.dy = PADDLE_SPEED
-     else
-        player2.dy = 0
-     end
+        if love.keyboard.isDown('up') then
+            player2.dy = -PADDLE_SPEED
+        elseif love.keyboard.isDown('down') then
+            player2.dy = PADDLE_SPEED
+        else
+            player2.dy = 0
+        end
     end
----------------------------------------------------- pvc
-    if gameMode == 'pvc' then   -- boing
+---------------------------------------------------- 2player
+    if gameMode == '2player' then   -- boing
         up_button = 'w'     -- because error
         down_button = 's'
-     if controls == 'ws' then            -- set controls
-        up_button = 'w'
-        down_button = 's'
-     elseif controls == 'ud' then
-        up_button = 'up'
-        down_button = 'down'
-     end
-
-     check_width = 0
-     if difficulty == 'easy' then
-        check_width = VIRTUAL_WIDTH/4
-     elseif difficulty == 'hard' then
-        check_width = VIRTUAL_WIDTH/2
-     elseif difficulty == 'imp' then
-        check_width = VIRTUAL_WIDTH
-     end
-
-
-     plr = player1          --because error  --side
-     plr_n = player2
-     if side == 'left' then
-         plr = player1
-        plr_n = player2
-     elseif side == 'right' then
-         plr = player2
-         plr_n = player1
-     end
-     if ((ball.x - plr_n.x)^2)^(0.5)  < check_width then
-        if (plr_n.y > (ball.y + ball.height/2))  then                    -- computer
-            plr_n.dy = -PADDLE_SPEED
-         elseif (plr_n.y + plr_n.height < (ball.y + ball.height/2))  then
-            plr_n.dy = PADDLE_SPEED
-         else
-            plr_n.dy = 0
+        if controls == 'ws' then            -- set controls
+            up_button = 'w'
+            down_button = 's'
+        elseif controls == 'ud' then
+            up_button = 'up'
+            down_button = 'down'
         end
-     end
 
-     if love.keyboard.isDown(up_button) then             -- player
-        plr.dy = -PADDLE_SPEED
-      elseif love.keyboard.isDown(down_button) then
-        plr.dy = PADDLE_SPEED
-       else
-        plr.dy = 0
-      end
+        check_width = 0
 
-    end
-
-    if gameMode == 'cvc' then
-        -- player 1                        -- we will make this AI - controlled --boing
-     if ball.x < VIRTUAL_WIDTH/3 then
-       if (player1.y > (ball.y + ball.height/2))  then
-          player1.dy = -PADDLE_SPEED
-       elseif (player1.y + player1.height < (ball.y + ball.height/2))  then
-          player1.dy = PADDLE_SPEED
-       else
-          player1.dy = 0
-       end
-     end
-
-       -- player 2
-     if ball.x > 2 * VIRTUAL_WIDTH/3 then
-       if (player2.y > (ball.y + ball.height/2))  then
-         player2.dy = -PADDLE_SPEED
-         elseif (player2.y + player2.height < (ball.y + ball.height/2))  then
-         player2.dy = PADDLE_SPEED
-         else
-        player2.dy = 0
+        if difficulty == 'easy' then
+            check_width = VIRTUAL_WIDTH/6
+        elseif difficulty == 'hard' then
+            check_width = VIRTUAL_WIDTH/3
+        elseif difficulty == 'imp' then
+            check_width = VIRTUAL_WIDTH
         end
-     end
+
+        player = player1          --because error  --side
+        computer = player2
+        if side == 'left' then
+            player = player1
+            computer = player2
+        elseif side == 'right' then
+            player = player2 
+            computer = player1
+        end
+        if ((ball.x - computer.x)^2)^(0.5)  < check_width then 
+            if (computer.y > (ball.y + ball.height/2))  then                    -- computer
+                computer.dy = -PADDLE_SPEED
+            elseif (computer.y + computer.height < (ball.y + ball.height/2))  then
+                computer.dy = PADDLE_SPEED
+            else
+                computer.dy = 0
+            end
+        end
+
+        if love.keyboard.isDown(up_button) then             -- player
+            player.dy = -PADDLE_SPEED
+        elseif love.keyboard.isDown(down_button) then
+            player.dy = PADDLE_SPEED
+        else
+            player.dy = 0
+        end
     end
 
     -- update our ball based on its DX and DY only if we're in play state;
@@ -415,16 +384,6 @@ end
 function love.keypressed(key)
     -- `key` will be whatever key this callback detected as pressed
     if key == 'escape' then
-      if gameState ~= 'menu_title' then
-       gameState = 'menu_title'
-       ball:reset()
-       player1Score = 0
-       player2Score = 0
-       player1:reset1()
-       player2:reset2()
-      else
-          love.event.quit()
-      end
         if gameState ~= 'menu_mode' then
          gameState = 'menu_mode'
          ball:reset()
@@ -436,117 +395,118 @@ function love.keypressed(key)
             love.event.quit()
         end
 
+    elseif key == '' then
+        if gameState == 'play' then
+            gameState = 'pause'
+        elseif gameState == 'pause' then
+            gameState = 'play'
+        else
+            gameState = 'play'
+        end
+
     -- if we press enter during either the start or serve phase, it should
     -- transition to the next appropriate state
     elseif key == 'enter' or key == 'return' then
-
-
-        if  (gameMode == 'pvp') or (gameMode == 'pvc' and ((side == 'left' and servingPlayer == 1) or (side == 'right' and servingPlayer == 2))) then
+       
+        if (gameMode == '1player') or (gameMode == '2player' and ((side == 'left' and servingPlayer == 1) or 
+            (side == 'right' and servingPlayer == 2)) or ((side == 'left' and servingPlayer == 2) or (
+            side == 'right' and servingPlayer == 1))) then
             if gameState == 'start' then
               gameState = 'serve'
-          elseif gameState == 'serve' then
+            elseif gameState == 'serve' then
              gameState = 'play'
-         elseif gameState == 'done' then
-            -- game is simply in a restart phase here, but will set the serving
-            -- player to the opponent of whomever won for fairness!
-            gameState = 'serve'
+            elseif gameState == 'done' then
+                -- game is simply in a restart phase here, but will set the serving
+                -- player to the opponent of whomever won for fairness!
+                gameState = 'serve'
+    
+    
+                ball:reset()
 
-
-            ball:reset()
-
-            -- reset scores to 0
-            player1Score = 0
-            player2Score = 0
+                -- reset scores to 0
+                player1Score = 0
+                player2Score = 0
 
             -- decide serving player as the opposite of who won
-            if winningPlayer == 1 then
-                servingPlayer = 2
-            else
-                servingPlayer = 1
+                if winningPlayer == 1 then
+                    servingPlayer = 2
+                else
+                    servingPlayer = 1
+                end
             end
-
-         end
-         elseif  (gameMode == 'pvc') and ((side == 'left' and servingPlayer == 2) or (side == 'right' and servingPlayer == 1)) then
-            if gameState == 'start' then
-                gameState = 'serve'
-            end
-
         end
 
     end
 
-
-            --sounds['menu_select']:play()--
-
-    -- the menu where one can choose to play standard PvP, against AI or watch
-    if gameState == 'menu_mode' then
+    if gameState == 'open' then
+        gameState = 'menu_mode'
+        sounds['select']:play()
+        
+    -- the menu where one can choose to play standard 1player, against AI or watch
+    elseif gameState == 'menu_mode' then
         if key == '1'  then
-            gameMode = 'pvp'
+            gameMode = '1player'
             gameState = 'start'
-            --sounds['menu_select']:play()--
+            sounds['select']:play()
         elseif key == '2' then
-            gameMode = 'pvc'
+            gameMode = '2player'
             gameState = 'menu_diff'
-          --  sounds['menu_select']:play()--
-      --  elseif key == 'down down' then--
-        --    gameMode = 'cvc'--
-        --    gameState = 'start'--
-          --  sounds['menu_select']:play()--
-    --    else--
-          --  sounds['menu_error']:play()--
+            sounds['select']:play()
+        else 
+            sounds['back']:play()
         end
-
-
+    
+    
     -- choose difficulty of AI opponent
-    elseif gameState == 'menu_diff' then
-                  -- the gamestate is mentioned twice to avoid mispresses
+    elseif gameState == 'menu_diff' then 
+        -- the gamestate is mentioned twice to avoid mispresses
         if key == '1'  then
             difficulty = 'easy'
             gameState = 'menu_side'
-          --  sounds['menu_select']:play()--
+            sounds['select']:play()
         elseif key == '2' then
             difficulty = 'hard'
             gameState = 'menu_side'
-          --  sounds['menu_select']:play()--
+            sounds['select']:play()
         elseif key == '3' then
             difficulty = 'imp'
             gameState = 'menu_side'
-          --  sounds['menu_select']:play()
-      --  else--
-          --  sounds['menu_error']:play()---
+            sounds['select']:play()
+        else 
+            sounds['back']:play()
         end
-
+    
         -- to choose which side your player is on
     elseif gameState == 'menu_side' then
-
+        
         if key == '1' then
             side = 'left'
             gameState = 'menu_ctrl'
-        --    sounds['menu_select']:play()--
+            sounds['select']:play()
         elseif key == '2' then
             side = 'right'
             gameState = 'menu_ctrl'
-          --  sounds['menu_select']:play()--
-        else
-            --sounds['menu_error']:play()--
+            sounds['select']:play()
+        else 
+            sounds['back']:play()
         end
-
-
+        
+    
             -- to choose controls
     elseif gameState == 'menu_ctrl' then
-
-        if key == '1' then
+        
+        if key == '1' then 
             controls = 'ws'
             gameState = 'start'
-          --  sounds['menu_select']:play()--
+            sounds['select']:play()
         elseif key == '2' then
             controls = 'ud'
             gameState = 'start'
-          --  sounds['menu_select']:play()--
-        else
-        --    sounds['menu_error']:play()--
-        end
-
+            sounds['select']:play()
+        else 
+            sounds['back']:play()
+        end        
+        
 
     end
 end
