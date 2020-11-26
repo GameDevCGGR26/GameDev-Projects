@@ -628,7 +628,7 @@ elseif gameState == 'open' then
 
  love.graphics.setFont(smallFont)
 
- love.graphics.printf('Press Enter key to start', 0, VIRTUAL_HEIGHT - 20, VIRTUAL_WIDTH, 'center')
+ love.graphics.printf('Press Any key to start', 0, VIRTUAL_HEIGHT - 20, VIRTUAL_WIDTH, 'center')
 
 
 
