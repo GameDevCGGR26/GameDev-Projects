@@ -2,9 +2,6 @@
     GD50 2018
     Flappy Bird Remake
 
-    bird12
-    "The Mouse Update"
-
     Author: Colton Ogden
     cogden@cs50.harvard.edu
 
@@ -35,6 +32,7 @@ Class = require 'class'
 -- game states smoothly and avoid monolithic code in one file
 require 'StateMachine'
 
+-- all states our StateMachine can transition between
 require 'states/BaseState'
 require 'states/CountdownState'
 require 'states/PlayState'
@@ -53,19 +51,17 @@ WINDOW_HEIGHT = 720
 VIRTUAL_WIDTH = 512
 VIRTUAL_HEIGHT = 288
 
-local background = love.graphics.newImage('background.png')
-local backgroundScroll = 0
+day_background = love.graphics.newImage('images/day_bg.png')
+night_background = love.graphics.newImage('images/night_bg.png')
+backgroundScroll = 0
 
-local ground = love.graphics.newImage('ground.png')
-local groundScroll = 0
+ground = love.graphics.newImage('images/ground.png')
+groundScroll = 0
 
-local BACKGROUND_SCROLL_SPEED = 30
-local GROUND_SCROLL_SPEED = 60
+BACKGROUND_SCROLL_SPEED = 30
+GROUND_SCROLL_SPEED = 60
 
-local BACKGROUND_LOOPING_POINT = 413
-
--- global variable we can use to scroll the map
-scrolling = true
+BACKGROUND_LOOPING_POINT = 413
 
 function love.load()
     -- initialize our nearest-neighbor filter
@@ -77,6 +73,8 @@ function love.load()
     -- app window title
     love.window.setTitle('Fifty Bird')
 
+    background = true
+
     -- initialize our nice-looking retro text fonts
     smallFont = love.graphics.newFont('font.ttf', 8)
     mediumFont = love.graphics.newFont('flappy.ttf', 14)
@@ -86,19 +84,22 @@ function love.load()
 
     -- initialize our table of sounds
     sounds = {
-        ['jump'] = love.audio.newSource('jump.wav', 'static'),
-        ['explosion'] = love.audio.newSource('explosion.wav', 'static'),
-        ['hurt'] = love.audio.newSource('hurt.wav', 'static'),
-        ['score'] = love.audio.newSource('score.wav', 'static'),
+        ['jump'] = love.audio.newSource('sounds/jump.wav', 'static'),
+        ['explosion'] = love.audio.newSource('sounds/explosion.wav', 'static'),
+        ['hurt'] = love.audio.newSource('sounds/hurt.wav', 'static'),
+        ['score'] = love.audio.newSource('sounds/score.wav', 'static'),
+        ['pause'] = love.audio.newSource('sounds/pause.wav', 'static'),
+        ['select'] = love.audio.newSource('sounds/select.wav', 'static'),
 
         -- https://freesound.org/people/xsgianni/sounds/388079/
-        ['music'] = love.audio.newSource('marios_way.mp3', 'static')
+        ['music'] = love.audio.newSource('sounds/marios_way.mp3', 'static')
     }
 
     -- kick off music
     sounds['music']:setLooping(true)
     sounds['music']:play()
 
+    scrolling = true
     -- initialize our virtual resolution
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         vsync = true,
@@ -140,9 +141,15 @@ end
     X and Y of the mouse, as well as the button in question.
 ]]
 function love.mousepressed(x, y, button)
+   
     love.mouse.buttonsPressed[button] = true
+
 end
 
+--[[
+    Custom function to extend LÖVE's input handling; returns whether a given
+    key was set to true in our input table this frame.
+]]
 function love.keyboard.wasPressed(key)
     return love.keyboard.keysPressed[key]
 end
@@ -155,7 +162,8 @@ function love.mouse.wasPressed(button)
 end
 
 function love.update(dt)
-    if scrolling then
+    if scrolling == true then
+        -- scroll our background and ground, looping back to 0 after a certain amount
         backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
         groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % VIRTUAL_WIDTH
     end
@@ -164,14 +172,23 @@ function love.update(dt)
 
     love.keyboard.keysPressed = {}
     love.mouse.buttonsPressed = {}
+
 end
 
 function love.draw()
     push:start()
-    
-    love.graphics.draw(background, -backgroundScroll, 0)
-    gStateMachine:render()
-    love.graphics.draw(ground, -groundScroll, VIRTUAL_HEIGHT - 16)
-    
+
+    if background == true then  -- day mode
+        love.graphics.draw(day_background, -backgroundScroll, 0)
+        gStateMachine:render()
+        love.graphics.setColor(1, 1, 1, 1)
+        love.graphics.draw(ground, -groundScroll, VIRTUAL_HEIGHT - 16)
+    elseif background == false then -- night mode
+        love.graphics.draw(night_background, -backgroundScroll, 0)
+        gStateMachine:render()
+        love.graphics.setColor(1, 1, 1, 1)
+        love.graphics.draw(ground, -groundScroll, VIRTUAL_HEIGHT - 16)
+    end
+
     push:finish()
 end
