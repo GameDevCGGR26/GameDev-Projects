@@ -11,7 +11,7 @@ TitleScreenState = Class{__includes = BaseState}
 
 -- to highlight, whether 'day mode' or 'night mode' of the game
 local highlight = 1
-
+birdlogo = love.graphics.newImage('bird.png')
 function TitleScreenState:update(dt)
     -- transition to countdown when enter/return are pressed
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
@@ -37,6 +37,7 @@ end
  
 function TitleScreenState:render()
     -- simple UI code
+    love.graphics.draw(birdlogo, 160, 65, 6)
     love.graphics.setFont(flappyFont)
     love.graphics.printf('Fifty Bird', 0, 80, VIRTUAL_WIDTH, 'center')
     love.graphics.setFont(mediumFont)
@@ -45,9 +46,9 @@ function TitleScreenState:render()
     love.graphics.setColor(97/255, 107/255, 97/255, 1)
     -- to display highlight of mode
     if highlight == 1 then 
-        love.graphics.rectangle('line', 227, 130, 57, 15)
+        love.graphics.rectangle('fill', 227, 130, 57, 15)
     else
-        love.graphics.rectangle('line', 227, 148, 57, 15)
+        love.graphics.rectangle('fill', 227, 148, 57, 15)
     end
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.printf('Day Mode', 0, 133, VIRTUAL_WIDTH, 'center')
