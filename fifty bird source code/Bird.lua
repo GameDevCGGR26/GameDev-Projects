@@ -54,9 +54,9 @@ end
 
 function Bird:render()
     if love.keyboard.isDown('space') or love.mouse.isDown(1) then
-        love.graphics.draw(self.image, self.x, self.y, 6)
+        love.graphics.draw(self.image, self.x, self.y, 5.9)
     elseif self.dy > 0  then
-        love.graphics.draw(self.image, self.x, self.y, 1)
+        love.graphics.draw(self.image, self.x, self.y, 0.8)
     else
         love.graphics.draw(self.image, self.x, self.y, 0)
     end
