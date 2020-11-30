@@ -37,24 +37,24 @@ function ScoreState:render()
     love.graphics.setFont(mediumFont)
     love.graphics.printf('Score: ' .. tostring(self.score), 0, 160, VIRTUAL_WIDTH, 'center')
 
-    -- GOLD MEDAL -> 50 OR higher
-    if self.score >= 50 then
+      -- GOLD MEDAL -> 30 OR higher
+    if self.score >= 30 then
         love.graphics.draw(self.medals['gold'], 206, 180)
         love.graphics.setFont(flappyFont)
         love.graphics.printf('Congratulations Birdie!', 0, 64, VIRTUAL_WIDTH, 'center')
-    --SILVER MEDAL -> 25 OR More than 25 Points
-    elseif self.score >= 25 then
+    --SILVER MEDAL -> 20 OR More than 20 Points
+  elseif self.score >= 20 then
         love.graphics.draw(self.medals['silver'], 206, 25)
         love.graphics.setFont(flappyFont)
         love.graphics.printf('Too close to Gold, Birdie!', 0, 64, VIRTUAL_WIDTH, 'center')
-    --BRONZE MEDAL -> 10 OR More than 10 Points
-    elseif self.score >= 1 then
+      --BRONZE MEDAL -> 10 OR More than 10 Points
+  elseif self.score >= 10 then
         love.graphics.draw(self.medals['bronze'], 206, 25)love.graphics.setFont(flappyFont)
         love.graphics.printf('Keep up!', 0, 120, VIRTUAL_WIDTH, 'center')
     else
-        love.graphics.setFont(flappyFont)
-        love.graphics.printf('Oof! You lose!', 0, 120, VIRTUAL_WIDTH, 'center')
+        love.graphics.setFont(hugeFont)
+        love.graphics.printf('Oops! You lose!', 0, 120, VIRTUAL_WIDTH, 'center')
     end
-
+    love.graphics.setFont(flappyFont)
     love.graphics.printf('Press Enter to Play Again!', 0, 230, VIRTUAL_WIDTH, 'center')
 end
