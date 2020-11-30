@@ -123,6 +123,8 @@ function PlayState:render()
 
     love.graphics.setFont(flappyFont)
     love.graphics.print('Score: ' .. tostring(self.score), 8, 8)
+    love.graphics.setFont(mediumFont)
+    love.graphics.printf('Press "P" to PAUSE', 8, 40, VIRTUAL_WIDTH - 20, 'left')
 
     self.bird:render()
 
