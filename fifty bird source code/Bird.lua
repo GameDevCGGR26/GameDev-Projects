@@ -53,5 +53,11 @@ function Bird:update(dt)
 end
 
 function Bird:render()
-    love.graphics.draw(self.image, self.x, self.y)
+    if love.keyboard.isDown('space') or love.mouse.isDown(1) then
+        love.graphics.draw(self.image, self.x, self.y, 6)
+    elseif self.dy > 0  then
+        love.graphics.draw(self.image, self.x, self.y, 1)
+    else
+        love.graphics.draw(self.image, self.x, self.y, 0)
+    end
 end
