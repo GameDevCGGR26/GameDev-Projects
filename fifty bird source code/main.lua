@@ -51,8 +51,8 @@ WINDOW_HEIGHT = 720
 VIRTUAL_WIDTH = 512
 VIRTUAL_HEIGHT = 288
 
-day_background = love.graphics.newImage('day_bg.png')
-night_background = love.graphics.newImage('night_bg.png')
+day_background = love.graphics.newImage('daybackground.png')
+night_background = love.graphics.newImage('nightbackground.png')
 backgroundScroll = 0
 
 ground = love.graphics.newImage('ground.png')
