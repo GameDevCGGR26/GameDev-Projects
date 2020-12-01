@@ -42,12 +42,12 @@ function ScoreState:render()
     if self.score >= 30 then
         love.graphics.draw(self.medals['gold'], 206, 25)
         love.graphics.setFont(flappyFont)
-        love.graphics.printf('Congratulations Birdie!', 0, 64, VIRTUAL_WIDTH, 'center')
+        love.graphics.printf('Congratulations Birdie!', 0, 120, VIRTUAL_WIDTH, 'center')
     --SILVER MEDAL -> 20 OR More than 20 Points
   elseif self.score >= 20 then
         love.graphics.draw(self.medals['silver'], 206, 25)
         love.graphics.setFont(flappyFont)
-        love.graphics.printf('Too close to Gold, Birdie!', 0, 64, VIRTUAL_WIDTH, 'center')
+        love.graphics.printf('Too close to Gold, Birdie!', 0, 120, VIRTUAL_WIDTH, 'center')
       --BRONZE MEDAL -> 10 OR More than 10 Points
   elseif self.score >= 10 then
         love.graphics.draw(self.medals['bronze'], 206, 25)love.graphics.setFont(flappyFont)
