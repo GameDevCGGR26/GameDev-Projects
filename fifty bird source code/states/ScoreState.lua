@@ -25,6 +25,7 @@ function ScoreState:enter(params)
 end
 
 function ScoreState:update(dt)
+    scroll = true
     -- go back to play if enter is pressed
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
         gStateMachine:change('countdown')
@@ -39,7 +40,7 @@ function ScoreState:render()
 
       -- GOLD MEDAL -> 30 OR higher
     if self.score >= 30 then
-        love.graphics.draw(self.medals['gold'], 206, 180)
+        love.graphics.draw(self.medals['gold'], 206, 25)
         love.graphics.setFont(flappyFont)
         love.graphics.printf('Congratulations Birdie!', 0, 64, VIRTUAL_WIDTH, 'center')
     --SILVER MEDAL -> 20 OR More than 20 Points
@@ -53,7 +54,7 @@ function ScoreState:render()
         love.graphics.printf('Keep up!', 0, 120, VIRTUAL_WIDTH, 'center')
     else
         love.graphics.setFont(hugeFont)
-        love.graphics.printf('Oops! You lose!', 0, 120, VIRTUAL_WIDTH, 'center')
+        love.graphics.printf('Oops! You lose!', 0, 100, VIRTUAL_WIDTH, 'center')
     end
     love.graphics.setFont(flappyFont)
     love.graphics.printf('Press Enter to Play Again!', 0, 230, VIRTUAL_WIDTH, 'center')
