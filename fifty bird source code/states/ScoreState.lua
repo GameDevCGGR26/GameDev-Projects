@@ -25,7 +25,7 @@ function ScoreState:enter(params)
 end
 
 function ScoreState:update(dt)
-    scroll = true
+    scrolling = true
     -- go back to play if enter is pressed
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
         gStateMachine:change('countdown')
