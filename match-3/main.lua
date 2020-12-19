@@ -27,6 +27,9 @@
     http://cpetry.github.io/TextureGenerator-Online/
 ]]
 
+-- initialize our nearest-neighbor filter
+love.graphics.setDefaultFilter('nearest', 'nearest')
+
 -- this time, we're keeping all requires and assets in our Dependencies.lua file
 require 'src/Dependencies'
 
@@ -38,10 +41,11 @@ WINDOW_HEIGHT = 720
 VIRTUAL_WIDTH = 512
 VIRTUAL_HEIGHT = 288
 
-function love.load()
-    -- initialize our nearest-neighbor filter
-    love.graphics.setDefaultFilter('nearest', 'nearest')
+-- speed at which our background texture will scroll
+BACKGROUND_SCROLL_SPEED = 80
 
+function love.load()
+    
     -- window bar title
     love.window.setTitle('Match 3')
 
@@ -52,7 +56,8 @@ function love.load()
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         vsync = true,
         fullscreen = false,
-        resizable = true
+        resizable = true,
+        canvas = true
     })
 
     -- set music to loop and start
@@ -70,10 +75,12 @@ function love.load()
 
     -- keep track of scrolling our background on the X axis
     backgroundX = 0
-    backgroundScrollSpeed = 80
 
-    -- initialize input table
+    -- initialize key input table
     love.keyboard.keysPressed = {}
+
+    --initialize mouse input table
+    love.mouse.buttonsPressed = {}
 end
 
 function love.resize(w, h)
@@ -81,8 +88,16 @@ function love.resize(w, h)
 end
 
 function love.keypressed(key)
+    if love.keyboard.wasPressed('escape') then
+        love.event.quit()
+    end
+    
     -- add to our table of keys pressed this frame
     love.keyboard.keysPressed[key] = true
+end
+
+function love.mousepressed(x, y, button)
+    love.mouse.buttonsPressed[button] = true
 end
 
 function love.keyboard.wasPressed(key)
@@ -93,9 +108,18 @@ function love.keyboard.wasPressed(key)
     end
 end
 
+function love.mouse.wasPressed(button)
+    if love.mouse.buttonsPressed[button] then
+        return true
+    else
+        return false
+    end
+end
+
 function love.update(dt)
+    
     -- scroll background, used across all states
-    backgroundX = backgroundX - backgroundScrollSpeed * dt
+    backgroundX = backgroundX - BACKGROUND_SCROLL_SPEED * dt
     
     -- if we've scrolled the entire image, reset it to 0
     if backgroundX <= -1024 + VIRTUAL_WIDTH - 4 + 51 then
@@ -105,6 +129,7 @@ function love.update(dt)
     gStateMachine:update(dt)
 
     love.keyboard.keysPressed = {}
+    love.mouse.buttonsPressed = {}
 end
 
 function love.draw()
