@@ -207,7 +207,66 @@ function Board:removeMatches()
 
     self.matches = nil
 end
+    
+function Board:swapTiles(tile1,tile2)
+    local tempX = tile1.gridX
+    local tempY = tile1.gridY
 
+    tile1.gridX = tile2.gridX
+    tile1.gridY = tile2.gridY
+    tile2.gridX = tempX
+    tile2.gridY = tempY
+
+    self.tiles[tile1.gridY][tile1.gridX] = tile1
+    self.tiles[tile2.gridY][tile2.gridX] = tile2
+
+end
+    
+function Board:anyMatches()
+
+    for y = 1, 8 do
+        
+        for x = 1, 8 do
+
+            if x > 1 then
+                self:swapTiles(self.tiles[y][x], self.tiles[y][x - 1])
+                if self:calculateMatches() then
+                    self:swapTiles(self.tiles[y][x], self.tiles[y][x - 1])
+                    return true
+                end
+                self:swapTiles(self.tiles[y][x], self.tiles[y][x - 1])
+            end
+
+            if y > 1 then
+                self:swapTiles(self.tiles[y][x], self.tiles[y - 1][x])
+                if self:calculateMatches() then
+                    self:swapTiles(self.tiles[y][x], self.tiles[y - 1][x])
+                    return true
+                end
+                self:swapTiles(self.tiles[y][x], self.tiles[y - 1][x])
+            end
+
+            if x < 8 then
+                self:swapTiles(self.tiles[y][x], self.tiles[y][x + 1])
+                if self:calculateMatches() then
+                    self:swapTiles(self.tiles[y][x], self.tiles[y][x + 1])
+                    return true
+                end
+                self:swapTiles(self.tiles[y][x], self.tiles[y][x + 1])
+            end
+
+            if y < 8 then
+                self:swapTiles(self.tiles[y][x], self.tiles[y + 1][x])
+                if self:calculateMatches() then
+                    self:swapTiles(self.tiles[y][x], self.tiles[y + 1][x])
+                    return true
+                end
+                self:swapTiles(self.tiles[y][x], self.tiles[y + 1][x])
+            end
+        end
+    end
+    return false
+end
 --[[
     Shifts down all of the tiles that now have spaces below them, then returns a table that
     contains tweening information for these new tiles.
