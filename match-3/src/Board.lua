@@ -149,7 +149,7 @@ function Board:calculateMatches()
                     for y2 = y - 1, y - matchNum, -1 do
                         if self.tiles[y2][x].shinyTiles == true then
                             for col = 1, 8 do
-                                table.insert(match, self.tiles[x][col])
+                                table.insert(match, self.tiles[col][x])
                             end
                             break
                         end
@@ -176,7 +176,7 @@ function Board:calculateMatches()
             for y = 8, 8 - matchNum + 1, -1 do
                 if self.tiles[y][x].shinyTiles == true then
                     for col = 1, 8 do
-                        table.insert(match, self.tiles[x][col])
+                        table.insert(match, self.tiles[col][x])
                     end
                     break
                 end
