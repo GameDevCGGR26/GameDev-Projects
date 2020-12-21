@@ -34,6 +34,10 @@ function BeginGameState:enter(def)
     -- the level text
     --
 
+    self.board = Board(VIRTUAL_WIDTH - 272, 16, self.level)
+    while self.board:anyMatches() do
+        self.board = Board(VIRTUAL_WIDTH - 272, 16, self.level)
+    end
     -- first, over a period of 1 second, transition our alpha to 0
     Timer.tween(1, {
         [self] = {transitionAlpha = 0}
