@@ -42,7 +42,7 @@ VIRTUAL_WIDTH = 512
 VIRTUAL_HEIGHT = 288
 
 -- speed at which our background texture will scroll
-BACKGROUND_SCROLL_SPEED = 80
+BACKGROUND_SCROLL_SPEED = 0
 
 function love.load()
     
