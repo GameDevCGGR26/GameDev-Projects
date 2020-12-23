@@ -18,7 +18,7 @@ function Board:init(x, y)
     self.y = y
     self.shinyTile = 18
     self.matches = {}
-    self.level = self.level == 1 and 2 or 1
+    self.level = 1
     self.possibleColors = {1,4,6,9,11,12,14,17}
     
     self:initializeTiles()
@@ -27,13 +27,14 @@ end
 function Board:initializeTiles()
     self.tiles = {}
 
+    self.level = self.level == 1 and 2 or 1
     for tileY = 1, 8 do
         
         -- empty table that will serve as a new row
         table.insert(self.tiles, {})
 
         for tileX = 1, 8 do
-          
+
             if self.level == 1 then
                     self.varietyFlag = 1
             else
@@ -330,17 +331,18 @@ function Board:getFallingTiles()
 
             -- if the tile is nil, we need to add a new one
             if not tile then
-               
-                if self.level ~= 1 then
-                    self.varietyFlag = math.random (6)
-                end       
-                    
+    
+                if self.level == 1 then
+                    self.varietyFlag = 1
+                else
+                    self.varietyFlag = math.random(6)
+                end
                     
                 self.shinyTiles = math.random(self.shinyTile) == 1  
                 
 
                  -- new tile with random color, variety, shiny tiles
-                local tile = Tile(x, y, math.random(18), math.random(6), self.varietyFlag, self.shinyTiles)
+                local tile = Tile(x, y, self.possibleColors[math.random(#self.possibleColors)], self.varietyFlag, self.shinyTiles)
                 tile.y = -32
                 self.tiles[y][x] = tile
                 -- create a new tween to return for this tile to fall down
