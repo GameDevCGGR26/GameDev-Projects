@@ -18,11 +18,9 @@ function Board:init(x, y)
     self.y = y
     self.shinyTile = 18
     self.matches = {}
+    self.level = level
+    self.possibleColors = {1,4,6,9,11,12,14,17}
     
-    
-    self.diffColorsCount = math.min(10, level + 5)
-    self.diffColors = self:getRandomColors(self.diffColorsCount)
-    self.maxVariety = math.mind(6, math.ceil(level/2))
     self:initializeTiles()
 end
 
@@ -37,11 +35,14 @@ function Board:initializeTiles()
         for tileX = 1, 8 do
            
             table.insert(self.tiles, {})
-            local variety = (math.random(6) == 1) and math.min(self.maxVariety, math.random(2,6)) or 1
-            table.insert(self.tiles[tileY], Tile(tileX, tileY, self.diffColors[math.random(self.diffColorsCount)], variety)
+            if self.level == 1 then
+                    self.varietyFlag = 1
+            else
+                self.varietyFlag = math.random(6)
+            end
             --random selected tiles for shiny specs
             self.shinyTiles = math.random(self.shinyTile) == 1   
-            table.insert(self.tiles[tileY], Tile(tileX, tileY, math.random(18), math.random(6), self.shinyTiles))
+            table.insert(self.tiles[tileY], Tile(tileX, tileY, self.possibleColors[math.random(#self.possibleColors)], self.shinyTiles,self.varietyFlag))
         end
     end
 
@@ -331,15 +332,16 @@ function Board:getFallingTiles()
             -- if the tile is nil, we need to add a new one
             if not tile then
                
-                local variety = (math.rando(6) == 1) and math.min(self.maxVariety, math.random(2,6)) or 1
-                local tile = Tile(x,y, self.diffColors[math.random(self.diffColorsCount)], variety)       
+                if self.level ~= 1 then
+                    self.varietyFlag = math.random (6)
+                end       
                     
                     
                 self.shinyTiles = math.random(self.shinyTile) == 1  
                 
 
                  -- new tile with random color, variety, shiny tiles
-                local tile = Tile(x, y, math.random(18), math.random(6), self.shinyTiles)
+                local tile = Tile(x, y, math.random(18), math.random(6), self.shinyTiles, self.varietyFlag)
                 tile.y = -32
                 self.tiles[y][x] = tile
                 -- create a new tween to return for this tile to fall down
@@ -360,21 +362,3 @@ function Board:render()
         end
     end
 end
-    
-function Board:getRandomColors(diffColorsCount)
-    local colors = {}
-    for i = 1, diffColorsCount do 
-        local rnd = 0
-        while rnd = 0 do
-            rnd = math.random(18)
-            for k, color in pairs(colors) do
-                if color = rnd then 
-                    rnd = 0
-                    break 
-                end
-            end
-        end
-        table.insert(colors, rnd)
-    end
-    return colors
-end    
