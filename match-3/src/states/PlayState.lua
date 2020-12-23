@@ -63,7 +63,7 @@ function PlayState:enter(params)
     self.level = params.level
 
     -- spawn a board and place it toward the right
-    self.board = params.board or Board(VIRTUAL_WIDTH - 272, 16)
+    self.board = params.board or Board(VIRTUAL_WIDTH - 272, 16, self.level)
 
     -- grab score from params if it was passed
     self.score = params.score or 0
@@ -197,11 +197,11 @@ end
     have matched and replaces them with new randomized tiles, deferring most of this
     to the Board class.
 ]]
-function PlayState:calculateMatches(calculatedMatches)
+function PlayState:calculateMatches(x1, y1, x2, y2)
     self.highlightedTile = nil
 
     -- if we have any matches, remove them and tween the falling blocks that result
-    local matches = calculatedMatches or self.board:calculateMatches()
+    local matches = self.board:calculateMatches()
     
     if matches then
         gSounds['match']:stop()
