@@ -155,42 +155,32 @@ function PlayState:update(dt)
                 gSounds['error']:play()
                 self.highlightedTile = nil
             else
-                self:swapTiles(self.highlightedTile, self.board.tiles[y][x], true)
+                -- swap grid positions of tiles
+                local newTile = self.board.tiles[y][x]
+                
+               self.board:swap(self.highlightedTile.gridX, self.highlightedTile.gridY, newTile.gridX, newTile.gridY)
+                
+                -- swap tiles in the tiles table
+                -- tween coordinates between the two so they swap
+                Timer.tween(0.1, {
+                    [self.highlightedTile] = {x = newTile.x, y = newTile.y},
+                    [newTile] = {x = self.highlightedTile.x, y = self.highlightedTile.y}
+                })
+                
+                -- once the swap is finished, we can tween falling blocks as needed
+                :finish(function()
+                    self:calculateMatches(self.highlightedTile.gridX, self.highlightedTile.gridY, newTile.gridX, newTile.gridY)
+                    
+                end)
             end
         end
     end
     Timer.update(dt)
-end
-
-function PlayState:swapTiles(tile1, tile2, swapBackOnNoMatch)
-    self.board:swapTiles(tile1, tile2)
-
-    if swapBackOnNoMatch then
-
-        -- tween coordinates between the two so they swap
-        Timer.tween(0.1, {
-            [tile1] = {x = tile2.x, y = tile2.y},
-            [tile2] = {x = tile1.x, y = tile1.y}
-        })
-        
-        -- once the swap is finished, we can tween falling blocks as needed
-        :finish(function()
-            local matches = self.board:calculateMatches()
-            if matches then
-                self:calculateMatches(matches)
-            else
-                self:swapTiles(tile1, tile2, false)
-                self.highlightedTile = nil
-                gSounds["error"]:play()
-            end
-        end)
-    else
-        Timer.tween(0.1, {
-            [tile1] = {x = tile2.x, y = tile2.y},
-            [tile2] = {x = tile1.x, y = tile1.y}
-        })
+    if self.board:boardCheck() == false then
+        self.board:reset()
     end
 end
+
 --[[
     Calculates whether any matches were found on the board and tweens the needed
     tiles to their new destinations if so. Also removes tiles from the board that
@@ -202,6 +192,16 @@ function PlayState:calculateMatches(x1, y1, x2, y2)
 
     -- if we have any matches, remove them and tween the falling blocks that result
     local matches = self.board:calculateMatches()
+    
+    if matches == false and x1 > 0 then
+        self.board:swap(x1, y1, x2, y2)
+        local tile1 = self.board.tiles[y1][x1]
+        local tile2 = self.board.tiles[y2][x2]
+        Timer.tween(0.1, {
+            [tile1] = {x = tile2.x, y = tile2.y},
+            [tile2] = {x = tile1.x, y = tile1.y}
+        })
+    end
     
     if matches then
         gSounds['match']:stop()
@@ -228,33 +228,9 @@ function PlayState:calculateMatches(x1, y1, x2, y2)
             
             -- recursively call function in case new matches have been created
             -- as a result of falling blocks once new blocks have finished falling
-            self:calculateMatches()
+            self:calculateMatches(0, 0, 0, 0)
         end)
         
-        if not self.board:anyMatches() then
-            self.noMatches = true
-            gSounds['error']:play()
-            
-            Timer.tween(0.5, {
-                [self] = {noMatchLabelY = VIRTUAL_HEIGHT/ 2 - 8}
-            })
-
-            :finish(function()
-                Timer.after(2, function()
-                    Timer.tween(0.5, {
-                        [self] = {noMatchLabelY = VIRTUAL_HEIGHT + 30}
-                    })
-        
-                    :finish(function()
-                        while not self.board:anyMatches() do
-                            self.board = Board(VIRTUAL_WIDTH - 272, 16, self.level)
-                        end
-                        self.noMatches = false
-                        self.noMatchLabelY = -64
-                    end)
-                end)
-            end)
-        end
     -- if no matches, we can continue playing
     else
         self.canInput = true
