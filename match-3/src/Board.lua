@@ -13,21 +13,23 @@
 
 Board = Class{}
 
-function Board:init(x, y)
+function Board:init(x, y, level)
     self.x = x
     self.y = y
     self.shinyTile = 18
     self.matches = {}
-    self.level = 1
     self.possibleColors = {1,4,6,9,11,12,14,17}
-    
+    self.level = level
+    self.checking = false
+    self.reset = false
+    self.ctr = 0
+
     self:initializeTiles()
 end
 
-function Board:initializeTiles()
+function Board:initializeTiles(level)
     self.tiles = {}
 
-    self.level = self.level == 1 and 2 or 1
     for tileY = 1, 8 do
         
         -- empty table that will serve as a new row
@@ -35,14 +37,10 @@ function Board:initializeTiles()
 
         for tileX = 1, 8 do
 
-            if self.level == 1 then
-                    self.varietyFlag = 1
-            else
-                self.varietyFlag = math.random(6)
-            end
+            local varietyFlag = math.random(math.min(math.floor((self.level+1)/3), 6))
             --random selected tiles for shiny specs
             self.shinyTiles = math.random(self.shinyTile) == 1   
-            table.insert(self.tiles[tileY], Tile(tileX, tileY, self.possibleColors[math.random(#self.possibleColors)], self.varietyFlag, self.shinyTiles))
+            table.insert(self.tiles[tileY], Tile(tileX, tileY, self.possibleColors[math.random(#self.possibleColors)], varietyFlag, self.shinyTiles))
         end
     end
 
@@ -50,7 +48,7 @@ function Board:initializeTiles()
         
         -- recursively initialize if matches were returned so we always have
         -- a matchless board on start
-        self:initializeTiles()
+        self:initializeTiles(self.level)
     end
 end
 
@@ -209,65 +207,6 @@ function Board:removeMatches()
     self.matches = nil
 end
     
-function Board:swapTiles(tile1,tile2)
-    local tempX = tile1.gridX
-    local tempY = tile1.gridY
-
-    tile1.gridX = tile2.gridX
-    tile1.gridY = tile2.gridY
-    tile2.gridX = tempX
-    tile2.gridY = tempY
-
-    self.tiles[tile1.gridY][tile1.gridX] = tile1
-    self.tiles[tile2.gridY][tile2.gridX] = tile2
-
-end
-    
-function Board:anyMatches()
-
-    for y = 1, 8 do
-        
-        for x = 1, 8 do
-
-            if x > 1 then
-                self:swapTiles(self.tiles[y][x], self.tiles[y][x - 1])
-                if self:calculateMatches() then
-                    self:swapTiles(self.tiles[y][x], self.tiles[y][x - 1])
-                    return true
-                end
-                self:swapTiles(self.tiles[y][x], self.tiles[y][x - 1])
-            end
-
-            if y > 1 then
-                self:swapTiles(self.tiles[y][x], self.tiles[y - 1][x])
-                if self:calculateMatches() then
-                    self:swapTiles(self.tiles[y][x], self.tiles[y - 1][x])
-                    return true
-                end
-                self:swapTiles(self.tiles[y][x], self.tiles[y - 1][x])
-            end
-
-            if x < 8 then
-                self:swapTiles(self.tiles[y][x], self.tiles[y][x + 1])
-                if self:calculateMatches() then
-                    self:swapTiles(self.tiles[y][x], self.tiles[y][x + 1])
-                    return true
-                end
-                self:swapTiles(self.tiles[y][x], self.tiles[y][x + 1])
-            end
-
-            if y < 8 then
-                self:swapTiles(self.tiles[y][x], self.tiles[y + 1][x])
-                if self:calculateMatches() then
-                    self:swapTiles(self.tiles[y][x], self.tiles[y + 1][x])
-                    return true
-                end
-                self:swapTiles(self.tiles[y][x], self.tiles[y + 1][x])
-            end
-        end
-    end
-    return false
-end
 --[[
     Shifts down all of the tiles that now have spaces below them, then returns a table that
     contains tweening information for these new tiles.
@@ -332,17 +271,11 @@ function Board:getFallingTiles()
             -- if the tile is nil, we need to add a new one
             if not tile then
     
-                if self.level == 1 then
-                    self.varietyFlag = 1
-                else
-                    self.varietyFlag = math.random(6)
-                end
+                local varietyFlag = math.random(math.min(math.floor((self.level+1)/3), 6))
                     
                 self.shinyTiles = math.random(self.shinyTile) == 1  
-                
-
                  -- new tile with random color, variety, shiny tiles
-                local tile = Tile(x, y, self.possibleColors[math.random(#self.possibleColors)], self.varietyFlag, self.shinyTiles)
+                local tile = Tile(x, y, self.possibleColors[math.random(#self.possibleColors)], varietyFlag, self.shinyTiles)
                 tile.y = -32
                 self.tiles[y][x] = tile
                 -- create a new tween to return for this tile to fall down
@@ -362,4 +295,107 @@ function Board:render()
             self.tiles[y][x]:render(self.x, self.y)
         end
     end
+end
+
+function Board:renderReset()
+    if self.reset == true then
+        love.graphics.setColor(255, 255, 255, 128)
+        love.graphics.rectangle('fill', VIRTUAL_WIDTH - 272, 16, 256, 256)
+        love.graphics.setColor(0,0,0,255)
+        love.graphics.setFont(gFonts['large'])
+        self.ctr = self.ctr + 1
+        print(self.ctr)
+        love.graphics.print("reset", self.x + 64, self.y + 112)
+        love.graphics.setColor(255, 255, 255, 255)
+    end
+end
+
+function Board:boardCheck()
+
+    self.checking = true
+
+    -- check for any possible horizontal swaps
+        for i =  1,8 do 
+            for j = 1, 7 do
+                self:swap(i, j, i, j+1)
+                if self:calculateMatches()  then
+                    self:swap(i, j, i, j+1)
+                    self.checking = false
+                    return true
+                else
+                    self:swap(i, j, i, j+1)
+                end
+            end
+        end
+        -- check for vertical matches
+        for j =  1,8 do 
+            for i = 1, 7 do
+                self:swap(i, j, i + 1, j)
+                if self:calculateMatches() then
+                    self:swap(i, j, i + 1, j)
+                    self.checking = false
+                    return true
+                else
+                self:swap(i, j, i + 1, j)
+                end
+            end
+        end
+
+    self.checking = false
+    return false
+end
+
+
+function Board:swap(x1, y1, x2, y2)             -- we supply the gridX, gridY values of the tiles we want to swap
+
+    local tile1 = self.tiles[y1][x1]
+    local tile2 = self.tiles[y2][x2]
+
+    local tempX = tile1.gridX
+    local tempY = tile1.gridY
+
+    -- swapping
+    tile1.gridX = tile2.gridX
+    tile1.gridY = tile2.gridY
+    tile2.gridX = tempX
+    tile2.gridY = tempY
+
+    self.tiles[tile1.gridY][tile1.gridX] =
+    tile1
+
+    self.tiles[tile2.gridY][tile2.gridX] = tile2
+end
+
+function Board:resetAnimated()
+  
+        local x1, y1, x2, y2 = math.random(8), math.random(8), math.random(8), math.random(8)
+        print("("..tostring(x1)..","..tostring(y1)..") ("..tostring(x2)..","..tostring(y2)..")")
+        local tile1 = self.tiles[y1][x1]
+        local tile2 = self.tiles[y2][x2]
+        self:swap(x1, y1, x2, y2)
+        Timer.tween(0.1,{
+            [tile1] ={x = tile2.x, y = tile2.y},
+            [tile2] = {x = tile1.x, y = tile1.y}
+        })
+        :finish(function()
+            if self:boardCheck() == false then
+                self:resetAnimated()
+            end
+
+        end
+
+        ) 
+     
+end
+
+function Board:reset()
+   self.reset = true
+   while self:boardCheck() == false do
+   self:init(self.x, self.y, self.level)
+   end
+   self.reset = true
+   Timer.after(1, 
+   function()
+    self.reset = false
+   end)
 end
