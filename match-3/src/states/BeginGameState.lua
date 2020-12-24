@@ -25,17 +25,14 @@ end
 function BeginGameState:enter(def)
     -- grab level # from the def we're passed
     self.level = def.level
-
+    self.board = Board(VIRTUAL_WIDTH - 272, 16, self.level)
+    while self.board:boardCheck() == false do
+        self.board = Board(VIRTUAL_WIDTH - 272, 16, self.level)
+    end
     --
     -- animate our white screen fade-in, then animate a drop-down with
     -- the level text
     --
-
-    self.board = Board(VIRTUAL_WIDTH - 272, 16, self.level)
-    
-    while not self.board:anyMatches() do
-        self.board = Board(VIRTUAL_WIDTH - 272, 16, self.level)
-    end
     -- first, over a period of 1 second, transition our alpha to 0
     Timer.tween(1, {
         [self] = {transitionAlpha = 0}
