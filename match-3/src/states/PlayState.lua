@@ -240,7 +240,7 @@ end
 function PlayState:render()
     -- render board of tiles
     self.board:render()
-
+    self.board:renderReset()
     -- render highlighted tile if it exists
     if self.highlightedTile then
         
