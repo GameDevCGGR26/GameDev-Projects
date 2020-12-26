@@ -21,7 +21,7 @@ function Board:init(x, y, level)
     self.possibleColors = {1,4,6,9,11,12,14,17}
     self.level = level
     self.checking = false
-    self.reset = false
+    self.toreset = false
     self.ctr = 0
 
     self:initializeTiles()
@@ -298,15 +298,16 @@ function Board:render()
 end
 
 function Board:renderReset()
-    if self.reset == true then
-        love.graphics.setColor(255, 255, 255, 128)
+    if self.toreset == true then
+        love.graphics.setColor(1, 1, 1, 50/255)
         love.graphics.rectangle('fill', VIRTUAL_WIDTH - 272, 16, 256, 256)
-        love.graphics.setColor(0,0,0,255)
-        love.graphics.setFont(gFonts['large'])
+        love.graphics.setColor(0,0,0,1)
+        love.graphics.setFont(gFonts['medium'])
         self.ctr = self.ctr + 1
         print(self.ctr)
-        love.graphics.print("reset", self.x + 64, self.y + 112)
-        love.graphics.setColor(255, 255, 255, 255)
+        love.graphics.print("No Matches.", self.x + 80, self.y + 108)
+        love.graphics.print("Board Reset.", self.x + 75, self.y + 130)
+        love.graphics.setColor(1, 1, 1, 1)
     end
 end
 
@@ -389,13 +390,13 @@ function Board:resetAnimated()
 end
 
 function Board:reset()
-   self.reset = true
+   self.toreset = true
    while self:boardCheck() == false do
    self:init(self.x, self.y, self.level)
    end
-   self.reset = true
-   Timer.after(1, 
+   self.toreset = true
+   Timer.after(2, 
    function()
-    self.reset = false
+    self.toreset = false
    end)
 end
