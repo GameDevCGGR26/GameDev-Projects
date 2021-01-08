@@ -9,7 +9,7 @@
 ]]
 
 LevelMaker = Class{}
-
+keyCollect = false
 function LevelMaker.generate(width, height)
     local tiles = {}
     local entities = {}
@@ -38,7 +38,7 @@ function LevelMaker.generate(width, height)
         end
 
         -- chance to just be emptiness
-        if math.random(7) == 1 then
+         if math.random(7) == 1 and keyPosition ~= x and lockPosition ~= x then
             for y = 7, height do
                 table.insert(tiles[y],
                     Tile(x, y, tileID, nil, tileset, topperset))
@@ -152,6 +152,54 @@ function LevelMaker.generate(width, height)
                             end
 
                             gSounds['empty-block']:play()
+                        end
+                    }
+                )
+            end
+            
+             --spawn a key
+            if x == keyPosition then 
+                table.insert(objects,
+                    GameObject {
+                        texture = 'keys-locks',
+                        x = (x - 1) * TILE_SIZE,
+                        y = (blockHeight - 1) * TILE_SIZE,
+                        width = 16,
+                        height = 16,
+                        frame = keyColor,
+                        collidable = true,
+                        consumable = true,
+                        solid = false,
+                        onConsume = function(player, object)
+                            gSounds['pickup']:play()
+                            player.score = player.score + 100
+                            keyCollect = true
+                        end
+                    }
+                )
+            end
+
+            --spawn a lock
+            if x == lockPosition then
+                table.insert(objects,
+                    GameObject {
+                        texture = 'keys-locks',
+                        x = (x - 1) * TILE_SIZE,
+                        y = (blockHeight - 1) * TILE_SIZE,
+                        width = 16,
+                        height = 16,
+                        frame = keyColor + 4,
+                        collidable = true,
+                        hit = false,
+                        solid = true,
+                        locked = false,
+                        onCollide = function(obj)
+                            if not obj.hit then
+                                if keyCollect == true then 
+                                    gSounds['pickup']:play()
+                                    obj.hit = true
+                                end
+                            end
                         end
                     }
                 )
