@@ -37,6 +37,15 @@ function LevelMaker.generate(width, height)
                 Tile(x, y, tileID, nil, tileset, topperset))
         end
 
+        -- so that the first 3 tiles will generate simple ground
+        if x <= 3 then
+            tileID = TILE_ID_GROUND
+            for y = 7, height do
+                table.insert(tiles[y],
+                    Tile(x, y, tileID, y == 7 and topper or nil, tileset, topperset))
+            end
+        end
+        
         -- chance to just be emptiness
          if math.random(7) == 1 and keyPosition ~= x and lockPosition ~= x then
             for y = 7, height do
