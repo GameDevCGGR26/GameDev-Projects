@@ -207,8 +207,58 @@ function LevelMaker.generate(width, height)
                                 if keyCollect == true then 
                                     gSounds['pickup']:play()
                                     obj.hit = true
+                               
+                                    --spawn flag post
+                                    local flagpost = GameObject{
+                                        texture = 'flagposts',
+                                        x = obj.x + 4,
+                                        y = (blockHeight - 4) * TILE_SIZE,
+                                        width = 8,
+                                        height = 48,
+                                        frame = 1, 
+
+                                        collidable = true,
+                                        consumable = true,
+                                        solid = false,
+
+                                        onConsume = function(player, object)
+                                            gSounds['pickup']:play()
+                                            player.score = player.score + 1000
+
+                                            gStateMachine:change('play', (score = player.score, lastLevelWidth = width))
+                                        end
+                                    }
+                                        local flag = GameObject{
+                                            texture = 'flag',
+                                            x = obj.x + 6,
+                                            y = (blockHeight - 2) * TILE_SIZE,
+                                            width = 16,
+                                            height = 10,
+                                            frame = 1, 
+
+                                            collidable = true,
+                                            consumable = true,
+                                            solid = false,
+
+                                            onConsume = function(player, object)
+                                                gSounds['pickup']:play()
+                                                player.score = player.score + 1000
+
+                                                gStateMachine:change('play', (score = player.score, lastLevelWidth = width))
+                                        end
+                                    }
+                                    Timer.tween(2.0, {
+                                        [flag] = {y = ((blockHeight - 4) * TILE_SIZE) + 4}
+                                    })
+                                    gSounds['powerup-reveal']:play()
+
+                                    table.insert(objects, flagpost)
+                                    table.insert(objects, flag)
+
                                 end
                             end
+
+                            gSounds['empty-block']:play()
                         end
                     }
                 )
