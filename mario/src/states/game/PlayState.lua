@@ -8,6 +8,22 @@
 PlayState = Class{__includes = BaseState}
 
 function PlayState:init()
+
+end
+
+
+function PlayState:enter(params)
+
+    self.score = params.score
+
+    self.levelWidth = params.lastLevelWidth
+
+    if self.levelWidth == 0 then 
+        self.levelWidth = 100
+    else
+        self.levelWidth = self.levelWidth + 50
+    end
+    
     self.camX = 0
     self.camY = 0
     self.level = LevelMaker.generate(100, 10)
@@ -30,7 +46,7 @@ function PlayState:init()
         },
         map = self.tileMap,
         level = self.level
-    })
+    }, self.score)
 
     self:spawnEnemies()
 
