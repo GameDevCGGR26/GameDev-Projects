@@ -10,7 +10,7 @@
 
 Player = Class{__includes = Entity}
 
-function Player:init(def)
+function Player:init(def, score)
     Entity.init(self, def)
     self.score = 0
 end
