@@ -16,11 +16,19 @@ function LevelMaker.generate(width, height)
     local objects = {}
 
     local tileID = TILE_ID_GROUND
+
+    local groundHeight = 6 
+    local pillar = 4  
     
     -- whether we should draw our tiles with toppers
     local topper = true
     local tileset = math.random(20)
     local topperset = math.random(20)
+
+    -- to spawn keys and locks
+    local lockPosition = width - 5
+    local keyPosition = width / 2
+    local keyColor = math.random(1, 4)
 
     -- insert blank tables into tiles for later access
     for x = 1, height do
@@ -44,10 +52,19 @@ function LevelMaker.generate(width, height)
                 table.insert(tiles[y],
                     Tile(x, y, tileID, y == 7 and topper or nil, tileset, topperset))
             end
+            goto continue
+        end
+        if x >= width - 2 then
+            tileID = TILE_ID_GROUND
+            for y = 7, height do
+                table.insert(tiles[y],
+                    Tile(x, y, tileID, y == 7 and topper or nil, tileset, topperset))
+            end
+            goto continue
         end
         
         -- chance to just be emptiness
-         if math.random(7) == 1 and keyPosition ~= x and lockPosition ~= x then
+        if math.random(7) == 1 and keyPosition ~= x and lockPosition ~= x then
             for y = 7, height do
                 table.insert(tiles[y],
                     Tile(x, y, tileID, nil, tileset, topperset))
@@ -62,6 +79,7 @@ function LevelMaker.generate(width, height)
                     Tile(x, y, tileID, y == 7 and topper or nil, tileset, topperset))
             end
 
+           
             -- chance to generate a pillar
             if math.random(8) == 1 then
                 blockHeight = 2
@@ -87,8 +105,8 @@ function LevelMaker.generate(width, height)
                 tiles[6][x] = Tile(x, 6, tileID, nil, tileset, topperset)
                 tiles[7][x].topper = nil
             
-            -- chance to generate bushes
-            elseif math.random(8) == 1 then
+             -- chance to generate bushes
+            elseif math.random(8) == 1 and keyPosition ~= x  then
                 table.insert(objects,
                     GameObject {
                         texture = 'bushes',
@@ -101,9 +119,108 @@ function LevelMaker.generate(width, height)
                     }
                 )
             end
+            --spawn a key
+            if x == keyPosition then 
+                table.insert(objects,
+                    GameObject {
+                        texture = 'keys-locks',
+                        x = (x - 1) * TILE_SIZE,
+                        y = (blockHeight - 1) * TILE_SIZE,
+                        width = 16,
+                        height = 16,
+                        frame = keyColor,
+                        collidable = true,
+                        consumable = true,
+                        solid = false,
+                        onConsume = function(player, object)
+                            gSounds['pickup']:play()
+                            player.score = player.score + 300
+                            keyCollect = true
+                            player.keyObj = object
+                        end
+                    }
+                )
+            end
+
+            --spawn a lock
+            if x == lockPosition then
+                table.insert(objects,
+                    GameObject {
+                        texture = 'keys-locks',
+                        x = (x - 1) * TILE_SIZE,
+                        y = (blockHeight - 1) * TILE_SIZE,
+                        width = 16,
+                        height = 16,
+                        frame = keyColor + 4,
+                        collidable = true,
+                        solid = true,
+                        locked = false,
+                        hit = false, 
+                        remove = false,
+                        onCollide = function(obj)
+                            if not obj.hit then
+                                if keyCollect == true then 
+                                    gSounds['pickup']:play()
+                                    obj.hit = true
+                                    obj.remove = true
+                                    obj.consumable = true
+
+                                    --spawn flag post
+                                    local flagpost = GameObject{
+                                        texture = 'flagposts',
+                                        x = (width - 2) * TILE_SIZE,
+                                        y = (3) * TILE_SIZE,
+                                        width = 8,
+                                        height = 48,
+                                        frame = 1, 
+                                        collidable = true,
+                                        consumable = true,
+                                        solid = false,
+
+                                        onConsume = function(player, object)
+                                            gSounds['pickup']:play()
+                                            player.score = player.score + 1000
+
+                                            gStateMachine:change('play', {score = player.score, lastLevelWidth = width})
+                                        end
+                                    }
+                                    table.insert(objects, flagpost)
+
+                                    --spawn a flag
+                                    local flag = GameObject{
+                                        texture = 'flags',
+                                        x = (width - 2) * TILE_SIZE,
+                                        y = (3) * TILE_SIZE,
+                                        width = 16,
+                                        height = 10,
+                                        frames = 1,
+                                        collidable = true,
+                                        consumable = true,
+                                        solid = false,
+
+                                        onConsume = function(player, object)
+                                            gSounds['pickup']:play()
+                                            player.score = player.score + 1000
+
+                                            gStateMachine:change('play', {score = player.score, lastLevelWidth = width})
+                                        end
+                                    }
+                                    Timer.tween(2.0, {
+                                        [flag] = {y = ((blockHeight - 4) * TILE_SIZE) + 4}
+                                    })
+                                    gSounds['powerup-reveal']:play()
+                                    table.insert(objects,flag)
+                                end
+                                keyCollect = false
+                            end
+                            gSounds['empty-block']:play()
+                        end
+                    }
+                )
+            end
 
             -- chance to spawn a block
-            if math.random(10) == 1 then
+            if math.random(10) == 1 and keyPosition ~= x and lockPosition ~= x then
                 table.insert(objects,
 
                     -- jump block
@@ -159,111 +276,14 @@ function LevelMaker.generate(width, height)
 
                                 obj.hit = true
                             end
-
-                            gSounds['empty-block']:play()
-                        end
-                    }
-                )
-            end
-            
-             --spawn a key
-            if x == keyPosition then 
-                table.insert(objects,
-                    GameObject {
-                        texture = 'keys-locks',
-                        x = (x - 1) * TILE_SIZE,
-                        y = (blockHeight - 1) * TILE_SIZE,
-                        width = 16,
-                        height = 16,
-                        frame = keyColor,
-                        collidable = true,
-                        consumable = true,
-                        solid = false,
-                        onConsume = function(player, object)
-                            gSounds['pickup']:play()
-                            player.score = player.score + 100
-                            keyCollect = true
-                        end
-                    }
-                )
-            end
-
-            --spawn a lock
-            if x == lockPosition then
-                table.insert(objects,
-                    GameObject {
-                        texture = 'keys-locks',
-                        x = (x - 1) * TILE_SIZE,
-                        y = (blockHeight - 1) * TILE_SIZE,
-                        width = 16,
-                        height = 16,
-                        frame = keyColor + 4,
-                        collidable = true,
-                        hit = false,
-                        solid = true,
-                        locked = false,
-                        onCollide = function(obj)
-                            if not obj.hit then
-                                if keyCollect == true then 
-                                    gSounds['pickup']:play()
-                                    obj.hit = true
-                               
-                                    --spawn flag post
-                                    local flagpost = GameObject{
-                                        texture = 'flagposts',
-                                        x = obj.x + 4,
-                                        y = (blockHeight - 4) * TILE_SIZE,
-                                        width = 8,
-                                        height = 48,
-                                        frame = 1, 
-
-                                        collidable = true,
-                                        consumable = true,
-                                        solid = false,
-
-                                        onConsume = function(player, object)
-                                            gSounds['pickup']:play()
-                                            player.score = player.score + 1000
-
-                                            gStateMachine:change('play', (score = player.score, lastLevelWidth = width))
-                                        end
-                                    }
-                                        local flag = GameObject{
-                                            texture = 'flag',
-                                            x = obj.x + 6,
-                                            y = (blockHeight - 2) * TILE_SIZE,
-                                            width = 16,
-                                            height = 10,
-                                            frame = 1, 
-
-                                            collidable = true,
-                                            consumable = true,
-                                            solid = false,
-
-                                            onConsume = function(player, object)
-                                                gSounds['pickup']:play()
-                                                player.score = player.score + 1000
-
-                                                gStateMachine:change('play', (score = player.score, lastLevelWidth = width))
-                                        end
-                                    }
-                                    Timer.tween(2.0, {
-                                        [flag] = {y = ((blockHeight - 4) * TILE_SIZE) + 4}
-                                    })
-                                    gSounds['powerup-reveal']:play()
-
-                                    table.insert(objects, flagpost)
-                                    table.insert(objects, flag)
-
-                                end
-                            end
-
                             gSounds['empty-block']:play()
                         end
                     }
                 )
             end
         end
+
+        ::continue::
     end
 
     local map = TileMap(width, height)
