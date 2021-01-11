@@ -12,7 +12,7 @@ Player = Class{__includes = Entity}
 
 function Player:init(def, score)
     Entity.init(self, def)
-    self.score = def.score or 0
+    self.score = score
     self.keyObj = nil
 end
 
