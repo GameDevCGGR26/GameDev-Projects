@@ -168,8 +168,8 @@ function LevelMaker.generate(width, height)
                                     --spawn flag post
                                     local flagpost = GameObject{
                                         texture = 'flagposts',
-                                        x = (width - 2) * TILE_SIZE,
-                                        y = (3) * TILE_SIZE,
+                                        x = obj.x + 4,
+                                        y = (blockHeight - 4) * TILE_SIZE,
                                         width = 8,
                                         height = 48,
                                         frame = 1, 
@@ -189,11 +189,11 @@ function LevelMaker.generate(width, height)
                                     --spawn a flag
                                     local flag = GameObject{
                                         texture = 'flags',
-                                        x = (width - 2) * TILE_SIZE,
-                                        y = (3) * TILE_SIZE,
+                                        x = obj.x + 6,
+                                        y = (blockHeight - 2) * TILE_SIZE,
                                         width = 16,
                                         height = 10,
-                                        frames = 1,
+                                        frame = 1,
                                         collidable = true,
                                         consumable = true,
                                         solid = false,
@@ -209,7 +209,8 @@ function LevelMaker.generate(width, height)
                                         [flag] = {y = ((blockHeight - 4) * TILE_SIZE) + 4}
                                     })
                                     gSounds['powerup-reveal']:play()
-                                    table.insert(objects,flag)
+                                    table.insert(objects, flagposts)
+                                    table.insert(objects, flag)
                                 end
                                 keyCollect = false
                             end
