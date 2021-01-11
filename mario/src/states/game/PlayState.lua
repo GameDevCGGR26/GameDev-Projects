@@ -26,7 +26,7 @@ function PlayState:enter(params)
     
     self.camX = 0
     self.camY = 0
-    self.level = LevelMaker.generate(100, 10)
+    self.level = LevelMaker.generate(self.levelWidth, 10)
     self.tileMap = self.level.tileMap
     self.background = math.random(3)
     self.backgroundX = 0
@@ -37,7 +37,7 @@ function PlayState:enter(params)
     self.player = Player({
         x = 0, y = 0,
         width = 16, height = 20,
-        texture = 'green-alien',
+        texture = 'pink-alien',
         stateMachine = StateMachine {
             ['idle'] = function() return PlayerIdleState(self.player) end,
             ['walking'] = function() return PlayerWalkingState(self.player) end,
@@ -90,6 +90,9 @@ function PlayState:render()
     self.player:render()
     love.graphics.pop()
     
+    if self.player.keyObj then
+        love.graphics.draw(gTextures[self.player.keyObj.texture], gFrames[self.player.keyObj.texture][self.player.keyObj.frame], 5, 20)
+    end
     -- render score
     love.graphics.setFont(gFonts['medium'])
     love.graphics.setColor(0, 0, 0, 255)
