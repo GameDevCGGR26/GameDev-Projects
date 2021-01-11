@@ -26,8 +26,8 @@ function LevelMaker.generate(width, height)
     local topperset = math.random(20)
 
     -- to spawn keys and locks
-    local lockPosition = width - 5
-    local keyPosition = width / 2
+    local lockPosition = math.random(width - 8, width - 3)
+    local keyPosition = math.random(5, width / 2)
     local keyColor = math.random(1, 4)
 
     -- insert blank tables into tiles for later access
@@ -81,7 +81,7 @@ function LevelMaker.generate(width, height)
 
            
             -- chance to generate a pillar
-            if math.random(8) == 1 then
+            if math.random(8) == 1 and lockPosition ~= x then
                 blockHeight = 2
                 
                 -- chance to generate bush on pillar
