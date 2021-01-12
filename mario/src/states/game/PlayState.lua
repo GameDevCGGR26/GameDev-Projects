@@ -8,7 +8,6 @@
 PlayState = Class{__includes = BaseState}
 
 function PlayState:init()
-
 end
 
 
@@ -89,10 +88,15 @@ function PlayState:render()
 
     self.player:render()
     love.graphics.pop()
-    
-    if self.player.keyObj then
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.rectangle('fill', 5, 20, 16, 16)
+    if self.player.keyObj and locked == false then
+        love.graphics.rectangle('fill', 5, 20, 16, 16)
         love.graphics.draw(gTextures[self.player.keyObj.texture], gFrames[self.player.keyObj.texture][self.player.keyObj.frame], 5, 20)
+    elseif self.player.keyObj and locked == true then
+        love.graphics.rectangle('fill', 5, 20, 16, 16)
     end
+    
     -- render score
     love.graphics.setFont(gFonts['medium'])
     love.graphics.setColor(0, 0, 0, 255)
