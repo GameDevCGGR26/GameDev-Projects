@@ -10,6 +10,7 @@
 
 LevelMaker = Class{}
 keyCollect = false
+locked = true
 function LevelMaker.generate(width, height)
     local tiles = {}
     local entities = {}
@@ -132,12 +133,15 @@ function LevelMaker.generate(width, height)
                         collidable = true,
                         consumable = true,
                         solid = false,
+
                         onConsume = function(player, object)
                             gSounds['pickup']:play()
                             player.score = player.score + 300
                             keyCollect = true
                             player.keyObj = object
+                            locked = false
                         end
+
                     }
                 )
             end
@@ -156,14 +160,13 @@ function LevelMaker.generate(width, height)
                         solid = true,
                         locked = false,
                         hit = false, 
-                        remove = false,
+
                         onCollide = function(obj)
                             if not obj.hit then
                                 if keyCollect == true then 
                                     gSounds['pickup']:play()
                                     obj.hit = true
-                                    obj.remove = true
-                                    obj.consumable = true
+                                    locked = true
 
                                     --spawn flag post
                                     local flagpost = GameObject{
@@ -209,10 +212,8 @@ function LevelMaker.generate(width, height)
                                         [flag] = {y = ((blockHeight - 4) * TILE_SIZE) + 4}
                                     })
                                     gSounds['powerup-reveal']:play()
-                                    table.insert(objects, flagposts)
                                     table.insert(objects, flag)
                                 end
-                                keyCollect = false
                             end
                             gSounds['empty-block']:play()
                         end
