@@ -245,6 +245,43 @@ function PlayState:update(dt)
     if love.keyboard.wasPressed('escape') then
         love.event.quit()
     end
+        
+    self.spawnTime = self.spawnTime + dt
+    if self.spawnTime > 10 or self.brickHitCount >= 5 then
+        table.insert(self.powerups, Powerup())
+        self.spawnTime = 0 
+        self.brickHitCount = 0 
+    end
+
+    for k, powerup in pairs(self.powerups) do
+        powerup:update(dt)
+        
+        --colision
+        if powerup:collides(self.paddle) then
+            gSounds['select']:play()
+            table.remove(self.powerups, k)
+            if powerup.powerupType == 'spawnBall' then
+                table.insert(self.balls, Ball(self.ball.skin, self.balls[1].x, self.balls[1].y))
+                table.insert(self.balls, Ball(self.ball.skin, self.balls[1].x, self.balls[1].y))
+            else
+                keyCount = keyCount + 1
+                if keyCount > 1 then
+                    gSounds['high-score']:play()
+                    --unlock
+                    for k, brick in pairs(self.bricks) do
+                        brick.brickLock = false
+                    end
+                end
+            end
+            
+            break
+        end
+
+        --remove powerup
+        if powerup.y > VIRTUAL_HEIGHT then
+            table.remove(self.powerups, k)
+        end
+    end    
 end
 
 function PlayState:render()
