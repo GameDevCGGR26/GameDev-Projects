@@ -82,6 +82,7 @@ function Coin:beginContact (a, b, collision)
       if a == Player.character.fixture or b == Player.character.fixture then
         instance.toBeRemoved = true
         print('a')
+        gSounds['coin']:play()
         return true
       end
     end
