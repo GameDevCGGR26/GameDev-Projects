@@ -91,6 +91,11 @@ function Player:die()
    GUI.isDisplay = false
 end
 
+function Player:lose()
+   gStateMachine:change('game-over')
+   self:resetPosition()
+end
+
 function Player:respawn()
    if not self.alive then
       self:resetPosition()
@@ -126,6 +131,11 @@ function Player:update(dt)
   if self.y > MapHeight then
   self:resetPosition()
   end
+  
+  if TIMERS == 0 then
+   self:lose()
+  end
+  
 end
 
 function Player:unTint(dt)
@@ -221,6 +231,7 @@ function Player:jump(key)
    if (key == "w" or key == "up") and self.grounded then
       self.dy = self.jumpAmount
       self.grounded = false
+      gSounds['jump']:play()
    end
 end
 
