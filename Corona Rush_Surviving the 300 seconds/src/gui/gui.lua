@@ -43,6 +43,7 @@ function GUI:draw()
   self:displayCoinText()
   self:displayHearts ()
   self:displayPowerupBar()
+  self:displayTime()
 end
 
 function GUI:displayPowerupBar()
@@ -79,5 +80,9 @@ function GUI:displayCoinText()
   love.graphics.print(" : "..Player.coins, x + 2, y + 2)
   love.graphics.setColor(1,1,1,1)
   love.graphics.print(" : "..Player.coins, x, y)
+end
+
+function GUI:displayTime()
+  love.graphics.printf('Timer: ' .. tostring(TIMERS), 530, 30, 182, 'center')
 end
 return GUI
