@@ -94,6 +94,7 @@ function Faceshield.beginContact (a, b, collision)
           Player.faceshieldCollected = true
           Player.maskCollected = false
           Player.ppeCollected = false
+          gSounds['powerup1']:play()
           return true
         else
           instance.toBeRemoved = false
