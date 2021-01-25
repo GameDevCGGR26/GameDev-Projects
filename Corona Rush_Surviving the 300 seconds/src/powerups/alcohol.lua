@@ -94,6 +94,7 @@ function Alcohol.beginContact (a, b, collision)
           Player.faceshieldCollected = false
           Player.maskCollected = false
           Player.ppeCollected = false
+          gSounds['powerup1']:play()
           return true
         else
           instance.toBeRemoved = false
