@@ -27,20 +27,21 @@ function ControlState:update(dt)
 end
 
 function ControlState:render()
-    love.graphics.draw(gTextures['toxic2'])
+    love.graphics.draw(gTextures['toxic2'], 0, 0, 0, 5, 5)
 
     love.graphics.setFont(gFonts['small'])
     love.graphics.setColor(255, 255, 255, 255)
-    love.graphics.print('Press Escape to go Back')
+    love.graphics.print('Press Escape to go Back', 5, 5)
 
     love.graphics.setColor(56/255, 56/255, 56/255, 234/255)
-    love.graphics.rectangle('fill', 37, 20, 180, 94)
+    love.graphics.rectangle('fill', 250, 120, 800, 500)
+
+    love.graphics.setColor(59/255, 200/255, 255/255, 255/255)
+    love.graphics.printf('Controls', 0, 170, WINDOW_WIDTH, 'center')
 
     love.graphics.setColor(99/255, 155/255, 255/255, 255/255)
-    love.graphics.printf('Controls', 60, 23, 128, 'center')
-
-    love.graphics.printf('W or UP arrow key to jump', 60, 33, 128, 'center')
-    love.graphics.printf('S or DOWN arrow key to go down', 60, 53, 128, 'center')
-    love.graphics.printf('A or LEFT arrow key to go left', 60, 73, 128, 'center')
-    love.graphics.printf('D or RIGHT arrow key to go right', 60, 93, 128, 'center')
+    love.graphics.printf('W or UP arrow key to jump', 0, 280, WINDOW_WIDTH, 'center')
+    love.graphics.printf('S or DOWN arrow key to go down', 0, 350, WINDOW_WIDTH, 'center')
+    love.graphics.printf('A or LEFT arrow key to go left', 0, 420, WINDOW_WIDTH, 'center')
+    love.graphics.printf('D or RIGHT arrow key to go right', 0, 500, WINDOW_WIDTH, 'center')
 end
