@@ -31,7 +31,7 @@ function GUI:load()
   self.powerupBar.y = 85
   self.powerupBar.scale = 8
 
-  self.font = love.graphics.newFont("assets/bit.ttf", 36) --coin count font
+  self.font = love.graphics.newFont("assets/font/bit.ttf", 36) --coin count font
 end
 
 function GUI:update(dt)
