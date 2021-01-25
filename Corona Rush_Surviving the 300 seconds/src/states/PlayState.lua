@@ -12,7 +12,7 @@ function PlayState:init()
     -- Player:load()
     GUI:load()
 	
-    TIMERS = 5
+    TIMERS = 300
     Timer.every(1, function()
             TIMERS = TIMERS - 1
         end)
