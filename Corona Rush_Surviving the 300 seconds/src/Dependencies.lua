@@ -41,9 +41,9 @@ require 'src/Util'
 
 
 gFonts = {
-  small = love.graphics.newFont('assets/font/bit.ttf', 8),
-  medium = love.graphics.newFont('assets/font/bit.ttf', 16),
-  large = love.graphics.newFont('assets/font/bit.ttf', 32)
+  small = love.graphics.newFont('assets/font/bit.ttf', 50),
+  medium = love.graphics.newFont('assets/font/bit.ttf', 64),
+  large = love.graphics.newFont('assets/font/bit.ttf', 128)
 }
 
 gSounds = {
