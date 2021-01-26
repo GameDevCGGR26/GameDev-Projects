@@ -5,6 +5,8 @@ WINDOW_HEIGHT = 720
 VIRTUAL_HEIGHT = 144
 VIRTUAL_WIDTH = 256
 
+BACKGROUND_SCROLL = 0
+
 love.graphics.setDefaultFilter('nearest', 'nearest')
 
 require 'src/Dependencies'
@@ -22,9 +24,9 @@ function love.load()
 
   Map = STI("map/level1.lua", {"box2d"}) --loads the map from tiled software
   World = love.physics.newWorld(0, 0)  --creates the world
- World:setCallbacks(beginContact, endContact) --callbacks for character collision
+  World:setCallbacks(beginContact, endContact) --callbacks for character collision
   Map:box2d_init(World)
- Map.layers.solid.visible = false
+  Map.layers.solid.visible = false
   MapWidth = Map.width * Map.tilewidth
   MapHeight = Map.height * Map.tileheight
 
@@ -42,23 +44,6 @@ function love.load()
 
 
   love.keyboard.keysPressed = {}
-
-  --background = love.graphics.newImage("assets/citybig.png")   --bg insert
-  GUI:load()
-  Player:load()
-  Coin:new(400,100)
-  Coin:new(2895,170)
-  Coin:new(5000,230)
-
-  Mask:new(3300,160)
-  Mask:new(830,130)
-
-  Faceshield:new(4450,150)
-
-  Ppe:new(1380,150)
-
-  Alcohol:new(2260,170)
-
 end
 
 function love.resize(w, h)
@@ -66,31 +51,25 @@ function love.resize(w, h)
 	print(w, h)
 end
 
-
-
-
 function love.draw()    --map insert and bg
---push:start()
+
   gStateMachine:render()
- --push:finish()
+
 end
 
 function love.keypressed (key)
   love.keyboard.keysPressed[key] = true
   Player:jump(key)
   Player:fire(key)
-
-
 end
 
 function love.keyboard.wasPressed(key)
 	return love.keyboard.keysPressed[key]
 end
 
-function  love.update(dt)
+function love.update(dt)
   	gStateMachine:update(dt)
     love.keyboard.keysPressed = {}
-  --backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt)
 end
 
 function beginContact (a, b, collision)
