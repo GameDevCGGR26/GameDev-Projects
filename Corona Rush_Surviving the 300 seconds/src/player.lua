@@ -88,13 +88,20 @@ end
 
 function Player:die()
    self.alive = false
-   GUI.isDisplay = false
+   GUI.isDisplayFaceshield = false
+   GUI.isDisplayAlcohol = false
+   GUI.isDisplayPPE = false
+   GUI.isDisplayMask = false
+   GUI.faceshieldBar = 0
+   GUI.alcoholBar = 0
+   GUI.ppeBar = 0
+   GUI.maskBar = 0
 end
 
 function Player:lose()
    gStateMachine:change('game-over')
    self:resetPosition()
-   gSounds['death']:play()
+    gSounds['death']:play()
 end
 
 function Player:respawn()
@@ -137,8 +144,30 @@ function Player:update(dt)
 
   if self.health.current > 0 then
     if self.y > MapHeight then
+      TIMERS = 300
       self.health.current = self.health.current - 1
       self:resetPosition()
+      self.coins = 0
+      self.maskCollected = false
+      self.faceshieldCollected = false
+      self.alcoholCollected = false
+      self.ppeCollected = false
+      GUI.isDisplayFaceshield = false
+      GUI.isDisplayAlcohol = false
+      GUI.isDisplayPPE = false
+      GUI.isDisplayMask = false
+      GUI.faceshieldBar = 0
+      GUI.alcoholBar = 0
+      GUI.ppeBar = 0
+      GUI.maskBar = 0
+      Coin:new(400,100)
+      Coin:new(2895,170)
+      Coin:new(5000,230)
+      Mask:new(3300,160)
+      Mask:new(830,130)
+      Faceshield:new(4450,150)
+      Ppe:new(1380,150)
+      Alcohol:new(2260,170)
     end
   if self.health.current <= 0 then
       self:lose()
@@ -148,11 +177,6 @@ function Player:update(dt)
     end
   end
 end
-
-
-
-
-
 
 function Player:unTint(dt)
    self.color.red = math.min(self.color.red + self.color.speed * dt, 1)
@@ -273,37 +297,37 @@ function Player:draw()   --1.5 bcoz 1 makes the character too small
    end
 
    love.graphics.setColor(self.color.red, self.color.green, self.color.blue)
-      if self.faceshieldCollected == true then
-         love.graphics.draw(
-         gTextures.heroF, gFrames.heroF[self.currentAnimation:getCurrentFrame()],
-         self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+   if self.faceshieldCollected == true then
+      love.graphics.draw(
+      gTextures.heroF, gFrames.heroF[self.currentAnimation:getCurrentFrame()],
+      self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+      )
+   elseif self.ppeCollected == true then
+      love.graphics.draw(
+      gTextures.heroP, gFrames.heroP[self.currentAnimation:getCurrentFrame()],
+      self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+      )
+   elseif self.maskCollected == true then
+      love.graphics.draw(
+      gTextures.heroM, gFrames.heroM[self.currentAnimation:getCurrentFrame()],
+      self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+      )
+   else
+      if self.alcoholCollected == true and love.keyboard.isDown('space') then
+         love.graphics.draw(gTextures.heroA, self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
          )
-      elseif self.ppeCollected == true then
+      elseif self.alcoholCollected == true then
          love.graphics.draw(
-         gTextures.heroP, gFrames.heroP[self.currentAnimation:getCurrentFrame()],
+         gTextures.hero, gFrames.hero[self.currentAnimation:getCurrentFrame()],
          self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
-         )
-      elseif self.maskCollected == true then
-         love.graphics.draw(
-         gTextures.heroM, gFrames.heroM[self.currentAnimation:getCurrentFrame()],
-         self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
-         )
+         ) 
       else
-         if self.alcoholCollected == true and love.keyboard.isDown('space') then
-            love.graphics.draw(gTextures.heroA, self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
-            )
-         elseif self.alcoholCollected == true then
-            love.graphics.draw(
-            gTextures.hero, gFrames.hero[self.currentAnimation:getCurrentFrame()],
-            self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
-            )  --1.7 is the divisor to offset the 1.5 scale of the character
-         else
-            love.graphics.draw(
-            gTextures.hero, gFrames.hero[self.currentAnimation:getCurrentFrame()],
-            self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
-            ) --1.7 is the divisor to offset the 1.5 scale of the character
-         end
+         love.graphics.draw(
+         gTextures.hero, gFrames.hero[self.currentAnimation:getCurrentFrame()],
+         self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+         ) 
       end
+   end
    love.graphics.setColor(1,1,1,1)
 end
 
