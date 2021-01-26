@@ -4,23 +4,23 @@ ActiveMasks = {}
 
 function Mask:new (x,y)
 local  instance = setmetatable ({}, Mask)
-instance.x = x
-instance.y = y
---instance.img = love.graphics.newImage("assets/mask.png")
-instance.width = 80
-instance.height = 40
-instance.scaleX = 1
-instance.randomTimeOffset = math.random(0, 100)
-instance.toBeRemoved = false
+  instance.x = x
+  instance.y = y
+  --instance.img = love.graphics.newImage("assets/mask.png")
+  instance.width = 80
+  instance.height = 40
+  instance.scaleX = 1
+  instance.randomTimeOffset = math.random(0, 100)
+  instance.toBeRemoved = false
 
-instance:loadAssets()
-instance.physics = {}
-instance.physics.body = love.physics.newBody(World, instance.x, instance.y, "static")
-instance.physics.shape = love.physics.newRectangleShape(instance.width, instance.height)
-instance.physics.fixture = love.physics.newFixture(instance.physics.body, instance.physics.shape)
-instance.physics.fixture:setSensor(true)
-table.insert(ActiveMasks, instance)
-end
+  instance:loadAssets()
+  instance.physics = {}
+  instance.physics.body = love.physics.newBody(World, instance.x, instance.y, "static")
+  instance.physics.shape = love.physics.newRectangleShape(instance.width, instance.height)
+  instance.physics.fixture = love.physics.newFixture(instance.physics.body, instance.physics.shape)
+  instance.physics.fixture:setSensor(true)
+  table.insert(ActiveMasks, instance)
+  end
 
 function Mask:loadAssets()
  self.animation = Animation {
@@ -33,7 +33,6 @@ end
 function Mask:remove ()
   for i,instance in ipairs(ActiveMasks) do
     if instance == self then
-      --Player:incrementPowerups()
       self.physics.body:destroy()
       table.remove(ActiveMasks, i)
     end
@@ -41,9 +40,15 @@ function Mask:remove ()
 end
 
 function Mask:update (dt)
---self:spin(dt)
-self.currentAnimation:update(dt)
-self:checkRemove()
+  self.currentAnimation:update(dt)
+  self:checkRemove()
+  self:checkNumber()
+end
+
+function Mask:checkNumber()
+  if #ActiveMasks > 1 then
+     self:remove()
+  end
 end
 
 function Mask:checkRemove ()
@@ -57,7 +62,6 @@ self.scaleX = math.sin(love.timer.getTime() * 2 + self.randomTimeOffset)
 end
 
 function Mask:draw ()
-  -- love.graphics.draw(self.img, self.x, self.y, 0, self.scaleX, 1, self.width/2, self.height/2)
   love.graphics.draw(
   gTextures.mask, gFrames.mask[self.currentAnimation:getCurrentFrame()],
       self.x, self.y, 0, scaleX, 1, self.width/2, self.height/2
