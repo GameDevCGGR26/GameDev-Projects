@@ -25,6 +25,9 @@ self.coins = 0
 self.powerups = 0
 self.health = {current = 3, max = 3}
 
+TIMERS = 300
+
+
 self.direction = 'right'
 self.state = 'idle'
 
@@ -128,15 +131,29 @@ function Player:update(dt)
   self:unTint(dt)
   self:respawn()
 
-  if self.y > MapHeight then
-  self:resetPosition()
-  end
-  
-  if TIMERS == 0 then
+  if TIMERS <= 0 then
    self:lose()
+   self.health.current = self.health.max
+   self.alive = true
   end
-  
+
+  if self.health.current > 0 then
+    if self.y > MapHeight then
+      self.health.current = self.health.current - 1
+      self:resetPosition()
+    end
+  if self.health.current <= 0 then
+      self:lose()
+      self.health.current = self.health.max
+      self.alive = true
+    end
+  end
 end
+
+
+
+
+
 
 function Player:unTint(dt)
    self.color.red = math.min(self.color.red + self.color.speed * dt, 1)
