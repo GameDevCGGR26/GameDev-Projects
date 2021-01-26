@@ -10,13 +10,13 @@ function GUI:load()
   self.coins.y = 30
 
   self.hearts = {} --hearts images and constants
-  self.hearts.img = love.graphics.newImage("assets/heart bar single.png")
+  self.hearts.img = love.graphics.newImage("assets/heartsingle.png")
   self.hearts.width = self.hearts.img:getWidth()
   self.hearts.height = self.hearts.img:getHeight()
-  self.hearts.scale = 8
-  self.hearts.x = 10
-  self.hearts.y = 30
-  self.hearts.spacing = self.hearts.width * self.hearts.scale + 10
+  self.hearts.scale = 5
+  self.hearts.x = 0
+  self.hearts.y = 16
+  self.hearts.spacing = self.hearts.width * self.hearts.scale + 5
 
   self.powerupBar = {}
   self.isDisplayFaceshield = false
@@ -59,10 +59,10 @@ function GUI:displayPowerupBar()
 end
 
 function GUI:displayHearts ()
- love.graphics.setColor(0,0,0,0.5) --shadow
- love.graphics.draw(self.hearts.img, self.hearts.x + 2, self.hearts.y + 2, 0, self.hearts.scale, self.hearts.scale)
- love.graphics.setColor(1,1,1,1)
- love.graphics.draw(self.hearts.img, self.hearts.x, self.hearts.y, 0, self.hearts.scale, self.hearts.scale)
+    for i = 1,Player.health.current do
+       local x = self.hearts.x + self.hearts.spacing * i
+       love.graphics.draw(self.hearts.img, x, self.hearts.y, 0, self.hearts.scale)
+    end
 end
 
 function GUI:displayCoins()
