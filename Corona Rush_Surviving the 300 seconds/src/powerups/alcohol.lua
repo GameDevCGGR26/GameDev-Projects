@@ -3,23 +3,23 @@ Alcohol.__index = Alcohol
 ActiveAlcohols = {}
 
 function Alcohol:new (x,y)
-local  instance = setmetatable ({}, Alcohol)
-instance.x = x
-instance.y = y
---instance.img = love.graphics.newImage("assets/mask.png")
-instance.width = 35
-instance.height = 35
-instance.scaleX = 1
-instance.randomTimeOffset = math.random(0, 100)
-instance.toBeRemoved = false
+  local  instance = setmetatable ({}, Alcohol)
+  instance.x = x
+  instance.y = y
+  --instance.img = love.graphics.newImage("assets/mask.png")
+  instance.width = 35
+  instance.height = 35
+  instance.scaleX = 1
+  instance.randomTimeOffset = math.random(0, 100)
+  instance.toBeRemoved = false
 
-instance:loadAssets()
-instance.physics = {}
-instance.physics.body = love.physics.newBody(World, instance.x, instance.y, "static")
-instance.physics.shape = love.physics.newRectangleShape(instance.width, instance.height)
-instance.physics.fixture = love.physics.newFixture(instance.physics.body, instance.physics.shape)
-instance.physics.fixture:setSensor(true)
-table.insert(ActiveAlcohols, instance)
+  instance:loadAssets()
+  instance.physics = {}
+  instance.physics.body = love.physics.newBody(World, instance.x, instance.y, "static")
+  instance.physics.shape = love.physics.newRectangleShape(instance.width, instance.height)
+  instance.physics.fixture = love.physics.newFixture(instance.physics.body, instance.physics.shape)
+  instance.physics.fixture:setSensor(true)
+  table.insert(ActiveAlcohols, instance)
 end
 
 function Alcohol:loadAssets()
@@ -33,7 +33,6 @@ end
 function Alcohol:remove ()
   for i,instance in ipairs(ActiveAlcohols) do
     if instance == self then
-      --Player:incrementPowerups()
       self.physics.body:destroy()
       table.remove(ActiveAlcohols, i)
     end
@@ -41,9 +40,15 @@ function Alcohol:remove ()
 end
 
 function Alcohol:update (dt)
---self:spin(dt)
-self.currentAnimation:update(dt)
-self:checkRemove()
+  self.currentAnimation:update(dt)
+  self:checkRemove()
+  self:checkNumber()
+end
+
+function Alcohol:checkNumber()
+  if #ActiveAlcohols > 1 then
+     self:remove()
+  end
 end
 
 function Alcohol:checkRemove ()
@@ -52,12 +57,7 @@ function Alcohol:checkRemove ()
   end
 end
 
---function Mask:spin (dt)
---self.scaleX = math.sin(love.timer.getTime() * 2 + self.randomTimeOffset)
---end
-
 function Alcohol:draw ()
-  -- love.graphics.draw(self.img, self.x, self.y, 0, self.scaleX, 1, self.width/2, self.height/2)
   love.graphics.draw(
   gTextures.alcohol, gFrames.alcohol[self.currentAnimation:getCurrentFrame()],
       self.x, self.y, 0, scaleX, 1, self.width/2, self.height/2
