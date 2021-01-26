@@ -11,7 +11,7 @@ function PlayState:init()
 --    Map:load()
     -- Player:load()
     GUI:load()
-	
+
     TIMERS = 300
     Timer.every(1, function()
             TIMERS = TIMERS - 1
@@ -30,18 +30,18 @@ function PlayState:update(dt)
     Ppe.updateAll(dt)
     Alcohol.updateAll(dt)
     GUI:update(dt)
-  --  Map:update(dt)
-	
-   if TIMERS <= 0 then
+
+    if TIMERS <= 0 then
       -- clear timers from prior PlayStates
       Timer.clear()
-      
+
       gSounds['death']:play()
 
       gStateMachine:change('game-over', {
          timer = TIMERS
       })
    end
+  --  Map:update(dt)
 
     Camera:setPosition(Player.x, 0)
 
