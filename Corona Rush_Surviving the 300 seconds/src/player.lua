@@ -25,9 +25,6 @@ self.coins = 0
 self.powerups = 0
 self.health = {current = 3, max = 3}
 
-TIMERS = 300
-
-
 self.direction = 'right'
 self.state = 'idle'
 
@@ -97,6 +94,7 @@ end
 function Player:lose()
    gStateMachine:change('game-over')
    self:resetPosition()
+   gSounds['death']:play()
 end
 
 function Player:respawn()
@@ -144,6 +142,7 @@ function Player:update(dt)
     end
   if self.health.current <= 0 then
       self:lose()
+      Timer.clear()
       self.health.current = self.health.max
       self.alive = true
     end
