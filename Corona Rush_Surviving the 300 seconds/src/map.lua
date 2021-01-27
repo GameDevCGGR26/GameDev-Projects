@@ -9,25 +9,30 @@ local Map = {}
 
 
 function Map:load()
-   self.currentLevel = 1
-   World = love.physics.newWorld(0, 0)
-   World:setCallbacks(beginContact, endContact)
+  self.currentLevel = 1
+  World = love.physics.newWorld(0,2000)
+  World:setCallbacks(beginContact, endContact)
 
-   self:init()
+  self:init()
 end
 
 function Map:init()
-   self.level = STI("map/level1.lua", {"box2d"})
+   self.level = STI("map/"..self.currentLevel..".lua", {"box2d"})
 
    self.level:box2d_init(World)
    self.entityLayer = self.level.layers.entity
-
+   self.objLayer = self.level.layers.obj
    MapWidth = self.level.width * self.level.tilewidth
    MapHeight = self.level.height * self.level.tileheight
 
-   --self:spawnEntities()
+
+
+
+
+
+   self:spawnEntities()
   -- self:spawBreakables()
-   self:spawObjects()
+   self:spawnObjects()
 end
 
 function Map:backGround()
@@ -49,10 +54,14 @@ function Map:positionCamera(player, camera)
 end
 
 function Map:next()
-   self:clean()
-   self.currentLevel = self.currentLevel + 1
-   self:init()
-   Player:resetPosition()
+
+   --self.currentLevel = self.currentLevel + 1
+  -- if self.testingcenters == 1 then
+    self:clean()
+    gStateMachine:change('next-level')
+   --self:init()
+  -- Player:resetPosition()
+--end
 end
 
 function Map:clean()
@@ -66,37 +75,45 @@ function Map:update(dt)
    if Player.x > MapWidth - 16 then
       self:next()
    end
-
-   if Player.y > MapHeight then
-      Player:die()
-      self:spawObjects()
+   if Player.testingc == true then
+     self:next()
    end
 end
 
+
+
 function Map:spawnEntities()
-	for i,v in ipairs(self.entityLayer.objects) do
-		if v.type == "slime" then
-         Slime:load(v.x + v.width / 2, v.y + v.height / 2)
-      elseif v.type == 'player' then
-         Player:load(v.x, v.y)
-		end
+  for i,v in ipairs(self.entityLayer.objects) do
+    if v.type == "enemy" then
+      print('spawn')
+      Virus:load(v.x + v.width / 2, v.y + v.height)
+    end
+  end
+end
+
+function Map:spawnObjects()
+   for i,v in ipairs(self.objLayer.objects) do
+     if v.type == "coin" then
+       Coin:new(v.x, v.y)
+     end
+     if v.type == "mask" then
+       Mask:new(v.x, v.y)
+     end
+     if v.type == "faceshield" then
+       Faceshield:new(v.x, v.y)
+     end
+     if v.type == "ppe" then
+       Ppe:new(v.x, v.y)
+     end
+     if v.type == "alcohol" then
+       Alcohol:new(v.x, v.y)
+     end
+     if v.type == "testingcenter" then
+       print('spawn')
+      TestingCenter:new(v.x + v.width / 2, v.y + v.height)
+     end
 	end
 end
 
-function Map:spawObjects()
-   for i,v in ipairs(self.entityLayer.objects) do
-      if v.type == "key" then
-         Key:load(v.x, v.y)
-		end
-	end
-end
-
-function Map:spawBreakables()
-   for i,v in ipairs(self.entityLayer.objects) do
-		if v.type == "breakable" then
-         Breakable.new(v.x , v.y)
-		end
-	end
-end
 
 return Map
