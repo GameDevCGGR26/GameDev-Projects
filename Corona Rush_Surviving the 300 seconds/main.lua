@@ -22,18 +22,24 @@ function love.load()
     vsync = true
   })
 
-  Map = STI("map/level1.lua", {"box2d"}) --loads the map from tiled software
-  World = love.physics.newWorld(0, 0)  --creates the world
-  World:setCallbacks(beginContact, endContact) --callbacks for character collision
+ --[[Map = STI("map/1.lua", {"box2d"}) --loads the map from tiled software
+ World = love.physics.newWorld(0, 0)  --creates the world
+ World:setCallbacks(beginContact, endContact) --callbacks for character collision
   Map:box2d_init(World)
-  Map.layers.solid.visible = false
+
+ Map.layers.solid.visible = false
+ Map.entityLayer = Map.layers.entity
+  Map.objLayer = Map.layers.obj
+
+
   MapWidth = Map.width * Map.tilewidth
-  MapHeight = Map.height * Map.tileheight
+  MapHeight = Map.height * Map.tileheightv]]--
 
   gStateMachine = StateMachine {
     ['start'] = function() return StartState() end,
     ['play'] = function() return PlayState() end,
     ['game-over'] = function() return GameOverState() end,
+    ['next-level'] = function() return NextLevelState() end,
     ['controls'] = function() return ControlState() end
   }
   gStateMachine:change('start')
@@ -44,6 +50,19 @@ function love.load()
 
 
   love.keyboard.keysPressed = {}
+
+--[[  GUI:load()
+ Player:load()
+---  Coin:new(400,100)
+--  Coin:new(2895,170)
+--  Coin:new(5000,230)
+--  Mask:new(3300,160)
+--  Mask:new(830,130)
+--  Faceshield:new(4450,150)
+--  Ppe:new(1380,150)
+--  Alcohol:new(2260,170) --]]
+--[[spawnEntities()
+spawnObjects() ]]--
 end
 
 function love.resize(w, h)
@@ -80,3 +99,42 @@ end
 function endContact (a, b, collision)
     	gStateMachine:endContact(a, b, collision)
 end
+
+
+--[[function spawnEntities()
+  for i,v in ipairs(Map.entityLayer.objects) do
+    if v.type == "enemy" then
+      print('spawn')
+      Virus:load(v.x + v.width / 2, v.y + v.height)
+    end
+  end
+end
+
+function spawnObjects()
+   for i,v in ipairs(Map.objLayer.objects) do
+     if v.type == "coin" then
+       print('spawn')
+       Coin:new(v.x + v.width / 2, v.y + v.height)
+     end
+     if v.type == "mask" then
+       print('spawn')
+       Mask:new(v.x + v.width / 2, v.y + v.height)
+     end
+     if v.type == "faceshield" then
+       print('spawn')
+       Faceshield:new(v.x + v.width / 2, v.y + v.height)
+     end
+     if v.type == "ppe" then
+       print('spawn')
+       Ppe:new(v.x + v.width / 2, v.y + v.height)
+     end
+     if v.type == "alcohol" then
+       print('spawn')
+       Alcohol:new(v.x + v.width / 2, v.y + v.height)
+     end
+     if v.type == "testingcenter" then
+       print('spawn')
+      TestingCenter:new(v.x + v.width / 2, v.y + v.height)
+     end
+	end
+end ]]--
