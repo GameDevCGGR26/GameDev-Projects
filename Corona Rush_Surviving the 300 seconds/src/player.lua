@@ -24,9 +24,12 @@ self.jumpAmount = -540
 self.coins = 0
 self.powerups = 0
 self.health = {current = 3, max = 3}
+self.testingcenters = 0
 
 self.direction = 'right'
 self.state = 'idle'
+
+TIMERS = 120
 
 self.color = { red = 1, green = 1, blue = 1, speed = 3}
 
@@ -47,6 +50,8 @@ self.maskCollected = false
 self.faceshieldCollected = false
 self.alcoholCollected = false
 self.ppeCollected = false
+
+self.testingc = false
 end
 
 function Player:loadAssets()   ---just like in colton's code using Dependencies
@@ -82,7 +87,6 @@ function Player:takeDamage(amount)
       self.health.current = self.health.current - amount
    else
       self.health.current = 0
-      self:die()
    end
 end
 
@@ -142,12 +146,19 @@ function Player:update(dt)
    self.alive = true
   end
 
+  if self.health.current <= 0 then
+      self:lose()
+      Timer.clear()
+      self.health.current = self.health.max
+      self.alive = true
+  end
+
   if self.health.current > 0 then
     if self.y > MapHeight then
-      TIMERS = 300
+      --TIMERS = 300
       self.health.current = self.health.current - 1
       self:resetPosition()
-      self.coins = 0
+      --self.coins = 0
       self.maskCollected = false
       self.faceshieldCollected = false
       self.alcoholCollected = false
@@ -160,22 +171,9 @@ function Player:update(dt)
       GUI.alcoholBar = 0
       GUI.ppeBar = 0
       GUI.maskBar = 0
-      Coin:new(400,100)
-      Coin:new(2895,170)
-      Coin:new(5000,230)
-      Mask:new(3300,160)
-      Mask:new(830,130)
-      Faceshield:new(4450,150)
-      Ppe:new(1380,150)
-      Alcohol:new(2260,170)
+
     end
-  if self.health.current <= 0 then
-      self:lose()
-      Timer.clear()
-      self.health.current = self.health.max
-      self.alive = true
     end
-  end
 end
 
 function Player:unTint(dt)
@@ -320,12 +318,12 @@ function Player:draw()   --1.5 bcoz 1 makes the character too small
          love.graphics.draw(
          gTextures.hero, gFrames.hero[self.currentAnimation:getCurrentFrame()],
          self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
-         ) 
+         )
       else
          love.graphics.draw(
          gTextures.hero, gFrames.hero[self.currentAnimation:getCurrentFrame()],
          self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
-         ) 
+         )
       end
    end
    love.graphics.setColor(1,1,1,1)
