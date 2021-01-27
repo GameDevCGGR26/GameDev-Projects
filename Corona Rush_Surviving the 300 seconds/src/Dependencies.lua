@@ -20,6 +20,8 @@ Alcohol  = require 'src/powerups/alcohol'
 GUI = require 'src/gui/gui'
 Camera = require 'src/camera'
 Map = require 'src/map'
+Virus = require 'src/virus'
+TestingCenter = require 'src/testingcenter'
 
 
 -- game objects
@@ -28,6 +30,7 @@ require 'src/StateMachine'
 require 'src/states/BaseState'
 require 'src/states/ControlState'
 require 'src/states/GameOverState'
+require 'src/states/NextLevelState'
 require 'src/states/PlayState'
 require 'src/states/StartState'
 
@@ -63,6 +66,7 @@ gTextures = {
     heroP = love.graphics.newImage('assets/ppe run animation.png'),
     heroM = love.graphics.newImage('assets/cesca run with mask.png'),
     heroA = love.graphics.newImage('assets/cesca with alcohol.png'),
+    virus = love.graphics.newImage('assets/virus.png'),
     coins = love.graphics.newImage('assets/coin7f.png'),
     mask = love.graphics.newImage('assets/mask.png'),
     faceshield = love.graphics.newImage('assets/faceshield.png'),
@@ -72,7 +76,8 @@ gTextures = {
     alcoholBar = love.graphics.newImage('assets/alcohol bar.png'),
     ppeBar = love.graphics.newImage('assets/ppe bar.png'),
     maskBar = love.graphics.newImage('assets/mask bar.png'),
-    toxic2 = love.graphics.newImage('assets/toxic2.png')
+    toxic2 = love.graphics.newImage('assets/toxic2.png'),
+    testingcenter = love.graphics.newImage('assets/testing centerbigt.png')
 }
 
 gFrames = {
@@ -80,6 +85,7 @@ gFrames = {
     heroF = GenerateQuads(gTextures.heroF, 25, 45),
     heroP = GenerateQuads(gTextures.heroP, 25, 45),
     heroM = GenerateQuads(gTextures.heroM, 25, 45),
+    virus = GenerateQuads(gTextures.virus, 32, 32),
     coins = GenerateQuads(gTextures.coins, 16, 16),
     mask = GenerateQuads(gTextures.mask, 40, 40),
     faceshield = GenerateQuads(gTextures.faceshield, 32, 32),
@@ -89,5 +95,6 @@ gFrames = {
     alcoholBar = GenerateQuads(gTextures.alcoholBar, 37, 6),
     ppeBar = GenerateQuads(gTextures.ppeBar, 55,6),
     maskBar = GenerateQuads(gTextures.maskBar, 28,6),
-    toxic2 = GenerateQuads(gTextures.toxic2, 256, 128)
+    toxic2 = GenerateQuads(gTextures.toxic2, 256, 128),
+    testingcenter = GenerateQuads(gTextures.testingcenter, 100, 110)
 }
