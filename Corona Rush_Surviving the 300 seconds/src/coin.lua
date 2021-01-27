@@ -40,6 +40,15 @@ function Coin:remove()
   end
 end
 
+function Coin.removeAll()
+  for i,instance in ipairs(ActiveCoins) do
+    if instance == self then
+      self.physics.body:destroy()
+      table.remove(ActiveCoins, i)
+    end
+  end
+end
+
 function Coin:update(dt)
   self.currentAnimation:update(dt)
   self:checkRemove()
