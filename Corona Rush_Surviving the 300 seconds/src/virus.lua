@@ -113,6 +113,7 @@ function Virus.beginContact(a, b, collision)
       if a == instance.physics.fixture or b == instance.physics.fixture then
          if a == Player.character.fixture or b == Player.character.fixture then
             Player:takeDamage(instance.damage)
+            gSounds['player-hurt']:play()
          end
          -- instance:incrementRage()
          instance:flipDirection()
