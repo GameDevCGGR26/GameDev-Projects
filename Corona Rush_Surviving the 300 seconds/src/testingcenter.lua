@@ -85,6 +85,7 @@ function TestingCenter.beginContact (a, b, collision)
     if a == instance.physics.fixture or b == instance.physics.fixture then
       if a == Player.character.fixture or b == Player.character.fixture then
         Player.testingc = true
+        gSounds['congrats']:play()
           return true
       end
     end
