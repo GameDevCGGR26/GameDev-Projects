@@ -56,7 +56,10 @@ gSounds = {
     ['death'] = love.audio.newSource('sounds/death.wav', 'static'),
     ['jump'] = love.audio.newSource('sounds/jump.wav', 'static'),
     ['coin'] = love.audio.newSource('sounds/coin.wav', 'static'),
-    ['powerup1'] = love.audio.newSource('sounds/powerup1.wav', 'static')
+    ['powerup1'] = love.audio.newSource('sounds/powerup1.wav', 'static'),
+    ['player-hurt'] = love.audio.newSource('sounds/player-hurt.wav', 'static'),
+    ['mainmenu'] = love.audio.newSource('sounds/mainmenu.mp3', 'static'),
+    ['congrats'] = love.audio.newSource('sounds/congrats.mp3', 'static')
 }
 
 gTextures = {
