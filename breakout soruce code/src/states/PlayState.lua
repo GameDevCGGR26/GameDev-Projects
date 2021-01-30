@@ -102,6 +102,7 @@ function PlayState:update(dt)
                     self.recoverPoints = self.recoverPoints + math.min(100000, self.recoverPoints * 2)
 
                     --increase size of paddle
+                     self.paddle:grow()
 
                     -- play recover sound effect
                     gSounds['recover']:play()
@@ -209,7 +210,8 @@ function PlayState:update(dt)
                 self.health = self.health - 1
                 gSounds['hurt']:play()
 
-
+                self.paddle:shrink()
+                
                 if self.health == 0 then
                     gStateMachine:change('game-over', {
                         score = self.score,
