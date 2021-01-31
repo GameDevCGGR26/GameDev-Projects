@@ -87,11 +87,15 @@ function PlayState:update(dt)
             -- only check collision if we're in play
             if brick.inPlay and ball:collides(brick) then
 
-                -- add to score
+                if self.key and brick.locked then
+                    self.score = self.score + 5000
+                elseif brick.locked then
+                    -- Do not give points when brick is locked
+                else 
                     self.score = self.score + (brick.tier * 200 + brick.color * 25)
-
-                -- trigger the brick's hit function, which removes it from play
-                brick:hit()
+                end
+                
+                brick:hit(self.key)
 
                 -- if we have enough points, recover a point of health
                 if self.score > self.recoverPoints then
@@ -193,9 +197,9 @@ function PlayState:update(dt)
                 if powerup.powertype < 10 then
                     self:extraBalls()  
                 end   
-               -- if powerup.powertype == 10 then
-                 --   self.key = true
-               -- end       
+                if powerup.powertype == 10 then
+                    self.key = true
+                end       
                 table.remove(self.powerups, k)
             end
             -- remove powerup from table when outside screen
@@ -271,7 +275,7 @@ function PlayState:render()
 
     -- pause text, if paused
     if self.key then
-        love.graphics.draw(gTextures['main'], gFrames['power'][10],VIRTUAL_WIDTH - 116, 3, 0, 0.6)
+        love.graphics.draw(gTextures['main'], gFrames['powerup'][10],VIRTUAL_WIDTH - 116, 3, 0, 0.6)
     end
 
     if self.paused then
