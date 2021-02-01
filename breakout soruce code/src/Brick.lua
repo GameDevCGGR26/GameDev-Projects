@@ -89,13 +89,13 @@ function Brick:hit(hasKey)
     
     if self.locked and hasKey then
         self.psystem:setColors(
-            paletteColors[self.color].r,
-            paletteColors[self.color].g,
-            paletteColors[self.color].b,
-            55 * (self.tier + 1),
-            paletteColors[self.color].r,
-            paletteColors[self.color].g,
-            paletteColors[self.color].b,
+            paletteColors[self.color].r / 255,
+            paletteColors[self.color].g / 255,
+            paletteColors[self.color].b / 255,
+            55 * (self.tier + 1) / 255,
+            paletteColors[self.color].r / 255,
+            paletteColors[self.color].g / 255,
+            paletteColors[self.color].b / 255,
             0
         )
         self.psystem:emit(256)
@@ -111,13 +111,13 @@ function Brick:hit(hasKey)
         -- it our self.color but with varying alpha; brighter for higher tiers, fading to 0
         -- over the particle's lifetime (the second color)
         self.psystem:setColors(
-            paletteColors[self.color].r,
-            paletteColors[self.color].g,
-            paletteColors[self.color].b,
+            paletteColors[self.color].r / 255,
+            paletteColors[self.color].g / 255,
+            paletteColors[self.color].b / 255,
             55 * (self.tier + 1),
-            paletteColors[self.color].r,
-            paletteColors[self.color].g,
-            paletteColors[self.color].b,
+            paletteColors[self.color].r / 255,
+            paletteColors[self.color].g / 255,
+            paletteColors[self.color].b / 255,
             0
         )
         self.psystem:emit(64)
