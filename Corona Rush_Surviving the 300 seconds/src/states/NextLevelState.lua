@@ -1,19 +1,14 @@
 
 NextLevelState = Class{__includes = BaseState}
 
-
-
 function NextLevelState:init()
-
-end
-
-function NextLevelState:enter()
-
+    Map:load() -- load first
 end
 
 function NextLevelState:update(dt)
-    if love.keyboard.wasPressed('enter') then
+    if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
         gStateMachine:change('play')
+        Map:next() -- to change from next level if enter was pressed
     end
 
     if love.keyboard.wasPressed('escape') then
