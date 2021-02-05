@@ -44,9 +44,9 @@ require 'src/Util'
 
 
 gFonts = {
-  small = love.graphics.newFont('assets/font/bit.ttf', 50),
-  medium = love.graphics.newFont('assets/font/bit.ttf', 64),
-  large = love.graphics.newFont('assets/font/bit.ttf', 128)
+	small = love.graphics.newFont('assets/font/bit.ttf', 50),
+	medium = love.graphics.newFont('assets/font/bit.ttf', 64),
+	large = love.graphics.newFont('assets/font/bit.ttf', 128)
 }
 
 gSounds = {
@@ -64,6 +64,7 @@ gSounds = {
 
 gTextures = {
     background = love.graphics.newImage("assets/citybig.png"),
+    background2= love.graphics.newImage("assets/city2_2x.png"),
     hero = love.graphics.newImage('assets/cesca run animation.png'),
     heroF = love.graphics.newImage('assets/cesca run with face shield.png'),
     heroP = love.graphics.newImage('assets/ppe run animation.png'),
@@ -79,6 +80,7 @@ gTextures = {
     alcoholBar = love.graphics.newImage('assets/alcohol bar.png'),
     ppeBar = love.graphics.newImage('assets/ppe bar.png'),
     maskBar = love.graphics.newImage('assets/mask bar.png'),
+    heartBar = love.graphics.newImage('assets/heart bar2.png'),
     toxic2 = love.graphics.newImage('assets/toxic2.png'),
     testingcenter = love.graphics.newImage('assets/testing centerbigt.png')
 }
@@ -98,6 +100,7 @@ gFrames = {
     alcoholBar = GenerateQuads(gTextures.alcoholBar, 37, 6),
     ppeBar = GenerateQuads(gTextures.ppeBar, 55,6),
     maskBar = GenerateQuads(gTextures.maskBar, 28,6),
+    heartBar = GenerateQuads(gTextures.heartBar, 36,6),
     toxic2 = GenerateQuads(gTextures.toxic2, 256, 128),
     testingcenter = GenerateQuads(gTextures.testingcenter, 100, 110)
 }
