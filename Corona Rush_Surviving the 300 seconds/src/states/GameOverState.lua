@@ -1,10 +1,7 @@
-
 GameOverState = Class{__includes = BaseState}
 
-
-
 function GameOverState:init()
-    
+
 end
 
 function GameOverState:enter()
@@ -31,3 +28,10 @@ function GameOverState:render()
     love.graphics.printf('Press SPACE to RESTART', 150, 500, 1000, 'center')
 end
 
+function GameOverState:beginContact(a, b, collision)
+
+end
+
+function GameOverState:endContact(a, b, collision)
+
+end
