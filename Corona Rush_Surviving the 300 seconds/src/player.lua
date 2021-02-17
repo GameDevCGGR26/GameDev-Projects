@@ -154,29 +154,25 @@ end
 function Player:lose()
 	gStateMachine:change('game-over')
 	gSounds['death']:play()
-		-- self:load()
 end
 
 function Player:respawn()
 	if not self.alive then
 		self:resetPosition()
 		self.health.current = self.health.max
-
-		-- self.health.current = self.health.max
 		self.alive = true
 		self.exposed = true
 		GUI.mBarDisplay = 1
 		GUI.fBarDisplay = 1
 		GUI.aBarDisplay = 1
 		GUI.pBarDisplay = 1
-		--Map:spawnObjects()
+
 	end
 end
 
 function Player:resetPosition()
 	self.character.body:setPosition(self.startX, self.startY)
 	self.exposed = true
-	-- Map:spawnObjects()
 	GUI.mBarDisplay = 1
 	GUI.fBarDisplay = 1
 	GUI.aBarDisplay = 1
@@ -340,14 +336,11 @@ function Player:jump(key)
 	end
 end
 
-
 function Player:fire(key)
 	if self.alcoholCollected == true then
 		if key == "space" then
 			GUI.aBarDisplay = GUI.aBarDisplay + 1
-			Virus.toBeRemoved = true
 			if GUI.aBarDisplay >= 4 then
-				self.exposed = true
 				GUI.isDisplayAlcohol = false
 			end
 			if GUI.aBarDisplay == 5 then
@@ -357,6 +350,7 @@ function Player:fire(key)
 		end
 	end
 end
+
 function Player:endContact(a, b, collision)   --characternot colliding with anything rather than the ground
 	if a == self.character.fixture or b == self.character.fixture then
 		if self.currentGroundCollision == collision then
@@ -390,7 +384,6 @@ function Player:draw()   --1.5 bcoz 1 makes the character too small
 		)
 	else
 		if love.keyboard.isDown('space') and self.alcoholCollected == true then
-		--	(GUI.aBarDisplay == 3 or GUI.aBarDisplay == 2 or GUI.aBarDisplay == 1) then
 			love.graphics.draw(
 			gTextures.heroA, self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
 			)
