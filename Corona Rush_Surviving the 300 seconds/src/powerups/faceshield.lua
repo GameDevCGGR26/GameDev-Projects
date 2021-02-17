@@ -1,13 +1,13 @@
-local Alcohol = {}
-Alcohol.__index = Alcohol
-ActiveAlcohols = {}
+local Faceshield = {}
+Faceshield.__index = Faceshield
+ActiveFaceshields = {}
 
-function Alcohol:new (x,y)
-	local  instance = setmetatable ({}, Alcohol)
+function Faceshield:new (x,y)
+	local  instance = setmetatable ({}, Faceshield)
 	instance.x = x
 	instance.y = y
-	instance.width = 35
-	instance.height = 35
+	instance.width = 32
+	instance.height = 32
 	instance.scaleX = 1
 	instance.randomTimeOffset = math.random(0, 100)
 	instance.toBeRemoved = false
@@ -18,10 +18,10 @@ function Alcohol:new (x,y)
 	instance.physics.shape = love.physics.newRectangleShape(instance.width, instance.height)
 	instance.physics.fixture = love.physics.newFixture(instance.physics.body, instance.physics.shape)
 	instance.physics.fixture:setSensor(true)
-	table.insert(ActiveAlcohols, instance)
+	table.insert(ActiveFaceshields, instance)
 end
 
-function Alcohol:loadAssets()
+function Faceshield:loadAssets()
 	self.animation = Animation {
 		frames = {1,2},
 		interval = 0.5,
@@ -29,87 +29,87 @@ function Alcohol:loadAssets()
 	self.currentAnimation = self.animation
 end
 
-function Alcohol:remove ()
-	for i,instance in ipairs(ActiveAlcohols) do
+function Faceshield:remove ()
+	for i,instance in ipairs(ActiveFaceshields) do
 		if instance == self then
 			self.physics.body:destroy()
-			table.remove(ActiveAlcohols, i)
+			table.remove(ActiveFaceshields, i)
 		end
 	end
 end
 
-function Alcohol.removeAll()
-	for i, v in ipairs(ActiveAlcohols) do
+function Faceshield.removeAll()
+	for i, v in ipairs(ActiveFaceshields) do
 		v.physics.body:destroy()
 	end
 
-  	ActiveAlcohols = {}
+  	ActiveFaceshields = {}
 end
 
-function Alcohol:update (dt)
+function Faceshield:update (dt)
 	self.currentAnimation:update(dt)
 	self:checkRemove()
 end
 
-function Alcohol:checkRemove ()
+function Faceshield:checkRemove ()
 	if self.toBeRemoved then
 		self:remove()
 	end
 end
 
-function Alcohol.removeAll()
-	for i, j in ipairs(ActiveAlcohols) do
+function Faceshield.removeAll()
+	for i,j in ipairs(ActiveFaceshields) do
 		j.physics.body:setActive(false)
 	end
 
-  	ActiveAlcohols = {}
+  	ActiveFaceshields = {}
 end
 
-function Alcohol:draw ()
+function Faceshield:draw ()
 	love.graphics.draw(
-	gTextures.alcohol, gFrames.alcohol[self.currentAnimation:getCurrentFrame()],
+	gTextures.faceshield, gFrames.faceshield[self.currentAnimation:getCurrentFrame()],
 		self.x, self.y, 0, scaleX, 1, self.width/2, self.height/2
 	)
 end
 
-function Alcohol.updateAll (dt)
-	for i,instance in ipairs(ActiveAlcohols) do
+function Faceshield.updateAll (dt)
+	for i,instance in ipairs(ActiveFaceshields) do
 		instance:update(dt)
 	end
 end
 
-function Alcohol.drawAll ()
-	for i,instance in ipairs(ActiveAlcohols) do
+function Faceshield.drawAll ()
+	for i,instance in ipairs(ActiveFaceshields) do
 		instance:draw()
 	end
 end
 
-function Alcohol.beginContact (a, b, collision)
-	for i,instance in ipairs(ActiveAlcohols) do
+function Faceshield.beginContact (a, b, collision)
+	for i,instance in ipairs(ActiveFaceshields) do
 		if a == instance.physics.fixture or b == instance.physics.fixture then
 			if a == Player.character.fixture or b == Player.character.fixture then
-				if GUI.alcoholBar == 0 then
+				if GUI.faceshieldBar == 0 then
 					instance.toBeRemoved = true
-					GUI.isDisplayAlcohol = true
+					GUI.isDisplayFaceshield = true
+					GUI.isDisplayAlcohol =false
 					GUI.isDisplayMask = false
-					GUI.isDisplayFaceshield = false
 					GUI.isDisplayPPE = false
-					GUI.alcoholBar = 1
+					GUI.faceshieldBar = 1
+					GUI.alcoholBar = 0
 					GUI.maskBar = 0
-					GUI.faceshieldBar = 0
 					GUI.ppeBar = 0
-					GUI.aBarDisplay = 1
-					Player.alcoholCollected = true
-					Player.faceshieldCollected = false
+					GUI.fBarDisplay = 1
+					Player.alcoholCollected = false
+					Player.faceshieldCollected = true
 					Player.maskCollected = false
 					Player.ppeCollected = false
 					gSounds['powerup1']:play()
 					return true
 				else
 					instance.toBeRemoved = false
-					Player.alcoholCollected = false
-					GUI.isDisplayAlcohol = false
-					GUI.alcoholBar = 0
+					Player.faceshieldCollected = false
+					GUI.isDisplayFaceshield = false
+					GUI.faceshieldBar = 0
 					instance.physics.fixture:setMask(1)
 					return false
 				end
@@ -118,4 +118,4 @@ function Alcohol.beginContact (a, b, collision)
 	end
 end
 
-return Alcohol
+return Faceshield
