@@ -24,9 +24,8 @@ end
 function Map:backGround()
 	if self.currentLevel == 1  then
 		return gTextures.background
-	end
 
-	if self.currentLevel == 2  then
+	elseif self.currentLevel == 2  then
 		return gTextures.background2
 	end
 end
@@ -88,7 +87,7 @@ function Map:update(dt)
 --[[	if Player.y > MapHeight then
 		Player:die()
 		self:spawObjects()
-	end]]
+	end]]--
 end
 
 function Map:spawnEntities()
