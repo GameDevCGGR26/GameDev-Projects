@@ -23,7 +23,7 @@ end
 
 function StartState:loadAssets()
 	self.animation = Animation {
-		frames = {1,2,3},
+		frames = {1,2,3,2},
 		interval = 0.4,
 	}
 	self.currentAnimation = self.animation
