@@ -14,6 +14,12 @@ function PlayState:init()
     Timer.every(1, function()
       	TIMERS = TIMERS - 1
     end)
+	
+    gSounds['mainmenu']:stop()
+    gSounds['level1']:setLooping(true)
+    gSounds['level1']:setVolume(0.5)
+    gSounds['level1']:play()
+	
 end
 
 
