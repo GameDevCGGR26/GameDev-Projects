@@ -32,9 +32,9 @@ function love.load()
 	}
   	gStateMachine:change('start')
 
-	gSounds['level1']:setLooping(true)
-	gSounds['level1']:setVolume(0.5)
-	gSounds['level1']:play()
+	gSounds['mainmenu']:setLooping(true)
+	gSounds['mainmenu']:setVolume(0.5)
+	gSounds['mainmenu']:play()
 
   	love.keyboard.keysPressed = {}
 end
