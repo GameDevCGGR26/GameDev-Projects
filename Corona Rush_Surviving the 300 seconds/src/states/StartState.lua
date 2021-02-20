@@ -1,9 +1,7 @@
 --[[
     GD50
     Super Mario Bros. Remake
-
     -- StartState Class --
-
     Author: Colton Ogden
     cogden@cs50.harvard.edu
 ]]
@@ -51,7 +49,7 @@ function StartState:update(dt)
         if highlighted == 1 then
             gStateMachine:change('play')
         elseif highlighted == 2 then
-            gStateMachine:change('controls')
+            gStateMachine:change('how2play')
         elseif highlighted == 3 then
             love.event.quit()
         end
@@ -88,9 +86,9 @@ function StartState:render()
 
     love.graphics.setFont(gFonts.medium)
     love.graphics.setColor(0, 0, 0, 255)
-    love.graphics.printf('Controls', 260, WINDOW_HEIGHT / 2 + 100, WINDOW_WIDTH)
+    love.graphics.printf('How to Play', 225, WINDOW_HEIGHT / 2 + 100, WINDOW_WIDTH)
     love.graphics.setColor(255, 255, 255, 255)
-    love.graphics.printf('Controls', 257, WINDOW_HEIGHT / 2 + 100, WINDOW_WIDTH)
+    love.graphics.printf('How to Play', 222, WINDOW_HEIGHT / 2 + 100, WINDOW_WIDTH)
 
     love.graphics.setFont(gFonts.medium)
     love.graphics.setColor(0, 0, 0, 255)
@@ -104,7 +102,7 @@ function StartState:render()
     elseif highlighted == 2 then
         love.graphics.setFont(gFonts.medium)
         love.graphics.setColor(255/255, 255/255, 0, 255/255)
-        love.graphics.printf('Controls', 260, WINDOW_HEIGHT / 2 + 100, WINDOW_WIDTH)
+        love.graphics.printf('How to Play', 225, WINDOW_HEIGHT / 2 + 100, WINDOW_WIDTH)
     elseif highlighted == 3 then
         love.graphics.setColor(255/255, 255/255, 0, 255/255)
         love.graphics.printf('Exit', 320, WINDOW_HEIGHT / 2 + 215, WINDOW_WIDTH)
