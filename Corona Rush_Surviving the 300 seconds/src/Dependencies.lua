@@ -29,6 +29,7 @@ TestingCenter = require 'src/testingcenter'
 require 'src/StateMachine'
 require 'src/states/BaseState'
 require 'src/states/ControlState'
+require 'src/states/HowToPlayState'
 require 'src/states/GameOverState'
 require 'src/states/NextLevelState'
 require 'src/states/PlayState'
@@ -44,6 +45,7 @@ require 'src/Util'
 
 
 gFonts = {
+	xsmall = love.graphics.newFont('assets/font/bit.ttf', 40),
 	small = love.graphics.newFont('assets/font/bit.ttf', 50),
 	medium = love.graphics.newFont('assets/font/bit.ttf', 64),
 	large = love.graphics.newFont('assets/font/bit.ttf', 128)
@@ -81,6 +83,12 @@ gTextures = {
     ppeBar = love.graphics.newImage('assets/ppe bar.png'),
     maskBar = love.graphics.newImage('assets/mask bar.png'),
     heartBar = love.graphics.newImage('assets/heart bar2.png'),
+		mainmenutitle = love.graphics.newImage('assets/mainmenu.png'),
+		mainmenubg = love.graphics.newImage('assets/main menu bg sprite.png'),
+		h2play1 = love.graphics.newImage('assets/1h2play.png'),
+		h2play2 = love.graphics.newImage('assets/2h2play.png'),
+		h2play3 = love.graphics.newImage('assets/3h2play.png'),
+		gameoverbg = love.graphics.newImage('assets/gameoverbg.png'),
     toxic2 = love.graphics.newImage('assets/toxic2.png'),
     testingcenter = love.graphics.newImage('assets/testing centerbigt.png')
 }
@@ -97,10 +105,16 @@ gFrames = {
     ppe = GenerateQuads(gTextures.ppe, 39, 35),
     alcohol = GenerateQuads(gTextures.alcohol, 35, 35),
     faceshieldBar = GenerateQuads(gTextures.faceshieldBar, 37, 6),
+		h2play1 = GenerateQuads(gTextures.h2play1, 256, 144),
+		h2play2 = GenerateQuads(gTextures.h2play2, 256, 144),
+		h2play2 = GenerateQuads(gTextures.h2play3, 256, 144),
     alcoholBar = GenerateQuads(gTextures.alcoholBar, 37, 6),
     ppeBar = GenerateQuads(gTextures.ppeBar, 55,6),
     maskBar = GenerateQuads(gTextures.maskBar, 28,6),
     heartBar = GenerateQuads(gTextures.heartBar, 36,6),
+		mainmenutitle = GenerateQuads(gTextures.mainmenutitle, 256,144),
+		mainmenubg = GenerateQuads(gTextures.mainmenubg, 256,144),
+		gameoverbg = GenerateQuads(gTextures.gameoverbg, 256, 144),
     toxic2 = GenerateQuads(gTextures.toxic2, 256, 128),
     testingcenter = GenerateQuads(gTextures.testingcenter, 100, 110)
 }
