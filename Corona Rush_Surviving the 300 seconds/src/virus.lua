@@ -11,8 +11,6 @@ function Virus:load(x, y)
 	instance.startX = instance.x
 	instance.startY = instance.y
 
-	-- instance.toBeRemoved = false
-
 	instance.width = 32
 	instance.height = 32
 	instance.speed = 100
@@ -117,37 +115,68 @@ function Virus.beginContact(a, b, collision)
 				Player:takeDamage(instance.damage)
 				gSounds['player-hurt']:play()
 				if Player.maskCollected == true then
-				GUI.mBarDisplay = GUI.mBarDisplay + 1
-				if GUI.mBarDisplay > 2 then
-					GUI.isDisplayMask = false
-					Player.exposed = true
-					Player.maskCollected = false
-				end
+					GUI.mBarDisplay = GUI.mBarDisplay + 1
+					if charNum == 1 then
+						if GUI.mBarDisplay > 2 then
+							GUI.isDisplayMask = false
+							Player.exposed = true
+							Player.maskCollected = false
+						end
+					elseif charNum > 1 then
+						if GUI.mBarDisplay > 1 then
+							GUI.isDisplayMask = false
+							Player.exposed = true
+							Player.maskCollected = false
+						end
+					end
 				end
 				if Player.faceshieldCollected == true then
-				GUI.fBarDisplay = GUI.fBarDisplay + 1
-				if GUI.fBarDisplay > 3 then
-					GUI.isDisplayFaceshield = false
-					Player.exposed = true
-					Player.faceshieldCollected = false
-				end
+					GUI.fBarDisplay = GUI.fBarDisplay + 1
+					if charNum == 1 then
+						if GUI.fBarDisplay > 3 then
+							GUI.isDisplayFaceshield = false
+							Player.exposed = true
+							Player.faceshieldCollected = false
+						end
+					elseif charNum > 1 then
+						if GUI.fBarDisplay > 2 then
+							GUI.isDisplayFaceshield = false
+							Player.exposed = true
+							Player.faceshieldCollected = false
+						end
+					end
 				end
 				if Player.ppeCollected == true then
-				GUI.pBarDisplay = GUI.pBarDisplay + 1
-				if GUI.pBarDisplay > 5 then
-					GUI.isDisplayPPE = false
-					Player.exposed = true
-					Player.ppeCollected = false
-				end
+					GUI.pBarDisplay = GUI.pBarDisplay + 1
+					if charNum == 1 then
+						if GUI.pBarDisplay > 5 then
+							GUI.isDisplayPPE = false
+							Player.exposed = true
+							Player.ppeCollected = false
+						end
+					elseif charNum > 1 then
+						if GUI.pBarDisplay > 4 then
+							GUI.isDisplayPPE = false
+							Player.exposed = true
+							Player.ppeCollected = false
+						end
+					end
 				end
 				if Player.alcoholCollected == true then
-				GUI.aBarDisplay = GUI.aBarDisplay + 1
-				if GUI.aBarDisplay > 3 then
-					GUI.isDisplayAlcohol = false
-					Player.exposed = true
-					Player.alcoholCollected = false
-				end
-				Player:fire(key)
+					GUI.aBarDisplay = GUI.aBarDisplay + 1
+					if charNum == 1 then
+						if GUI.aBarDisplay > 3 then
+							GUI.isDisplayAlcohol = false
+							Player.exposed = true
+							Player.alcoholCollected = false
+						end
+					elseif charNum > 1 then
+						if GUI.aBarDisplay > 2 then
+							GUI.isDisplayAlcohol = false
+							Player.exposed = true
+							Player.alcoholCollected = false
+						end
+					end
 				end
 			end
 		instance:flipDirection()
