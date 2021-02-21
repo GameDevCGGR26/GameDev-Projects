@@ -24,13 +24,9 @@ function Player:load(x,y)
 	self.coins = 0
 	self.powerups = 0
 	self.testingcenters = 0
-	-- self.health = {current = 3, max = 3}
 
 	self.direction = 'right'
 	self.state = 'idle'
-
-	self.health = {current = 3, max = 3}
-	--TIMERS = 300
 
 	self.color = { red = 1, green = 1, blue = 1, speed = 3}
 
@@ -48,10 +44,14 @@ function Player:load(x,y)
 	self.character.body:setGravityScale(0)
 
 	self.powerup = {}
-	self.maskCollected = false
 	self.faceshieldCollected = false
 	self.alcoholCollected = false
 	self.ppeCollected = false
+	if charNum == 4 then
+		self.maskCollected = true
+	elseif charNum < 4 then
+		self.maskCollected = false
+	end
 
 	self.testingc = false
 end
@@ -86,7 +86,7 @@ end
 function Player:takeDamage(amount)
 	if self.exposed == true then
 		self:tintRed()
-		if self.health.current - amount > 0 then
+		if GUI.health.current - amount > 0 then
 			GUI.health.current = GUI.health.current - amount
 
 		else
@@ -130,7 +130,6 @@ function Player:hasPowers()
 		self.maskCollected = false
 		self.alcoholCollected = false
 	end
-
 end
 
 function Player:die()
@@ -143,12 +142,18 @@ function Player:die()
 	GUI.alcoholBar = 0
 	GUI.ppeBar = 0
 	GUI.maskBar = 0
-	self.alive = true
 	self.exposed = true
 	GUI.mBarDisplay = 1
 	GUI.fBarDisplay = 1
 	GUI.aBarDisplay = 1
 	GUI.pBarDisplay = 1
+	if charNum == 4 then 
+		self.exposed = false
+		self.maskCollected = true
+		GUI.isDisplayMask = true
+		GUI.mBarDisplay = 1
+		GUI.maskBar = 1
+	end
 end
 
 function Player:lose()
@@ -161,22 +166,37 @@ function Player:respawn()
 		self:resetPosition()
 		self.health.current = self.health.max
 		self.alive = true
-		self.exposed = true
-		GUI.mBarDisplay = 1
-		GUI.fBarDisplay = 1
-		GUI.aBarDisplay = 1
-		GUI.pBarDisplay = 1
-
+		if charNum == 4 then
+			self.exposed = false
+			self.maskCollected = true
+			GUI.isDisplayMask = true
+			GUI.mBarDisplay = 1
+			GUI.maskBar = 1
+		elseif charNum < 4 then
+			self.exposed = true
+			GUI.mBarDisplay = 1
+			GUI.fBarDisplay = 1
+			GUI.aBarDisplay = 1
+			GUI.pBarDisplay = 1
+		end
 	end
 end
 
 function Player:resetPosition()
 	self.character.body:setPosition(self.startX, self.startY)
-	self.exposed = true
-	GUI.mBarDisplay = 1
-	GUI.fBarDisplay = 1
-	GUI.aBarDisplay = 1
-	GUI.pBarDisplay = 1
+	if charNum == 4 then
+		self.exposed = false
+		self.maskCollected = true
+		GUI.isDisplayMask = true
+		GUI.mBarDisplay = 1
+		GUI.maskBar = 1
+	elseif charNum < 4 then
+		self.exposed = true
+		GUI.mBarDisplay = 1
+		GUI.fBarDisplay = 1
+		GUI.aBarDisplay = 1
+		GUI.pBarDisplay = 1
+	end
 end
 
 function Player:tintRed()
@@ -202,27 +222,21 @@ function Player:update(dt)
 
 	if TIMERS == 0 then
 		self:lose()
-		-- GUI.health.current = GUI.health.max
-		-- self.alive = true
 	end
 
 	if GUI.health.current == 0 then
 		self:lose()
 		Timer.clear()
-		-- GUI.health.current = GUI.health.max
-		-- self.alive = true
 	end
 
 	if GUI.health.current > 0 then
 		if self.y > MapHeight then
-			-- TIMERS = 300
 			GUI.health.current = GUI.health.current - 1
 
 			Map:deleteAll()
 			Map:load()
 			self:resetPosition()
 
-			--self.coins = 0
 			self.maskCollected = false
 			self.faceshieldCollected = false
 			self.alcoholCollected = false
@@ -235,8 +249,15 @@ function Player:update(dt)
 			GUI.alcoholBar = 0
 			GUI.ppeBar = 0
 			GUI.maskBar = 0
+
+			if charNum == 4 then
+				self.maskCollected = true
+				GUI.isDisplayMask = true
+				GUI.maskBar = 1
+			end
 		end
 	end
+
 end
 
 function Player:unTint(dt)
@@ -287,7 +308,7 @@ function Player:move(dt)  --character controls
 end
 
 
-function Player:applyFriction(dt)  --friction/movemnt of character above ground
+function Player:applyFriction(dt)  --friction/movement of character above ground
 	if self.dx > 0 then
 		self.dx = math.max(self.dx - self.friction * dt, 0)
 	elseif self.dx < 0 then
@@ -340,12 +361,27 @@ function Player:fire(key)
 	if self.alcoholCollected == true then
 		if key == "space" then
 			GUI.aBarDisplay = GUI.aBarDisplay + 1
-			if GUI.aBarDisplay >= 4 then
-				GUI.isDisplayAlcohol = false
+			if GUI.isDisplayAlcohol == true then
+				if GUI.health.current < GUI.health.max then
+					GUI.health.current = GUI.health.current + 1
+				end
 			end
-			if GUI.aBarDisplay == 5 then
-				self.exposed = true
-				self.alcoholCollected = false
+			if charNum == 1 then
+				if GUI.aBarDisplay >= 4 then
+					GUI.isDisplayAlcohol = false
+				end
+				if GUI.aBarDisplay == 5 then
+					self.exposed = true
+					self.alcoholCollected = false
+				end
+			elseif charNum > 1 then
+				if GUI.aBarDisplay >= 3 then
+					GUI.isDisplayAlcohol = false
+				end
+				if GUI.aBarDisplay == 4 then
+					self.exposed = true
+					self.alcoholCollected = false
+				end
 			end
 		end
 	end
@@ -367,37 +403,135 @@ function Player:draw()   --1.5 bcoz 1 makes the character too small
 	end
 
 	love.graphics.setColor(self.color.red, self.color.green, self.color.blue)
-	if self.faceshieldCollected == true then
-		love.graphics.draw(
-		gTextures.heroF, gFrames.heroF[self.currentAnimation:getCurrentFrame()],
-		self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
-		)
-	elseif self.ppeCollected == true then
-		love.graphics.draw(
-		gTextures.heroP, gFrames.heroP[self.currentAnimation:getCurrentFrame()],
-		self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
-		)
-	elseif self.maskCollected == true then
-		love.graphics.draw(
-		gTextures.heroM, gFrames.heroM[self.currentAnimation:getCurrentFrame()],
-		self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
-		)
-	else
-		if love.keyboard.isDown('space') and self.alcoholCollected == true then
-			love.graphics.draw(
-			gTextures.heroA, self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
-			)
-		elseif self.alcoholCollected == true then
-			love.graphics.draw(
-			gTextures.hero, gFrames.hero[self.currentAnimation:getCurrentFrame()],
-			self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
-			)
-		else
-			love.graphics.draw(
-			gTextures.hero, gFrames.hero[self.currentAnimation:getCurrentFrame()],
-			self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
-			)
-		end
+	if charNum == 1 then
+        if self.faceshieldCollected == true then
+            love.graphics.draw(
+            gTextures.hero1F, gFrames.hero1F[self.currentAnimation:getCurrentFrame()],
+            self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+            )
+        elseif self.ppeCollected == true then
+            love.graphics.draw(
+            gTextures.heroP, gFrames.heroP[self.currentAnimation:getCurrentFrame()],
+            self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+            )
+        elseif self.maskCollected == true then
+            love.graphics.draw(
+            gTextures.hero1M, gFrames.hero1M[self.currentAnimation:getCurrentFrame()],
+            self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+            )
+        else
+            if love.keyboard.isDown('space') and self.alcoholCollected == true then
+                love.graphics.draw(
+                gTextures.hero1A,self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5)
+            elseif self.alcoholCollected == true then
+                love.graphics.draw(
+                gTextures.hero1, gFrames.hero1[self.currentAnimation:getCurrentFrame()],
+                self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+                )
+            else
+                love.graphics.draw(
+                gTextures.hero1, gFrames.hero1[self.currentAnimation:getCurrentFrame()],
+                self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+                )
+            end
+        end
+	elseif charNum == 2 then
+        if self.faceshieldCollected == true then
+            love.graphics.draw(
+            gTextures.hero2F, gFrames.hero2F[self.currentAnimation:getCurrentFrame()],
+            self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+            )
+        elseif self.ppeCollected == true then
+            love.graphics.draw(
+            gTextures.heroP, gFrames.heroP[self.currentAnimation:getCurrentFrame()],
+            self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+            )
+        elseif self.maskCollected == true then
+            love.graphics.draw(
+            gTextures.hero2M, gFrames.hero2M[self.currentAnimation:getCurrentFrame()],
+            self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+            )
+        else
+            if love.keyboard.isDown('space') and self.alcoholCollected == true then
+                love.graphics.draw(
+                gTextures.hero2A, self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5)
+            elseif self.alcoholCollected == true then
+                love.graphics.draw(
+                gTextures.hero2, gFrames.hero2[self.currentAnimation:getCurrentFrame()],
+                self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+                )
+            else
+                love.graphics.draw(
+                gTextures.hero2, gFrames.hero2[self.currentAnimation:getCurrentFrame()],
+                self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+                )
+            end
+        end
+	elseif charNum == 3 then
+        if self.faceshieldCollected == true then
+            love.graphics.draw(
+            gTextures.hero3F, gFrames.hero3F[self.currentAnimation:getCurrentFrame()],
+            self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+            )
+        elseif self.ppeCollected == true then
+            love.graphics.draw(
+            gTextures.heroP, gFrames.heroP[self.currentAnimation:getCurrentFrame()],
+            self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+            )
+        elseif self.maskCollected == true then
+            love.graphics.draw(
+            gTextures.hero3M, gFrames.hero3M[self.currentAnimation:getCurrentFrame()],
+            self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+            )
+        else
+            if love.keyboard.isDown('space') and self.alcoholCollected == true then
+                love.graphics.draw(
+                gTextures.hero3A, self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5)
+            elseif self.alcoholCollected == true then
+                love.graphics.draw(
+                gTextures.hero3, gFrames.hero3[self.currentAnimation:getCurrentFrame()],
+                self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+                )
+            else
+                love.graphics.draw(
+                gTextures.hero3, gFrames.hero3[self.currentAnimation:getCurrentFrame()],
+                self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+                )
+            end
+        end
+	elseif charNum == 4 then
+		love.graphics.setColor(self.color.red, self.color.green, self.color.blue)
+        if self.faceshieldCollected == true then
+            love.graphics.draw(
+            gTextures.hero4F, gFrames.hero4F[self.currentAnimation:getCurrentFrame()],
+            self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+            )
+        elseif self.ppeCollected == true then
+            love.graphics.draw(
+            gTextures.heroP, gFrames.heroP[self.currentAnimation:getCurrentFrame()],
+            self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+            )
+        elseif self.maskCollected == true then
+            love.graphics.draw(
+            gTextures.hero4M, gFrames.hero4M[self.currentAnimation:getCurrentFrame()],
+            self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+            )
+        else
+            if love.keyboard.isDown('space') and self.alcoholCollected == true then
+                love.graphics.draw(
+                gTextures.hero4A, self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5)
+            elseif self.alcoholCollected == true then
+                love.graphics.draw(
+                gTextures.hero4, gFrames.hero4[self.currentAnimation:getCurrentFrame()],
+                self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+                )
+            else
+                love.graphics.draw(
+                gTextures.hero4, gFrames.hero4[self.currentAnimation:getCurrentFrame()],
+                self.x, self.y, 0, scaleX, 1.5, self.currentAnimation.width/1.5, self.currentAnimation.height/1.5
+                )
+            end
+        end
 	end
 	love.graphics.setColor(1,1,1,1)
 end
