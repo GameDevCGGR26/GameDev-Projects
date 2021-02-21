@@ -8,18 +8,18 @@ function PlayState:init()
 
     Map:load()
     GUI:load()
-  --  Player:load()
 
     TIMERS = 300
+    
     Timer.every(1, function()
-      	TIMERS = TIMERS - 1
+        TIMERS = TIMERS - 1
     end)
-	
+    
     gSounds['mainmenu']:stop()
     gSounds['level1']:setLooping(true)
     gSounds['level1']:setVolume(0.5)
     gSounds['level1']:play()
-	
+
 end
 
 
@@ -51,8 +51,8 @@ function PlayState:update(dt)
 		gStateMachine:change('game-over', {
 			timer = TIMERS
 		})
-   end
-    --  Map:update(dt)
+    end
+
     local halfScreen =  WINDOW_WIDTH / 2
 
     if Player.x < (MapWidth - halfScreen) then
@@ -75,12 +75,17 @@ function PlayState:update(dt)
 end
 
 function PlayState:render()
-  love.graphics.draw(gTextures.background, -BACKGROUND_SCROLL, 0, 0, 4, 3.5)
+    if Map.currentLevel == 1 then
+        love.graphics.draw(gTextures.background, -BACKGROUND_SCROLL, 0, 0, 4, 3.5)
+    elseif Map.currentLevel == 2 then
+        love.graphics.draw(gTextures.background2, -BACKGROUND_SCROLL, 0, 0, 4, 3.5)
+    end
 	Map.level:draw(-Camera.x, -Camera.y, Camera.scale, Camera.scale)
+
 
   	Camera:apply()
     TestingCenter.drawAll()
-		Player:draw()
+        Player:draw()
 		Coin.drawAll()
 		Mask.drawAll()
 		Faceshield.drawAll()
@@ -100,9 +105,9 @@ function PlayState:beginContact(a, b, collision)
 	if Alcohol.beginContact(a,b, collision) then return end
 	if TestingCenter.beginContact(a, b, collision) then return end
 	Virus.beginContact(a, b, collision)
-	Player:beginContact (a, b, collision)
+    Player:beginContact (a, b, collision)
 end
 
 function PlayState:endContact(a, b, collision)
-    Player:endContact(a, b, collision)
+    Player:endContact (a, b, collision)
 end
