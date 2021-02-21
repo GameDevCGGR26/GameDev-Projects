@@ -28,8 +28,9 @@ function love.load()
 		['play'] = function() return PlayState() end,
 		['game-over'] = function() return GameOverState() end,
 		['next-level'] = function() return NextLevelState() end,
-    ['how2play'] = function() return HowToPlayState() end,
-		['controls'] = function() return ControlState() end
+		['how2play'] = function() return HowToPlayState() end,
+		['controls'] = function() return ControlState() end,
+		['char-select'] = function() return CharacterSelectState() end
 	}
   	gStateMachine:change('start')
 
@@ -45,7 +46,7 @@ function love.resize(w, h)
 	print(w, h)
 end
 
-function love.draw()    --map insert and bg
+function love.draw()
 
   gStateMachine:render()
 
