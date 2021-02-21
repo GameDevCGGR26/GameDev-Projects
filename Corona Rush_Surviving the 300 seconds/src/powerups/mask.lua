@@ -107,6 +107,12 @@ function Mask.beginContact (a, b, collision)
 					Player.faceshieldCollected = false
 					Player.maskCollected = true
 					Player.ppeCollected = false
+					if charNum == 2 then
+						TIMERS = TIMERS + 10
+					end
+					if charNum == 4 then
+						maskBar = 2 
+					end
 					gSounds['powerup1']:play()
 					return true
 				else
