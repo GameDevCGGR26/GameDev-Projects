@@ -103,6 +103,9 @@ function Faceshield.beginContact (a, b, collision)
 					Player.faceshieldCollected = true
 					Player.maskCollected = false
 					Player.ppeCollected = false
+					if charNum == 2 then
+						TIMERS = TIMERS + 10
+					end
 					gSounds['powerup1']:play()
 					return true
 				else
@@ -114,6 +117,119 @@ function Faceshield.beginContact (a, b, collision)
 					return false
 				end
 			end
+			--[[if CharacterSelectState.currentChar == 1 then
+				if a == Character1.character.fixture or b == Character1.character.fixture then
+					if GUI.faceshieldBar == 0 then
+						instance.toBeRemoved = true
+						GUI.isDisplayFaceshield = true
+						GUI.isDisplayAlcohol =false
+						GUI.isDisplayMask = false
+						GUI.isDisplayPPE = false
+						GUI.faceshieldBar = 1
+						GUI.alcoholBar = 0
+						GUI.maskBar = 0
+						GUI.ppeBar = 0
+						GUI.fBarDisplay = 1
+						Character1.alcoholCollected = false
+						Character1.faceshieldCollected = true
+						Character1.maskCollected = false
+						Character1.ppeCollected = false
+						gSounds['powerup1']:play()
+						return true
+					else
+						instance.toBeRemoved = false
+						Character1.faceshieldCollected = false
+						GUI.isDisplayFaceshield = false
+						GUI.faceshieldBar = 0
+						instance.physics.fixture:setMask(1)
+						return false
+					end
+				end
+			elseif CharacterSelectState.currentChar == 2 then
+				if a == Character2.character.fixture or b == Character2.character.fixture then
+					if GUI.faceshieldBar == 0 then
+						instance.toBeRemoved = true
+						GUI.isDisplayFaceshield = true
+						GUI.isDisplayAlcohol =false
+						GUI.isDisplayMask = false
+						GUI.isDisplayPPE = false
+						GUI.faceshieldBar = 1
+						GUI.alcoholBar = 0
+						GUI.maskBar = 0
+						GUI.ppeBar = 0
+						GUI.fBarDisplay = 1
+						Character2.alcoholCollected = false
+						Character2.faceshieldCollected = true
+						Character2.maskCollected = false
+						Character2.ppeCollected = false
+						gSounds['powerup1']:play()
+						return true
+					else
+						instance.toBeRemoved = false
+						Character2.faceshieldCollected = false
+						GUI.isDisplayFaceshield = false
+						GUI.faceshieldBar = 0
+						instance.physics.fixture:setMask(1)
+						return false
+					end
+				end
+			elseif CharacterSelectState.currentChar == 3 then
+				if a == Character3.character.fixture or b == Character3.character.fixture then
+					if GUI.faceshieldBar == 0 then
+						instance.toBeRemoved = true
+						GUI.isDisplayFaceshield = true
+						GUI.isDisplayAlcohol =false
+						GUI.isDisplayMask = false
+						GUI.isDisplayPPE = false
+						GUI.faceshieldBar = 1
+						GUI.alcoholBar = 0
+						GUI.maskBar = 0
+						GUI.ppeBar = 0
+						GUI.fBarDisplay = 1
+						Character3.alcoholCollected = false
+						Character3.faceshieldCollected = true
+						Character3.maskCollected = false
+						Character3.ppeCollected = false
+						gSounds['powerup1']:play()
+						return true
+					else
+						instance.toBeRemoved = false
+						Character3.faceshieldCollected = false
+						GUI.isDisplayFaceshield = false
+						GUI.faceshieldBar = 0
+						instance.physics.fixture:setMask(1)
+						return false
+					end
+				end
+			elseif CharacterSelectState.currentChar == 4 then
+				if a == Character4.character.fixture or b == Character4.character.fixture then
+					if GUI.faceshieldBar == 0 then
+						instance.toBeRemoved = true
+						GUI.isDisplayFaceshield = true
+						GUI.isDisplayAlcohol =false
+						GUI.isDisplayMask = false
+						GUI.isDisplayPPE = false
+						GUI.faceshieldBar = 1
+						GUI.alcoholBar = 0
+						GUI.maskBar = 0
+						GUI.ppeBar = 0
+						GUI.fBarDisplay = 1
+						Character4.alcoholCollected = false
+						Character4.faceshieldCollected = true
+						Character4.maskCollected = false
+						Character4.ppeCollected = false
+						gSounds['powerup1']:play()
+						return true
+					else
+						instance.toBeRemoved = false
+						Character4.faceshieldCollected = false
+						GUI.isDisplayFaceshield = false
+						GUI.faceshieldBar = 0
+						instance.physics.fixture:setMask(1)
+						return false
+					end
+				end
+			end]]
 		end
 	end
 end
