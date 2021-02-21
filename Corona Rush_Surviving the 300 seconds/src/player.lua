@@ -147,7 +147,7 @@ function Player:die()
 	GUI.fBarDisplay = 1
 	GUI.aBarDisplay = 1
 	GUI.pBarDisplay = 1
-	if charNum == 4 then 
+	if charNum == 4 then
 		self.exposed = false
 		self.maskCollected = true
 		GUI.isDisplayMask = true
@@ -184,6 +184,7 @@ end
 
 function Player:resetPosition()
 	self.character.body:setPosition(self.startX, self.startY)
+	self.coins = self.coins
 	if charNum == 4 then
 		self.exposed = false
 		self.maskCollected = true
@@ -233,8 +234,8 @@ function Player:update(dt)
 		if self.y > MapHeight then
 			GUI.health.current = GUI.health.current - 1
 
-			Map:deleteAll()
-			Map:load()
+			Map:clean()
+			Map:init()
 			self:resetPosition()
 
 			self.maskCollected = false
