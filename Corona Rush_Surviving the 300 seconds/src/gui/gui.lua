@@ -17,11 +17,11 @@ function GUI:load()
 	self.hearts.x = 0
 	self.hearts.y = 10
 	self.hearts.spacing = self.hearts.width * self.hearts.scale + 5
-	self.health = {current = 3, max = 3}
-	--[[self.HeartDisplay = .health.current
-	self.hearts.scale = 8
-	self.hearts.x = 7
-	self.hearts.y = 20]]--
+	if charNum == 3 then
+		self.health = {current = 4, max = 4}
+	else
+		self.health = {current = 3, max = 3}
+	end
 
 	self.powerupBar = {}
 	self.isDisplayFaceshield = false
@@ -39,6 +39,16 @@ function GUI:load()
 	self.powerupBar.x = 10
 	self.powerupBar.y = 85
 	self.powerupBar.scale = 8
+
+	if charNum == 4 then
+		self.isDisplayMask = true
+		self.maskBar = 1
+		self.mBarDisplay = 1
+	elseif charNum < 4 then
+		self.isDisplayMask = false
+		self.maskBar = 0
+		self.mBarDisplay = 1
+	end
 
 	self.testingcenter = {}
 	self.testingcenter.x = 100
@@ -60,18 +70,33 @@ function GUI:draw()
 	self:displayHearts ()
 	self:displayPowerupBar()
 	self:displayTime()
-	--self:displayCongrats()
 end
 
 function GUI:displayPowerupBar()
 	if self.isDisplayFaceshield == true then
-		love.graphics.draw(gTextures.faceshieldBar, gFrames.faceshieldBar[self.fBarDisplay], self.powerupBar.x, self.powerupBar.y, 0, self.powerupBar.scale, self.powerupBar.scale)
+		if charNum == 1 then
+			love.graphics.draw(gTextures.faceshieldBar, gFrames.faceshieldBar[self.fBarDisplay], self.powerupBar.x, self.powerupBar.y, 0, self.powerupBar.scale, self.powerupBar.scale)
+		elseif charNum > 1 then
+			love.graphics.draw(gTextures.nfaceshieldBar, gFrames.nfaceshieldBar[self.fBarDisplay], self.powerupBar.x, self.powerupBar.y, 0, self.powerupBar.scale, self.powerupBar.scale)
+		end
 	elseif self.isDisplayAlcohol == true then
-		love.graphics.draw(gTextures.alcoholBar, gFrames.alcoholBar[self.aBarDisplay], self.powerupBar.x, self.powerupBar.y, 0, self.powerupBar.scale, self.powerupBar.scale)
+		if charNum == 1 then
+			love.graphics.draw(gTextures.alcoholBar, gFrames.alcoholBar[self.aBarDisplay], self.powerupBar.x, self.powerupBar.y, 0, self.powerupBar.scale, self.powerupBar.scale)
+		elseif charNum > 1 then
+			love.graphics.draw(gTextures.nalcoholBar, gFrames.nalcoholBar[self.aBarDisplay], self.powerupBar.x, self.powerupBar.y, 0, self.powerupBar.scale, self.powerupBar.scale)
+		end
 	elseif self.isDisplayPPE == true then
-		love.graphics.draw(gTextures.ppeBar, gFrames.ppeBar[self.pBarDisplay], self.powerupBar.x, self.powerupBar.y, 0, self.powerupBar.scale, self.powerupBar.scale)
+		if charNum == 1 then
+			love.graphics.draw(gTextures.ppeBar, gFrames.ppeBar[self.pBarDisplay], self.powerupBar.x, self.powerupBar.y, 0, self.powerupBar.scale, self.powerupBar.scale)
+		elseif charNum > 1 then
+			love.graphics.draw(gTextures.nppeBar, gFrames.nppeBar[self.pBarDisplay], self.powerupBar.x, self.powerupBar.y, 0, self.powerupBar.scale, self.powerupBar.scale)
+		end
 	elseif self.isDisplayMask == true then
-		love.graphics.draw(gTextures.maskBar, gFrames.maskBar[self.mBarDisplay], self.powerupBar.x, self.powerupBar.y, 0, self.powerupBar.scale, self.powerupBar.scale)
+		if charNum == 1 then
+			love.graphics.draw(gTextures.maskBar, gFrames.maskBar[self.mBarDisplay], self.powerupBar.x, self.powerupBar.y, 0, self.powerupBar.scale, self.powerupBar.scale)
+		elseif charNum > 1 then
+			love.graphics.draw(gTextures.nmaskBar, gFrames.nmaskBar[self.mBarDisplay], self.powerupBar.x, self.powerupBar.y, 0, self.powerupBar.scale, self.powerupBar.scale)	
+		end
 	end
 end
 
@@ -80,7 +105,6 @@ function GUI:displayHearts ()
 		local x = self.hearts.x + self.hearts.spacing * i
 		love.graphics.draw(self.hearts.img, x, self.hearts.y, 0, self.hearts.scale)
     end
-    --  love.graphics.draw(gTextures.heartBar, gFrames.heartBar[self.HeartDisplay], self.hearts.x, self.hearts.y, 0, self.hearts.scale, self.hearts.scale)
 end
 
 function GUI:displayCoins()
@@ -104,10 +128,4 @@ function GUI:displayTime()
   	love.graphics.printf('Timer: ' .. tostring(TIMERS), 530, 30, 182, 'center')
 end
 
---[[function GUI:displayCongrats()
-  if Player.testingc == true then
-    love.graphics.draw(gTextures.testingcenter, gFrames.testingcenter[1], self.x, self.y, 0, self.scale, self.scale)
-      gStateMachine:change('game-over')
-end
-end]]--
 return GUI
