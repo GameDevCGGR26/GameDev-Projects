@@ -110,6 +110,9 @@ function Ppe.beginContact (a, b, collision)
 					Player.faceshieldCollected = false
 					Player.maskCollected = false
 					Player.ppeCollected = true
+					if charNum == 2 then
+						TIMERS = TIMERS + 10
+					end
 					gSounds['powerup1']:play()
 					return true
 				else
