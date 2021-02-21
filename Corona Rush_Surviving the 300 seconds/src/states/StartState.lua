@@ -13,10 +13,10 @@ local highlighted = 1
 
 
 function StartState:init()
-self.transitionAlpha = 0
-self.color = { red = 1, green = 1, blue = 1}
+    self.transitionAlpha = 0
+    self.color = { red = 1, green = 1, blue = 1}
 
-self:loadAssets()
+    self:loadAssets()
 end
 
 function StartState:loadAssets()
@@ -47,7 +47,7 @@ function StartState:update(dt)
     end
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
         if highlighted == 1 then
-            gStateMachine:change('play')
+            gStateMachine:change('char-select')
         elseif highlighted == 2 then
             gStateMachine:change('how2play')
         elseif highlighted == 3 then
@@ -60,53 +60,38 @@ function StartState:update(dt)
 
 
 function StartState:render()
-
-    --love.graphics.draw(gTextures.toxic2, 0, 0, 0, 5, 5)
     love.graphics.setColor(self.color.red, self.color.green, self.color.blue)
-    --love.graphics.draw(gTextures.mainmenubg, 0, 0, 0, 5, 5)
-    love.graphics.draw(
-  	gTextures.mainmenubg, gFrames.mainmenubg[self.currentAnimation:getCurrentFrame()],
-  	0, 0, 0, 5, 5)
-
+    love.graphics.draw(gTextures.mainmenubg, gFrames.mainmenubg[self.currentAnimation:getCurrentFrame()],0, 0, 0, 5, 5)
     love.graphics.draw(gTextures.mainmenutitle, 0, 0, 0, 5, 5)
-
-
-    --[[love.graphics.setFont(gFonts.large)
-    love.graphics.setColor(0, 0, 0, 255)
-    love.graphics.printf('Corona Rush', 3, WINDOW_HEIGHT / 4 + 5, WINDOW_WIDTH, 'center')
-    love.graphics.setColor(255, 255, 255, 255)
-    love.graphics.printf('Corona Rush', 0, WINDOW_HEIGHT / 4, WINDOW_WIDTH, 'center') ]]--
 
     love.graphics.setFont(gFonts.medium)
     love.graphics.setColor(self.color.red, self.color.green, self.color.blue)
-    --love.graphics.setColor(0, 0, 0, 255)
     love.graphics.printf('Start', 295, WINDOW_HEIGHT / 2 -5, WINDOW_WIDTH)
-    love.graphics.setColor(255, 255, 255, 255)
+    love.graphics.setColor(1, 1, 1, 1)
     love.graphics.printf('Start', 292, WINDOW_HEIGHT / 2 - 5, WINDOW_WIDTH)
 
     love.graphics.setFont(gFonts.medium)
-    love.graphics.setColor(0, 0, 0, 255)
+    love.graphics.setColor(0, 0, 0, 1)
     love.graphics.printf('How to Play', 225, WINDOW_HEIGHT / 2 + 100, WINDOW_WIDTH)
-    love.graphics.setColor(255, 255, 255, 255)
+    love.graphics.setColor(1, 1, 1, 1)
     love.graphics.printf('How to Play', 222, WINDOW_HEIGHT / 2 + 100, WINDOW_WIDTH)
 
     love.graphics.setFont(gFonts.medium)
-    love.graphics.setColor(0, 0, 0, 255)
+    love.graphics.setColor(0, 0, 0, 1)
     love.graphics.printf('Exit', 320, WINDOW_HEIGHT / 2 + 215, WINDOW_WIDTH)
-    love.graphics.setColor(255, 255, 255, 255)
+    love.graphics.setColor(1, 1, 1, 1)
     love.graphics.printf('Exit', 317, WINDOW_HEIGHT / 2 + 215, WINDOW_WIDTH)
 
     if highlighted == 1 then
-        love.graphics.setColor(255/255, 255/255, 0, 255/255)
+        love.graphics.setColor(1, 1, 0, 1)
         love.graphics.printf('Start', 295, WINDOW_HEIGHT / 2 -5, WINDOW_WIDTH)
     elseif highlighted == 2 then
         love.graphics.setFont(gFonts.medium)
-        love.graphics.setColor(255/255, 255/255, 0, 255/255)
+        love.graphics.setColor(1, 1, 0, 1)
         love.graphics.printf('How to Play', 225, WINDOW_HEIGHT / 2 + 100, WINDOW_WIDTH)
     elseif highlighted == 3 then
-        love.graphics.setColor(255/255, 255/255, 0, 255/255)
+        love.graphics.setColor(1, 1, 0, 1)
         love.graphics.printf('Exit', 320, WINDOW_HEIGHT / 2 + 215, WINDOW_WIDTH)
-    else
     end
 
 
