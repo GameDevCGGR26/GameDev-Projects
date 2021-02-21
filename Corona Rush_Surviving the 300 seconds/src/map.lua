@@ -29,7 +29,7 @@ function Map:backGround()
 		return gTextures.background2
 
 	elseif self.currentLevel == 3  then
-		return gTextures.background1
+		return gTextures.background
 
 	end
 end
@@ -53,6 +53,7 @@ function Map:next()
 	self:clean()
 	self.currentLevel = self.currentLevel + 1
 	self:init()
+
 	Player:resetPosition()
 end
 --[[
@@ -60,7 +61,13 @@ end
 ]]
 function Map:clean()
 	self.level:box2d_removeLayer("solid")
-	self:deleteAll()
+	 Coin.removeAll()
+    Alcohol.removeAll()
+    Faceshield.removeAll()
+    Mask.removeAll()
+    Ppe.removeAll()
+    Virus.removeAll()
+    TestingCenter.removeAll()
 end
 
 function Map:deleteAll()
@@ -76,7 +83,30 @@ end
 function Map:update(dt)
 	-- if player goes to the testeing center
 	if GUI.testingcenterDisplay == 1 then
-		gStateMachine:change('next-level')
+--gStateMachine:change('next-level')
+--gStateMachine:change('play')
+self:next()
+GUI.testingcenterDisplay = 0
+TIMERS = 300
+GUI.isDisplayFaceshield = false
+GUI.isDisplayAlcohol = false
+GUI.isDisplayPPE = false
+
+if charNum == 4 then
+	GUI.isDisplayMask = true
+	GUI.maskBar = 1
+	GUI.mBarDisplay = 1
+elseif charNum < 4 then
+	GUI.isDisplayMask = false
+	GUI.maskBar = 0
+	GUI.mBarDisplay = 1
+end
+
+if charNum == 3 then
+	GUI.health = {current = 4, max = 4}
+else
+	GUI.health = {current = 3, max = 3}
+end--]]
 	end
 
 	if GUI.health.current == 0 then
@@ -84,9 +114,9 @@ function Map:update(dt)
 		Timer.clear()
 	end
 
-	if Player.x > MapWidth - 16 then
-		self:next()
-	end
+	-- if Player.x > MapWidth - 16 then
+	-- 	self:next()
+	-- end
 
 --[[	if Player.y > MapHeight then
 		Player:die()
@@ -99,7 +129,7 @@ function Map:spawnEntities()
 		if j.type == "enemy" then
 			Virus:load(j.x + j.width / 2, j.y + j.height)
 		elseif j.type == 'player' then
-			 Player:load(j.x, j.y)
+			 Player:load(j.x + j.width/2, j.y+j.height/2)
 		end
 	end
 end
