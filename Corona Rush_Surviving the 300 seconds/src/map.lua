@@ -27,6 +27,10 @@ function Map:backGround()
 
 	elseif self.currentLevel == 2  then
 		return gTextures.background2
+
+	elseif self.currentLevel == 3  then
+		return gTextures.background1
+
 	end
 end
 
