@@ -21,6 +21,8 @@ function Map:init()
 	self:spawnObjects()
 end
 
+
+
 function Map:backGround()
 	if self.currentLevel == 1  then
 		return gTextures.background
@@ -56,6 +58,7 @@ function Map:next()
 
 	Player:resetPosition()
 end
+
 --[[
   clean all the objects
 ]]
@@ -83,31 +86,12 @@ end
 function Map:update(dt)
 	-- if player goes to the testeing center
 	if GUI.testingcenterDisplay == 1 then
---gStateMachine:change('next-level')
---gStateMachine:change('play')
-self:next()
-GUI.testingcenterDisplay = 0
-TIMERS = 300
-GUI.isDisplayFaceshield = false
-GUI.isDisplayAlcohol = false
-GUI.isDisplayPPE = false
+gStateMachine:change('next-level')   --next level ui
 
-if charNum == 4 then
-	GUI.isDisplayMask = true
-	GUI.maskBar = 1
-	GUI.mBarDisplay = 1
-elseif charNum < 4 then
-	GUI.isDisplayMask = false
-	GUI.maskBar = 0
-	GUI.mBarDisplay = 1
+
 end
 
-if charNum == 3 then
-	GUI.health = {current = 4, max = 4}
-else
-	GUI.health = {current = 3, max = 3}
-end--]]
-	end
+
 
 	if GUI.health.current == 0 then
 		Map:deleteAll()
