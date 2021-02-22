@@ -2,13 +2,89 @@
 NextLevelState = Class{__includes = BaseState}
 
 function NextLevelState:init()
-    Map:load() -- load first
+    Map:clean() --cleans the map
+    Map:init() -- load first
 end
 
 function NextLevelState:update(dt)
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
-        gStateMachine:change('play')
-        Map:next() -- to change from next level if enter was pressed
+
+    if Map.currentLevel == 1 then           --level1 to level2
+      GUI.testingcenterDisplay = 0
+      TIMERS = 300
+      GUI.isDisplayFaceshield = false
+      GUI.isDisplayAlcohol = false
+      GUI.isDisplayPPE = false
+
+      if charNum == 4 then
+      	GUI.isDisplayMask = true
+      	GUI.maskBar = 1
+      	GUI.mBarDisplay = 1
+      elseif charNum < 4 then
+      	GUI.isDisplayMask = false
+      	GUI.maskBar = 0
+      	GUI.mBarDisplay = 1
+      end
+
+      if charNum == 3 then
+      	GUI.health = {current = 4, max = 4}
+      else
+      	GUI.health = {current = 3, max = 3}
+      end
+      gStateMachine:change('play2')
+      Map:next()
+
+
+    elseif Map.currentLevel == 2 then           --level2 to cutscene2 to level3
+      GUI.testingcenterDisplay = 0
+      TIMERS = 300
+      GUI.isDisplayFaceshield = false
+      GUI.isDisplayAlcohol = false
+      GUI.isDisplayPPE = false
+
+      if charNum == 4 then
+        GUI.isDisplayMask = true
+        GUI.maskBar = 1
+        GUI.mBarDisplay = 1
+      elseif charNum < 4 then
+        GUI.isDisplayMask = false
+        GUI.maskBar = 0
+        GUI.mBarDisplay = 1
+      end
+
+      if charNum == 3 then
+        GUI.health = {current = 4, max = 4}
+      else
+        GUI.health = {current = 3, max = 3}
+      end
+        gStateMachine:change('cutscene2')
+
+
+
+      elseif Map.currentLevel == 3 then    --level3 to cutscene3 to endcredits(TBA)
+        GUI.testingcenterDisplay = 0
+        TIMERS = 300
+        GUI.isDisplayFaceshield = false
+        GUI.isDisplayAlcohol = false
+        GUI.isDisplayPPE = false
+
+        if charNum == 4 then
+          GUI.isDisplayMask = true
+          GUI.maskBar = 1
+          GUI.mBarDisplay = 1
+        elseif charNum < 4 then
+          GUI.isDisplayMask = false
+          GUI.maskBar = 0
+          GUI.mBarDisplay = 1
+        end
+
+        if charNum == 3 then
+          GUI.health = {current = 4, max = 4}
+        else
+          GUI.health = {current = 3, max = 3}
+        end
+          gStateMachine:change('cutscene3')
+    end
     end
 
     if love.keyboard.wasPressed('escape') then
