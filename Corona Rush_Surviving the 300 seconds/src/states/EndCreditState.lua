@@ -32,7 +32,7 @@ function EndCreditState:render()
 
         love.graphics.setFont(gFonts.large)
         love.graphics.setColor(1, 1, 1, 1)
-        love.graphics.printf('Made by CGGR from BSCOE 2-6\nA.Y.2020-2021', 150, 190, 1000, 'center')
+        love.graphics.printf('Made by CGGR from BSCOE 2-6\nA.Y. 2020-2021', 150, 190, 1000, 'center')
     elseif credits == 45 or credits == 44 or credits == 43 or credits == 42 or credits == 41 then
         love.graphics.setFont(gFonts.medium)
         love.graphics.setColor(1, 1, 1, 1)
