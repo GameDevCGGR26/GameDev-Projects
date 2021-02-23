@@ -70,7 +70,8 @@ function EndCreditState:render()
         love.graphics.setColor(1, 1, 1, 1)
         love.graphics.printf('To God Be The Glory', 150, 250, 1000, 'center')
     else
-        gStateMachine:change('start')
+        Map:clean()
+        gStateMachine:change('start2')
     end
 
 
