@@ -23,21 +23,21 @@ function love.load()
 		vsync = true
   	})
 
-	gStateMachine = StateMachine {
-		['start'] = function() return StartState() end,
-		['play'] = function() return PlayState() end,
-		['play2'] = function() return PlayState2() end,
-		['game-over'] = function() return GameOverState() end,
-		['next-level'] = function() return NextLevelState() end,
-		['how2play'] = function() return HowToPlayState() end,
-		['controls'] = function() return ControlState() end,
-		['char-select'] = function() return CharacterSelectState() end
-	}
-  	gStateMachine:change('start')
-
-	gSounds['mainmenu']:setLooping(true)
-	gSounds['mainmenu']:setVolume(0.5)
-	gSounds['mainmenu']:play()
+    gStateMachine = StateMachine {
+  		['start'] = function() return StartState() end,
+  		['play'] = function() return PlayState() end,
+        ['play2'] = function() return PlayState2() end,
+  		['game-over'] = function() return GameOverState() end,
+  		['next-level'] = function() return NextLevelState() end,
+  		['how2play'] = function() return HowToPlayState() end,
+  		['cutscene1'] = function() return Cutscene1State() end,
+  		['cutscene2'] = function() return Cutscene2State() end,
+  		['cutscene3'] = function() return Cutscene3State() end,
+  		['controls'] = function() return ControlState() end,
+  		['end-credit'] = function() return EndCreditState() end,
+  		['char-select'] = function() return CharacterSelectState() end
+  	}
+    	gStateMachine:change('start')
 
   	love.keyboard.keysPressed = {}
 end
