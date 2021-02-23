@@ -93,6 +93,7 @@ gTextures = {
     selecttool = love.graphics.newImage('assets/selecttool.png'),
     mainmenutitle = love.graphics.newImage('assets/mainmenu.png'),
     mainmenubg = love.graphics.newImage('assets/main menu bg sprite.png'),
+    nextlvlbg = love.graphics.newImage('assets/nextlevelbg.png'),
     h2play1 = love.graphics.newImage('assets/1h2play.png'),
     h2play2 = love.graphics.newImage('assets/2h2play.png'),
     h2play3 = love.graphics.newImage('assets/3h2play.png'),
