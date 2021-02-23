@@ -2,7 +2,7 @@
 local Player = {}
 
 function Player:load(x,y)
-	self.x = 5000
+	self.x = x
 	self.y = y
 
 	-- starting position when player falls
