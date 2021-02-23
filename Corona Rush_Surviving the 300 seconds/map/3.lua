@@ -9,7 +9,7 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 5,
-  nextobjectid = 148,
+  nextobjectid = 150,
   properties = {},
   tilesets = {
     {
@@ -2209,6 +2209,36 @@ return {
           rotation = 0,
           visible = true,
           properties = {}
+        },
+        {
+          id = 148,
+          name = "TestingCenter",
+          type = "testingcenter",
+          shape = "rectangle",
+          x = 15880,
+          y = 82.5,
+          width = 100,
+          height = 110,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["collidable"] = false
+          }
+        },
+        {
+          id = 149,
+          name = "TestingCenter",
+          type = "testingcenter",
+          shape = "rectangle",
+          x = 4526,
+          y = 20,
+          width = 100,
+          height = 110,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["collidable"] = false
+          }
         }
       }
     },
