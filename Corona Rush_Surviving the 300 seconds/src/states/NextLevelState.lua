@@ -4,7 +4,11 @@ NextLevelState = Class{__includes = BaseState}
 function NextLevelState:init()
     Map:clean() --cleans the map
     Map:init() -- load first
+
+    self.color = { red = 1, green = 1, blue = 1}
 end
+
+
 
 function NextLevelState:update(dt)
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
@@ -93,14 +97,27 @@ function NextLevelState:update(dt)
         Map:clean()
         gStateMachine:change('start2')
     end
+
 end
 
 function NextLevelState:render()
-    love.graphics.setFont(gFonts.medium)
-    love.graphics.setColor(99, 155, 255, 255)
-    love.graphics.printf('CONGRATULATIONS', 150, 100, 1000, 'center')
+
+  love.graphics.setColor(self.color.red, self.color.green, self.color.blue)
+  love.graphics.draw(gTextures.nextlvlbg, 0, 0, 0, 5, 5)
+
     love.graphics.setFont(gFonts.small)
-    love.graphics.printf('You can collected '..Player.coinstotal..' coins! Great job!', 290, 400, 1000)
+    love.graphics.setColor(0, 0, 0, 1)
+    love.graphics.printf('You collected '..Player.coinstotal..' coins! Great job!', 340, 400, 1000)
+    love.graphics.setColor(1, 1, 0, 1)
+    love.graphics.printf('You collected '..Player.coinstotal..' coins! Great job!', 337, 400, 1000)
+    if Map.currentLevel < 3 then
+      love.graphics.setColor(self.color.red, self.color.green, self.color.blue)
     love.graphics.printf('Press ENTER to proceed to Level '..Map.currentLevel + 1 ..'!', 150, 450, 1000, 'center')
+
+  else
+      love.graphics.setColor(self.color.red, self.color.green, self.color.blue)
+    love.graphics.printf('Press ENTER to proceed', 150, 450, 1000, 'center')
+  end
+      love.graphics.setColor(self.color.red, self.color.green, self.color.blue)
     love.graphics.printf('Press ESCAPE to Go back to the MAIN MENU', 150, 500, 1000, 'center')
 end
