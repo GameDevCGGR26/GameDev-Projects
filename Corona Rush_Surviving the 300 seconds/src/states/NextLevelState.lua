@@ -98,6 +98,6 @@ function NextLevelState:render()
     love.graphics.printf('CONGRATULATIONS', 150, 100, 1000, 'center')
     love.graphics.setFont(gFonts.small)
     love.graphics.printf('You can now proceed to the next level', 230, 400, 1000)
-    love.graphics.printf('Press ENTER to proceed to Level 2!', 150, 450, 1000, 'center')
+    love.graphics.printf('Press ENTER to proceed to Level 3!', 150, 450, 1000, 'center')
     love.graphics.printf('Press ESCAPE to Go back to the MAIN MENU', 150, 500, 1000, 'center')
 end
