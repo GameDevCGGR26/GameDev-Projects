@@ -159,6 +159,7 @@ end
 function Player:lose()
 	gStateMachine:change('game-over')
 	gSounds['death']:play()
+	Map.currentLevel = 1
 end
 
 function Player:respawn()
