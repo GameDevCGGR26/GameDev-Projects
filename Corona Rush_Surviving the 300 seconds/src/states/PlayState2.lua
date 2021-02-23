@@ -15,10 +15,9 @@ function PlayState2:init()
   --      TIMERS = TIMERS - 1
   --  end)
 
-    gSounds['mainmenu']:stop()
-    gSounds['level1']:setLooping(true)
-    gSounds['level1']:setVolume(0.5)
-    gSounds['level1']:play()
+
+
+
 
 end
 
@@ -72,6 +71,22 @@ function PlayState2:update(dt)
             playing = true
         end
     end
+
+    if Map.currentLevel == 2 then
+        gSounds['level1']:stop()
+        gSounds['level2']:setLooping(true)
+        gSounds['level2']:setVolume(0.5)
+        gSounds['level2']:play()
+    elseif Map.currentLevel ~= 2 then
+        gSounds['level2']:stop()
+    elseif Map.currentLevel == 3 then
+        gSounds['level2']:stop()
+        gSounds['level3']:setLooping(true)
+        gSounds['level3']:setVolume(0.5)
+        gSounds['level3']:play()
+    else
+    end
+
 end
 
 function PlayState2:render()
