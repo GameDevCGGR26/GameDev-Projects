@@ -28,14 +28,16 @@ TestingCenter = require 'src/testingcenter'
 
 require 'src/StateMachine'
 require 'src/states/BaseState'
-require 'src/states/ControlState'
 require 'src/states/HowToPlayState'
 require 'src/states/GameOverState'
 require 'src/states/NextLevelState'
 require 'src/states/PlayState'
 require 'src/states/PlayState2'
+require 'src/states/PlayState3'
 require 'src/states/StartState'
+require 'src/states/StartState2'
 require 'src/states/CharacterSelectState'
+require 'src/states/CharacterSelectState2'
 require 'src/states/EndCreditState'
 
 
@@ -46,6 +48,7 @@ require 'src/cutscenes/cutscene3'
 
 -- game cutscene states
 require 'src/states/Cutscene1State'
+require 'src/states/Cutscene1State2'
 require 'src/states/Cutscene2State'
 require 'src/states/Cutscene3State'
 
@@ -109,7 +112,7 @@ gTextures = {
     chaos4 = love.graphics.newImage('assets/cutscene/chaos4.png'),
     friends = love.graphics.newImage('assets/cutscene/che and ces.png'),
 
-    
+
 
     hero1 = love.graphics.newImage('assets/cesca run animation.png'),
     hero1F = love.graphics.newImage('assets/cesca run with face shield.png'),
