@@ -9,7 +9,7 @@ end
 function NextLevelState:update(dt)
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
 
-    if Map.currentLevel == 1 then           --level1 to level2
+    if Map.currentLevel == 1 then  --level1 to level2
       GUI.testingcenterDisplay = 0
       TIMERS = 300
       GUI.isDisplayFaceshield = false
@@ -35,7 +35,7 @@ function NextLevelState:update(dt)
       Map:next()
 
 
-    elseif Map.currentLevel == 2 then           --level2 to cutscene2 to level3
+    elseif Map.currentLevel == 2 then --level2 to cutscene2 to level3
       GUI.testingcenterDisplay = 0
       TIMERS = 300
       GUI.isDisplayFaceshield = false
@@ -61,7 +61,7 @@ function NextLevelState:update(dt)
 
 
 
-      elseif Map.currentLevel == 3 then    --level3 to cutscene3 to endcredits(TBA)
+      elseif Map.currentLevel == 3 then --level3 to cutscene3 to endcredits(TBA)
         GUI.testingcenterDisplay = 0
         TIMERS = 300
         GUI.isDisplayFaceshield = false
@@ -88,7 +88,9 @@ function NextLevelState:update(dt)
     end
 
     if love.keyboard.wasPressed('escape') then
-        gStateMachine:change('start')
+        gSounds['level1']:stop()
+        gSounds['level2']:stop()
+        gStateMachine:change('start2')
     end
 end
 
@@ -97,7 +99,7 @@ function NextLevelState:render()
     love.graphics.setColor(99, 155, 255, 255)
     love.graphics.printf('CONGRATULATIONS', 150, 100, 1000, 'center')
     love.graphics.setFont(gFonts.small)
-    love.graphics.printf('You can now proceed to the next level', 230, 400, 1000)
-    love.graphics.printf('Press ENTER to proceed to Level 3!', 150, 450, 1000, 'center')
+    love.graphics.printf('You can collected '..Player.coinstotal..' coins! Great job!', 290, 400, 1000)
+    love.graphics.printf('Press ENTER to proceed to Level '..Map.currentLevel + 1 ..'!', 150, 450, 1000, 'center')
     love.graphics.printf('Press ESCAPE to Go back to the MAIN MENU', 150, 500, 1000, 'center')
 end
