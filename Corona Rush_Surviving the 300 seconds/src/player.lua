@@ -2,7 +2,7 @@
 local Player = {}
 
 function Player:load(x,y)
-	self.x = x
+	self.x = 5000
 	self.y = y
 
 	-- starting position when player falls
@@ -208,6 +208,7 @@ end
 
 function Player:incrementCoins()
    	self.coins = self.coins + 1
+		self.coinstotal = self.coins
 end
 
 function Player:update(dt)
