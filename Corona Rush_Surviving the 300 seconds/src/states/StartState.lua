@@ -17,6 +17,11 @@ function StartState:init()
     self.color = { red = 1, green = 1, blue = 1}
 
     self:loadAssets()
+
+    gSounds['end-credit']:stop()
+    gSounds['mainmenu']:setLooping(true)
+	gSounds['mainmenu']:setVolume(0.5)
+	gSounds['mainmenu']:play()
 end
 
 function StartState:loadAssets()
@@ -47,7 +52,7 @@ function StartState:update(dt)
     end
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
         if highlighted == 1 then
-            gStateMachine:change('char-select')
+              gStateMachine:change('cutscene1')
         elseif highlighted == 2 then
             gStateMachine:change('how2play')
         elseif highlighted == 3 then
