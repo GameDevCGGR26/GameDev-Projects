@@ -74,6 +74,7 @@ function Cutscene1State:update(dt)
         elseif love.keyboard.wasPressed('lshift') then
             next_text = 71
             x = 71
+              gSounds['news']:stop()
         end
 
     end
@@ -96,7 +97,7 @@ function Cutscene1State:update(dt)
 
 
     self:setState()
-    
+
     self.currentAnimation:update(dt)
 end
 
@@ -130,13 +131,13 @@ function Cutscene1State:render()
         end
     end
 
-    if next_text == 7 or next_text == 8 or next_text == 9 or next_text == 10 or next_text == 11 or 
+    if next_text == 7 or next_text == 8 or next_text == 9 or next_text == 10 or next_text == 11 or
     next_text == 12 or next_text == 13 or next_text == 14 then
         love.graphics.draw(gTextures.curtain, 0, 0, 0, 5, 5)
         love.graphics.draw(gTextures.dialogboxcs, 0, 515, 0, 1, 1)
     end
 
-    if next_text == 15 or next_text == 16 or next_text == 17 or next_text == 18 or 
+    if next_text == 15 or next_text == 16 or next_text == 17 or next_text == 18 or
     next_text == 19 or next_text == 20 or next_text == 21 or next_text == 22 or next_text == 23 or
     next_text == 24 or next_text == 25 or next_text == 26 then
 
@@ -149,13 +150,13 @@ function Cutscene1State:render()
         love.graphics.draw(gTextures.dialogboxcs, 0, 515, 0, 1, 1)
     end
 
-    if next_text == 37 or next_text == 38 or next_text == 39 or next_text == 40 or 
+    if next_text == 37 or next_text == 38 or next_text == 39 or next_text == 40 or
     next_text == 41 or next_text == 42 or next_text == 43 or next_text == 44 or next_text == 45 or next_text == 46 then
 
         love.graphics.draw(gTextures.meet, 0, 0, 0, 5, 5)
         love.graphics.draw(gTextures.dialogboxcs, 0, 515, 0, 1, 1)
     end
-    
+
     if next_text == 47 or next_text == 48 or next_text == 49 then
         love.graphics.draw(gTextures.window, 0, 0, 0, 5, 5)
         love.graphics.draw(gTextures.dialogboxcs, 0, 515, 0, 1, 1)
@@ -166,8 +167,8 @@ function Cutscene1State:render()
         love.graphics.draw(gTextures.dialogboxcs, 0, 515, 0, 1, 1)
     end
 
-    if next_text == 54 or next_text == 55 or next_text == 56 or next_text == 57 or next_text == 58 or next_text == 59 
-    or next_text == 60 or next_text == 61 or next_text == 62 or next_text == 63 or next_text == 64 or next_text == 
+    if next_text == 54 or next_text == 55 or next_text == 56 or next_text == 57 or next_text == 58 or next_text == 59
+    or next_text == 60 or next_text == 61 or next_text == 62 or next_text == 63 or next_text == 64 or next_text ==
     65 or next_text == 66 or next_text == 67 or next_text == 68 or next_text == 69 or next_text == 70 or next_text == 71 then
 
         love.graphics.draw(gTextures.meet, 0, 0, 0, 5, 5)
