@@ -10,12 +10,14 @@ function PlayState:init()
     GUI:load()
 
     TIMERS = 300
-    
+
     Timer.every(1, function()
         TIMERS = TIMERS - 1
     end)
+
+    gSounds['news']:stop()
+    gSounds['bgm1']:stop()
     
-    gSounds['mainmenu']:stop()
     gSounds['level1']:setLooping(true)
     gSounds['level1']:setVolume(0.5)
     gSounds['level1']:play()
@@ -79,6 +81,8 @@ function PlayState:render()
         love.graphics.draw(gTextures.background, -BACKGROUND_SCROLL, 0, 0, 4, 3.5)
     elseif Map.currentLevel == 2 then
         love.graphics.draw(gTextures.background2, -BACKGROUND_SCROLL, 0, 0, 4, 3.5)
+      elseif Map.currentLevel == 3 then
+          love.graphics.draw(gTextures.background, -BACKGROUND_SCROLL, 0, 0, 4, 3.5)  
     end
 	Map.level:draw(-Camera.x, -Camera.y, Camera.scale, Camera.scale)
 
