@@ -90,6 +90,7 @@ function NextLevelState:update(dt)
     if love.keyboard.wasPressed('escape') then
         gSounds['level1']:stop()
         gSounds['level2']:stop()
+        Map:clean()
         gStateMachine:change('start2')
     end
 end
