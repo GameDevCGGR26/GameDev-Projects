@@ -3,36 +3,36 @@ EndCreditState = Class{__includes = BaseState}
 
 function EndCreditState:init()
     credits = 70
-    
+
     Timer.every(1, function()
         credits = credits - 1
     end)
 end
 
 function EndCreditState:enter()
-    
+
 end
 
 function EndCreditState:update(dt)
     Timer.update(dt)
-    
 
-    
+
+
 end
 
 function EndCreditState:render()
-    if credits == 70 or credits == 69 or credits == 68 or credits == 67 or credits == 66 or credits == 65 or credits == 64 or credits == 63 
+    if credits == 70 or credits == 69 or credits == 68 or credits == 67 or credits == 66 or credits == 65 or credits == 64 or credits == 63
         or credits == 62 or credits == 61 or credits == 60 or credits == 59 or credits == 58 or credits == 57 or credits == 56 then
 
         love.graphics.setFont(gFonts.large)
         love.graphics.setColor(1, 1, 1, 1)
         love.graphics.printf('END?', 150, 300, 1000, 'center')
-    elseif credits == 55 or credits == 54 or credits == 53 or credits == 52 or credits == 51 or credits == 50 or credits == 49 
+    elseif credits == 55 or credits == 54 or credits == 53 or credits == 52 or credits == 51 or credits == 50 or credits == 49
         or credits == 48 or credits == 47 or credits == 46 then
 
         love.graphics.setFont(gFonts.large)
         love.graphics.setColor(1, 1, 1, 1)
-        love.graphics.printf('Made by CGGR from BSCOE 2-6', 150, 250, 1000, 'center')
+        love.graphics.printf('Made by CGGR from BSCOE 2-6\nA.Y.2020-2021', 150, 190, 1000, 'center')
     elseif credits == 45 or credits == 44 or credits == 43 or credits == 42 or credits == 41 then
         love.graphics.setFont(gFonts.medium)
         love.graphics.setColor(1, 1, 1, 1)
@@ -74,8 +74,7 @@ function EndCreditState:render()
     end
 
 
-    
 
-    
+
+
 end
-
