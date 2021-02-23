@@ -30,14 +30,24 @@ require 'src/StateMachine'
 require 'src/states/BaseState'
 require 'src/states/ControlState'
 require 'src/states/HowToPlayState'
-require 'src/states/PlayState2'
 require 'src/states/GameOverState'
 require 'src/states/NextLevelState'
 require 'src/states/PlayState'
+require 'src/states/PlayState2'
 require 'src/states/StartState'
 require 'src/states/CharacterSelectState'
+require 'src/states/EndCreditState'
 
 
+-- game cutscenes
+require 'src/cutscenes/cutscene1'
+require 'src/cutscenes/cutscene2'
+require 'src/cutscenes/cutscene3'
+
+-- game cutscene states
+require 'src/states/Cutscene1State'
+require 'src/states/Cutscene2State'
+require 'src/states/Cutscene3State'
 
 require 'src/Animation'
 
@@ -47,6 +57,7 @@ require 'src/Util'
 
 
 gFonts = {
+    xxsmall = love.graphics.newFont('assets/font/bit.ttf', 30),
     xsmall = love.graphics.newFont('assets/font/bit.ttf', 40),
 	small = love.graphics.newFont('assets/font/bit.ttf', 50),
 	medium = love.graphics.newFont('assets/font/bit.ttf', 64),
@@ -63,7 +74,12 @@ gSounds = {
     ['powerup1'] = love.audio.newSource('sounds/powerup1.wav', 'static'),
     ['player-hurt'] = love.audio.newSource('sounds/player-hurt.wav', 'static'),
     ['mainmenu'] = love.audio.newSource('sounds/mainmenu.mp3', 'static'),
-    ['congrats'] = love.audio.newSource('sounds/congrats.mp3', 'static')
+    ['congrats'] = love.audio.newSource('sounds/congrats.mp3', 'static'),
+    ['news'] = love.audio.newSource('sounds/breaking-news.mp3', 'static'),
+    ['bgm1'] = love.audio.newSource('sounds/mysteriousbg.mp3', 'static'),
+    ['end-credit'] = love.audio.newSource('sounds/end-credits.mp3', 'static'),
+    ['level2'] = love.audio.newSource('sounds/level2.mp3', 'static'),
+    ['level3'] = love.audio.newSource('sounds/level3.mp3', 'static')
 }
 
 gTextures = {
@@ -79,6 +95,21 @@ gTextures = {
     h2play3 = love.graphics.newImage('assets/3h2play.png'),
     gameoverbg = love.graphics.newImage('assets/gameoverbg.png'),
     toxic2 = love.graphics.newImage('assets/toxic2.png'),
+
+    news = love.graphics.newImage('assets/cutscene/news reporter.png'),
+    news1 = love.graphics.newImage('assets/cutscene/news reporter1.png'),
+    news4 = love.graphics.newImage('assets/cutscene/news reporter4.png'),
+    eyeopen = love.graphics.newImage('assets/cutscene/eye open.png'),
+    curtain = love.graphics.newImage('assets/cutscene/curtain.png'),
+    hospital = love.graphics.newImage('assets/cutscene/hospital.png'),
+    oxygen = love.graphics.newImage('assets/cutscene/oxygen mask.png'),
+    meet = love.graphics.newImage('assets/cutscene/meeting.png'),
+    window = love.graphics.newImage('assets/cutscene/looking at window.png'),
+    chaos = love.graphics.newImage('assets/cutscene/chaos.png'),
+    chaos4 = love.graphics.newImage('assets/cutscene/chaos4.png'),
+    friends = love.graphics.newImage('assets/cutscene/che and ces.png'),
+
+    
 
     hero1 = love.graphics.newImage('assets/cesca run animation.png'),
     hero1F = love.graphics.newImage('assets/cesca run with face shield.png'),
@@ -140,6 +171,11 @@ gFrames = {
     h2play2 = GenerateQuads(gTextures.h2play3, 256, 144),
     toxic2 = GenerateQuads(gTextures.toxic2, 256, 128),
 
+    news = GenerateQuads(gTextures.news, 256, 144),
+    chaos = GenerateQuads(gTextures.chaos, 256, 144),
+    eyeopen = GenerateQuads(gTextures.eyeopen, 256, 144),
+    oxygen = GenerateQuads(gTextures.oxygen, 256, 144),
+
     hero1 = GenerateQuads(gTextures.hero1, 25, 45),
     hero1F = GenerateQuads(gTextures.hero1F, 25, 45),
     hero1M = GenerateQuads(gTextures.hero1M, 25, 45),
@@ -147,7 +183,7 @@ gFrames = {
     hero2 = GenerateQuads(gTextures.hero2, 27, 45),
     hero2F = GenerateQuads(gTextures.hero2F, 27, 45),
     hero2M = GenerateQuads(gTextures.hero2M, 27, 45),
-    
+
     hero3 = GenerateQuads(gTextures.hero3, 25, 45),
     hero3F = GenerateQuads(gTextures.hero3F, 25, 45),
     hero3M = GenerateQuads(gTextures.hero3M, 25, 45),
