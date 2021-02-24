@@ -18,6 +18,7 @@ function Cutscene3State:enter()
     gSounds['end-credit']:play()
 end
 
+
 function Cutscene3State:update(dt)
 
     
@@ -44,6 +45,12 @@ function Cutscene3State:update(dt)
 end
 
 function Cutscene3State:render()
+
+    if next_text == 1 then
+        love.graphics.draw(gTextures.road1, 0, 0, 0, 5, 5)
+        love.graphics.draw(gTextures.dialogboxcs, 0, 515, 0, 1, 1)
+    end
+
     if dialogue_Cutscene3[next_text] ~= nil then
         if next_text == x then
             love.graphics.draw(gTextures.dialogboxcs, 0, 515, 0, 1, 1)
@@ -54,4 +61,5 @@ function Cutscene3State:render()
         end
     end
 end
+
 
