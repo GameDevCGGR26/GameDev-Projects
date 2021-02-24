@@ -91,6 +91,9 @@ function HowToPlayState2:render()
     love.graphics.setColor(1, 1, 1, 1)
     if charNum == 1 then
       love.graphics.draw(gTextures.h2play1,  0, 0, 0, 5, 5)
+		      love.graphics.setFont(gFonts['small'])
+      love.graphics.printf("Spacebar to activate Alcohol", 0, 551,
+          WINDOW_WIDTH, 'center')
     elseif charNum == 2 then
         love.graphics.draw(gTextures.h2play2,  0, 0, 0, 5, 5)
         love.graphics.setFont(gFonts['small'])
