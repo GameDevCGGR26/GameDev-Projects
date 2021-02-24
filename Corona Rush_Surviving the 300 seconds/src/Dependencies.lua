@@ -73,6 +73,7 @@ gSounds = {
     ['select1'] = love.audio.newSource('sounds/select1.wav', 'static'),
     ['select2'] = love.audio.newSource('sounds/select2.wav', 'static'),
     ['death'] = love.audio.newSource('sounds/death.wav', 'static'),
+    ['kill'] = love.audio.newSource('sounds/kill.wav', 'static'),
     ['jump'] = love.audio.newSource('sounds/jump.wav', 'static'),
     ['coin'] = love.audio.newSource('sounds/coin.wav', 'static'),
     ['powerup1'] = love.audio.newSource('sounds/powerup1.wav', 'static'),
