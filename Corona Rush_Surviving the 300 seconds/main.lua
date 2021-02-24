@@ -24,6 +24,7 @@ function love.load()
   	})
 
     gStateMachine = StateMachine {
+      ['logo'] = function() return LoadingState() end,
   		['start'] = function() return StartState() end,
       ['start2'] = function() return StartState2() end,
   		['play'] = function() return PlayState() end,
@@ -32,16 +33,16 @@ function love.load()
   		['game-over'] = function() return GameOverState() end,
   		['next-level'] = function() return NextLevelState() end,
   		['how2play'] = function() return HowToPlayState() end,
+      ['how2play2'] = function() return HowToPlayState2() end,
   		['cutscene1'] = function() return Cutscene1State() end,
       ['cutscene12'] = function() return Cutscene1State2() end,
   		['cutscene2'] = function() return Cutscene2State() end,
   		['cutscene3'] = function() return Cutscene3State() end,
-  --		['highscore'] = function() return HighScoreState() end,
   		['end-credit'] = function() return EndCreditState() end,
       ['char-select2'] = function() return CharacterSelectState2() end,
   		['char-select'] = function() return CharacterSelectState() end
   	}
-    	gStateMachine:change('start')
+    	gStateMachine:change('logo')
 
   	love.keyboard.keysPressed = {}
 end
