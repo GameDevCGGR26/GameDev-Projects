@@ -29,7 +29,7 @@ function GameOverState:update(dt)
     end
 
     if love.keyboard.wasPressed('space') then
-        gStateMachine:change('play')
+        gStateMachine:change('play3')
     end
       self.currentAnimation:update(dt)
 end
