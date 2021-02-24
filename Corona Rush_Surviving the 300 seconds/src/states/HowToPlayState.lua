@@ -26,7 +26,7 @@ function HowToPlayState:update(dt)
     elseif self.currentChar == 3 then
         charNum = 3
     end
-    if love.keyboard.wasPressed("left" or "a") then
+    if love.keyboard.wasPressed("left") then
         if self.currentChar == 1 then
             charNum = 1
             gSounds['select1']:play()
@@ -34,7 +34,17 @@ function HowToPlayState:update(dt)
             self.currentChar = self.currentChar - 1
             gSounds['select1']:play()
         end
-    elseif love.keyboard.wasPressed("right" or "d") then
+
+    elseif love.keyboard.wasPressed("a") then
+        if self.currentChar == 1 then
+            charNum = 1
+            gSounds['select1']:play()
+        else
+            self.currentChar = self.currentChar - 1
+            gSounds['select1']:play()
+        end
+
+    elseif love.keyboard.wasPressed("right") then
         if self.currentChar == 3 then
             charNum = 3
             gSounds['select2']:play()
@@ -42,6 +52,16 @@ function HowToPlayState:update(dt)
             self.currentChar = self.currentChar + 1
             gSounds['select2']:play()
         end
+
+    elseif love.keyboard.wasPressed("d") then
+        if self.currentChar == 3 then
+            charNum = 3
+            gSounds['select2']:play()
+        else
+            self.currentChar = self.currentChar + 1
+            gSounds['select2']:play()
+        end
+
     end
 
     if love.keyboard.wasPressed('return') or love.keyboard.wasPressed('enter') then
