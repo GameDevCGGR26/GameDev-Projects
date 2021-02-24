@@ -7,8 +7,8 @@ function TestingCenter:new (x,y)
 	instance.x = x
 	instance.y = y
 	--instance.img = love.graphics.newImage("assets/TestingCenter.png")
-	instance.width = 80
-	instance.height = 40
+	instance.width = 100
+	instance.height = 110
 	instance.scaleX = 1
 	instance.toBeRemoved = false
 
@@ -59,8 +59,8 @@ end
 
 function TestingCenter:draw ()
 	love.graphics.draw(
-	gTextures.testingcenter, gFrames.testingcenter[self.currentAnimation:getCurrentFrame()],
-		self.x, self.y, 0, scaleX, 1, self.width/2, self.height/2
+		gTextures.testingcenter, gFrames.testingcenter[self.currentAnimation:getCurrentFrame()],
+		self.x, self.y, 0, scaleX, 1, self.width, self.height-5
 	)
 end
 
