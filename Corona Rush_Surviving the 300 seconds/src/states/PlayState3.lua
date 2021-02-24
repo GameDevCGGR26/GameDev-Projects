@@ -100,7 +100,7 @@ function PlayState3:render()
     elseif Map.currentLevel == 2 then
         love.graphics.draw(gTextures.background2, -BACKGROUND_SCROLL, 0, 0, 4, 3.5)
       elseif Map.currentLevel == 3 then
-          love.graphics.draw(gTextures.background, -BACKGROUND_SCROLL, 0, 0, 4, 3.5)
+          love.graphics.draw(gTextures.background3, -BACKGROUND_SCROLL, 0, 0, 4, 3.5)
     end
 	Map.level:draw(-Camera.x, -Camera.y, Camera.scale, Camera.scale)
 
