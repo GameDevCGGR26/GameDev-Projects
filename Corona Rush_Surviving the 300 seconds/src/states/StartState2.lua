@@ -33,19 +33,35 @@ function StartState2:loadAssets()
 end
 
 function StartState2:update(dt)
-    if love.keyboard.wasPressed('s' or 'down') then
-        highlighted = highlighted + 1
-        if highlighted > 3 then
-            highlighted = 1
-        end
-        gSounds['select1']:play()
-    elseif love.keyboard.wasPressed('w' or 'up') then
-        highlighted = highlighted - 1
-        if highlighted < 1 then
-            highlighted = 3
-        end
-        gSounds['select2']:play()
+  if love.keyboard.wasPressed("s") then
+      highlighted = highlighted + 1
+      if highlighted > 3 then
+          highlighted = 1
+      end
+      gSounds['select1']:play()
+
+  elseif love.keyboard.wasPressed("down") then
+    highlighted = highlighted + 1
+    if highlighted > 3 then
+        highlighted = 1
     end
+      gSounds['select2']:play()
+
+  elseif love.keyboard.wasPressed("w") then
+      highlighted = highlighted - 1
+      if highlighted < 1 then
+          highlighted = 3
+      end
+      gSounds['select2']:play()
+
+  elseif love.keyboard.wasPressed("up") then
+      highlighted = highlighted - 1
+      if highlighted < 1 then
+          highlighted = 3
+      end
+      gSounds['select2']:play()
+
+  end
 
     if love.keyboard.wasPressed('escape') then
         love.event.quit()
@@ -54,7 +70,7 @@ function StartState2:update(dt)
         if highlighted == 1 then
               gStateMachine:change('cutscene12')
         elseif highlighted == 2 then
-            gStateMachine:change('how2play')
+            gStateMachine:change('how2play2')
         elseif highlighted == 3 then
             love.event.quit()
         end
