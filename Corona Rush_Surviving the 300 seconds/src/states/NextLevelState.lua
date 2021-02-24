@@ -5,6 +5,8 @@ function NextLevelState:init()
     Map:clean() --cleans the map
     Map:init() -- load first
 
+      gSounds['congrats']:play()
+
     self.color = { red = 1, green = 1, blue = 1}
 end
 
