@@ -25,17 +25,20 @@ TestingCenter = require 'src/testingcenter'
 
 
 -- game objects
-
 require 'src/StateMachine'
 require 'src/states/BaseState'
-require 'src/states/ControlState'
+require 'src/states/LoadingState'
 require 'src/states/HowToPlayState'
+require 'src/states/HowToPlayState2'
 require 'src/states/GameOverState'
 require 'src/states/NextLevelState'
 require 'src/states/PlayState'
 require 'src/states/PlayState2'
+require 'src/states/PlayState3'
 require 'src/states/StartState'
+require 'src/states/StartState2'
 require 'src/states/CharacterSelectState'
+require 'src/states/CharacterSelectState2'
 require 'src/states/EndCreditState'
 
 
@@ -46,6 +49,7 @@ require 'src/cutscenes/cutscene3'
 
 -- game cutscene states
 require 'src/states/Cutscene1State'
+require 'src/states/Cutscene1State2'
 require 'src/states/Cutscene2State'
 require 'src/states/Cutscene3State'
 
@@ -59,9 +63,9 @@ require 'src/Util'
 gFonts = {
     xxsmall = love.graphics.newFont('assets/font/bit.ttf', 30),
     xsmall = love.graphics.newFont('assets/font/bit.ttf', 40),
-	small = love.graphics.newFont('assets/font/bit.ttf', 50),
-	medium = love.graphics.newFont('assets/font/bit.ttf', 64),
-	large = love.graphics.newFont('assets/font/bit.ttf', 128)
+	  small = love.graphics.newFont('assets/font/bit.ttf', 50),
+	  medium = love.graphics.newFont('assets/font/bit.ttf', 64),
+	  large = love.graphics.newFont('assets/font/bit.ttf', 128)
 }
 
 gSounds = {
@@ -77,20 +81,24 @@ gSounds = {
     ['congrats'] = love.audio.newSource('sounds/congrats.mp3', 'static'),
     ['news'] = love.audio.newSource('sounds/breaking-news.mp3', 'static'),
     ['bgm1'] = love.audio.newSource('sounds/mysteriousbg.mp3', 'static'),
-    ['bgm2'] = love.audio.newSource('sounds/tensebgm.mp3', 'static'),
+    ['bgm2'] = love.audio.newSource('sounds/Music/Tense-Background.mp3', 'static'),
     ['end-credit'] = love.audio.newSource('sounds/end-credits.mp3', 'static'),
     ['level2'] = love.audio.newSource('sounds/level2.mp3', 'static'),
-    ['level3'] = love.audio.newSource('sounds/level3.mp3', 'static')
+    ['level3'] = love.audio.newSource('sounds/level3.mp3', 'static'),
+    ['loadingbgm'] = love.audio.newSource('sounds/Music/thrilerbg.mp3', 'static')
 }
 
 gTextures = {
+    logo = love.graphics.newImage('assets/logosprite.png'),
     background = love.graphics.newImage('assets/citybig.png'),
     background2= love.graphics.newImage('assets/city2_2x.png'),
+    background3= love.graphics.newImage('assets/city3.png'),
     bgcharselect = love.graphics.newImage('assets/bgcharselect.png'),
     dialogboxcs = love.graphics.newImage('assets/dialogboxcs.png'),
     selecttool = love.graphics.newImage('assets/selecttool.png'),
     mainmenutitle = love.graphics.newImage('assets/mainmenu.png'),
     mainmenubg = love.graphics.newImage('assets/main menu bg sprite.png'),
+    nextlvlbg = love.graphics.newImage('assets/nextlevelbg.png'),
     h2play1 = love.graphics.newImage('assets/1h2play.png'),
     h2play2 = love.graphics.newImage('assets/2h2play.png'),
     h2play3 = love.graphics.newImage('assets/3h2play.png'),
@@ -114,6 +122,7 @@ gTextures = {
     road1 = love.graphics.newImage('assets/cutscene/distanceroad3.png'),
     bigboss = love.graphics.newImage('assets/cutscene/transforming virus.png'),
     bigboss5 = love.graphics.newImage('assets/cutscene/transforming virus5.png'),
+
 
 
     hero1 = love.graphics.newImage('assets/cesca run animation.png'),
@@ -168,6 +177,7 @@ gTextures = {
 }
 
 gFrames = {
+    logo = GenerateQuads(gTextures.logo, 256,144),
     mainmenutitle = GenerateQuads(gTextures.mainmenutitle, 256,144),
     mainmenubg = GenerateQuads(gTextures.mainmenubg, 256,144),
     gameoverbg = GenerateQuads(gTextures.gameoverbg, 256, 144),
@@ -181,7 +191,6 @@ gFrames = {
     eyeopen = GenerateQuads(gTextures.eyeopen, 256, 144),
     oxygen = GenerateQuads(gTextures.oxygen, 256, 144),
     bigboss = GenerateQuads(gTextures.bigboss, 256, 144),
-
 
     hero1 = GenerateQuads(gTextures.hero1, 25, 45),
     hero1F = GenerateQuads(gTextures.hero1F, 25, 45),
