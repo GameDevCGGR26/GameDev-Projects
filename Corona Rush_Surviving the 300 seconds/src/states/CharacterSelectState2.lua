@@ -7,19 +7,6 @@ function CharacterSelectState2:init()
     gSounds['bgm1']:setLooping(true)
     gSounds['bgm1']:setVolume(0.25)
     gSounds['bgm1']:play()
-
-    if self.currentChar == 1 then
-      self.charName = 'Cesca'
-
-    elseif self.currentChar == 2 then
-      self.charName = 'Chelsea'
-
-    elseif self.currentChar == 3 then
-      self.charName = 'Lois'
-
-    elseif self.currentChar == 4 then
-      self.charName = 'Daniel'
-    end
 end
 
 function CharacterSelectState2:update(dt)
@@ -32,7 +19,8 @@ function CharacterSelectState2:update(dt)
     elseif self.currentChar == 4 then
         charNum = 4
     end
-    if love.keyboard.wasPressed("left" or "a") then
+
+    if love.keyboard.wasPressed("left") then
         if self.currentChar == 1 then
             charNum = 1
             gSounds['select1']:play()
@@ -40,7 +28,26 @@ function CharacterSelectState2:update(dt)
             self.currentChar = self.currentChar - 1
             gSounds['select1']:play()
         end
+
+    elseif love.keyboard.wasPressed("a") then
+        if self.currentChar == 1 then
+            charNum = 1
+            gSounds['select1']:play()
+        else
+            self.currentChar = self.currentChar - 1
+            gSounds['select1']:play()
+        end
+
     elseif love.keyboard.wasPressed("right" or "d") then
+        if self.currentChar == 4 then
+            charNum = 4
+            gSounds['select2']:play()
+        else
+            self.currentChar = self.currentChar + 1
+            gSounds['select2']:play()
+        end
+
+    elseif love.keyboard.wasPressed("d") then
         if self.currentChar == 4 then
             charNum = 4
             gSounds['select2']:play()
@@ -56,7 +63,7 @@ function CharacterSelectState2:update(dt)
     end
 
     if love.keyboard.wasPressed('escape') then
-        gStateMachine:change('start')
+        gStateMachine:change('start2')
     end
 end
 
