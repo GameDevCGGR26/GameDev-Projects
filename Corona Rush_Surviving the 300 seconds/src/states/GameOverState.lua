@@ -20,6 +20,7 @@ end
 
 function GameOverState:update(dt)
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
+	Map:clean()
         gStateMachine:change('start')
         gSounds['level1']:stop()
         gSounds['death']:stop()
@@ -29,7 +30,8 @@ function GameOverState:update(dt)
     end
 
     if love.keyboard.wasPressed('space') then
-        gStateMachine:change('play3')
+	Map:clean()
+        gStateMachine:change('play')
     end
       self.currentAnimation:update(dt)
 end
