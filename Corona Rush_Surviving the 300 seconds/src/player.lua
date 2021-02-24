@@ -184,6 +184,7 @@ function Player:respawn()
 end
 
 function Player:resetPosition()
+		gSounds['kill']:stop()
 	self.character.body:setPosition(self.startX, self.startY)
 	self.coins = self.coins
 	if charNum == 4 then
@@ -235,9 +236,10 @@ function Player:update(dt)
 	if GUI.health.current > 0 then
 		if self.y > MapHeight then
 			GUI.health.current = GUI.health.current - 1
-
+			gSounds['kill']:play()
 			Map:clean()
 			Map:init()
+
 			self:resetPosition()
 
 			self.maskCollected = false
@@ -363,10 +365,12 @@ end
 function Player:fire(key)
 	if self.alcoholCollected == true then
 		if key == "space" then
+				gSounds['powerup1']:play()
 			GUI.aBarDisplay = GUI.aBarDisplay + 1
 			if GUI.isDisplayAlcohol == true then
 				if GUI.health.current < GUI.health.max then
 					GUI.health.current = GUI.health.current + 1
+
 				end
 			end
 			if charNum == 1 then
