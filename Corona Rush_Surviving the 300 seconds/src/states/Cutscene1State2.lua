@@ -15,7 +15,7 @@ end
 
 function Cutscene1State2:enter()
     next_text = 1
-    x = 1
+ x = 1
 end
 
 function Cutscene1State2:loadAssets()
@@ -64,16 +64,16 @@ function Cutscene1State2:update(dt)
         if love.keyboard.wasPressed('space') then
         --controls user input to go to forward
             next_text = next_text + 1
-            x = x + 1
+         x = x + 1
 
 
         elseif love.keyboard.wasPressed('x') then
         --controls user input to go to back
             next_text = next_text - 1
-            x = x - 1
-        elseif love.keyboard.wasPressed('lshift') then
+         x = x - 1
+      elseif love.keyboard.wasPressed('s') then
             next_text = 71
-            x = 71
+          x = 71
               gSounds['news']:stop()
         end
 
@@ -180,15 +180,24 @@ function Cutscene1State2:render()
             love.graphics.setFont(gFonts.xxsmall)
             love.graphics.setColor(1, 1, 1, 1)
             love.graphics.print(dialogue_Cutscene1[next_text], 150, 500)
-            love.graphics.print(next_text, 0, 0)
+        --    love.graphics.print(next_text, 0, 0)
         elseif next_text == x then
             love.graphics.setFont(gFonts.xxsmall)
             love.graphics.setColor(1, 1, 1, 1)
             love.graphics.print(dialogue_Cutscene1[next_text], 150, 475)
-            love.graphics.print(next_text, 0, 0)
+          --  love.graphics.print(next_text, 0, 0)
         end
 
     end
+
+    love.graphics.printf("Press s to skip", 20, 670,
+        WINDOW_WIDTH, 'left')
+
+        love.graphics.printf("Press x for previous", 10, 670,
+            WINDOW_WIDTH, 'center')
+
+    love.graphics.printf("Press Spacebar to continue", -20, 670,
+        WINDOW_WIDTH, 'right')
 
 end
 
