@@ -358,6 +358,7 @@ function Player:jump(key)
 	if (key == "w" or key == "up") and self.grounded then
 		self.dy = self.jumpAmount
 		self.grounded = false
+		gSounds['jump']:setVolume(0.25)
 		gSounds['jump']:play()
 	end
 end
