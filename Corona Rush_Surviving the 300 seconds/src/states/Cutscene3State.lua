@@ -4,7 +4,8 @@ require 'src/cutscenes/cutscene3'
 
 
 function Cutscene3State:init()
-
+  gSounds['level3']:stop()
+  gSounds['level1']:stop()
 end
 
 function Cutscene3State:enter()
