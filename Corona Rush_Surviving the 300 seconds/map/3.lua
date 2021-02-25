@@ -2731,19 +2731,6 @@ return {
           properties = {}
         },
         {
-          id = 153,
-          name = "Enemy",
-          type = "enemy",
-          shape = "point",
-          x = 10505.3,
-          y = 29.2121,
-          width = 0,
-          height = 0,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        },
-        {
           id = 154,
           name = "Enemy",
           type = "enemy",
