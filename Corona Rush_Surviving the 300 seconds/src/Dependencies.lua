@@ -156,6 +156,7 @@ gTextures = {
 
     heroP = love.graphics.newImage('assets/ppe run animation.png'),
 
+    bigvirus = love.graphics.newImage('assets/boss_enemy.png'),
     virus = love.graphics.newImage('assets/virus.png'),
     coins = love.graphics.newImage('assets/coin7f.png'),
     heartBar = love.graphics.newImage('assets/heart bar2.png'),
@@ -210,7 +211,8 @@ gFrames = {
     hero4M = GenerateQuads(gTextures.hero4M, 27, 45),
 
     heroP = GenerateQuads(gTextures.heroP, 25, 45),
-
+	
+    bigvirus = GenerateQuads(gTextures.bigvirus, 94, 94),
     virus = GenerateQuads(gTextures.virus, 32, 32),
     coins = GenerateQuads(gTextures.coins, 16, 16),
     heartBar = GenerateQuads(gTextures.heartBar, 36,6),
