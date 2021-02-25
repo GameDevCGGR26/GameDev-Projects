@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="1000" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="194">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="1000" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="195">
  <editorsettings>
   <export target="3.lua" format="lua"/>
  </editorsettings>
@@ -797,7 +797,7 @@
   <object id="186" name="Alcohol" type="alcohol" x="14014.5" y="232.5" width="35" height="35"/>
   <object id="187" name="Mask" type="mask" x="4338" y="230" width="40" height="40"/>
   <object id="190" name="Faceshield" type="faceshield" x="9502" y="140" width="32" height="32"/>
-  <object id="191" name="Faceshield" type="faceshield" x="7711.27" y="141.576" width="32" height="32"/>
+  <object id="191" name="Faceshield" type="faceshield" x="7711.27" y="159.826" width="32" height="32"/>
   <object id="192" name="Mask" type="mask" x="12237.6" y="234.545" width="40" height="40"/>
   <object id="193" name="TestingCenter" type="testingcenter" x="15886" y="79" width="100" height="110">
    <properties>
@@ -815,16 +815,13 @@
   <object id="148" name="Enemy" type="enemy" x="1024.67" y="37.3333">
    <point/>
   </object>
-  <object id="149" name="Enemy" type="enemy" x="2680" y="20.4848">
-   <point/>
-  </object>
   <object id="150" name="Enemy" type="enemy" x="4582" y="14">
    <point/>
   </object>
   <object id="151" name="Enemy" type="enemy" x="6217.33" y="32">
    <point/>
   </object>
-  <object id="152" name="Enemy" type="enemy" x="8418.79" y="25.5758">
+  <object id="152" name="Enemy" type="enemy" x="8472.79" y="8.5758">
    <point/>
   </object>
   <object id="153" name="Enemy" type="enemy" x="10505.3" y="29.2121">
@@ -834,6 +831,9 @@
    <point/>
   </object>
   <object id="155" name="Enemy" type="enemy" x="14157" y="38.6364">
+   <point/>
+  </object>
+  <object id="194" name="Enemy" type="enemy" x="3382.67" y="18.6667">
    <point/>
   </object>
  </objectgroup>
