@@ -64,6 +64,7 @@ function NextLevelState:update(dt)
         GUI.health = {current = 3, max = 3}
       end
         gStateMachine:change('cutscene2')
+          gSounds['level2']:stop()
 
 
 
@@ -89,6 +90,7 @@ function NextLevelState:update(dt)
         else
           GUI.health = {current = 3, max = 3}
         end
+          gSounds['level3']:stop()
           gStateMachine:change('cutscene3')
     end
     end
