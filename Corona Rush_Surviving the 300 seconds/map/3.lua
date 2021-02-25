@@ -9,7 +9,7 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 5,
-  nextobjectid = 194,
+  nextobjectid = 195,
   properties = {},
   tilesets = {
     {
@@ -2602,7 +2602,7 @@ return {
           type = "faceshield",
           shape = "rectangle",
           x = 7711.27,
-          y = 141.576,
+          y = 159.826,
           width = 32,
           height = 32,
           rotation = 0,
@@ -2692,19 +2692,6 @@ return {
           properties = {}
         },
         {
-          id = 149,
-          name = "Enemy",
-          type = "enemy",
-          shape = "point",
-          x = 2680,
-          y = 20.4848,
-          width = 0,
-          height = 0,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        },
-        {
           id = 150,
           name = "Enemy",
           type = "enemy",
@@ -2735,8 +2722,8 @@ return {
           name = "Enemy",
           type = "enemy",
           shape = "point",
-          x = 8418.79,
-          y = 25.5758,
+          x = 8472.79,
+          y = 8.5758,
           width = 0,
           height = 0,
           rotation = 0,
@@ -2776,6 +2763,19 @@ return {
           shape = "point",
           x = 14157,
           y = 38.6364,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 194,
+          name = "Enemy",
+          type = "enemy",
+          shape = "point",
+          x = 3382.67,
+          y = 18.6667,
           width = 0,
           height = 0,
           rotation = 0,
