@@ -10,6 +10,7 @@ function Cutscene2State:init()
     self:loadAssets()
 	dialog_finished3 = false
 	gSounds['level1']:stop()
+  gSounds['level2']:stop()
 end
 
 function Cutscene2State:loadAssets()
@@ -57,8 +58,15 @@ function Cutscene2State:update(dt)
     end
 
     if next_text == 17 then
+    gSounds['bgm2']:stop()
 		gStateMachine:change('play2')
-		Map:next()
+
+	Map:next()
+
+
+    gSounds['level3']:setLooping(true)
+    gSounds['level3']:setVolume(0.5)
+    gSounds['level3']:play()
     end
 
     self.currentAnimation:update(dt)
