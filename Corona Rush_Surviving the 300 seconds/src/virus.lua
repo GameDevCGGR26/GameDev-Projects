@@ -11,8 +11,14 @@ function Virus:load(x, y)
 	instance.startX = instance.x
 	instance.startY = instance.y
 
-	instance.width = 32
-	instance.height = 32
+	if Map.currentLevel == 3 then
+		instance.width = 94
+		instance.height = 94
+	else
+		instance.width = 32
+		instance.height = 32
+	end
+	
 	instance.speed = 100
 	instance.speedMod = 1
 	instance.xVel = instance.speed
@@ -90,10 +96,18 @@ function Virus:draw()
 	if self.xVel < 0 then
 		scaleX = -1
 	end
-	love.graphics.draw(
-		gTextures.virus, gFrames.virus[self.currentAnimation:getCurrentFrame()],
+	
+	if Map.currentLevel == 3 then
+		love.graphics.draw(
+		gTextures.bigvirus, gFrames.bigvirus[self.currentAnimation:getCurrentFrame()],
 		self.x, self.y, 0, scaleX, 1, self.currentAnimation.width/2, self.currentAnimation.height/2
-	)
+		)
+	else 
+		love.graphics.draw(
+			gTextures.virus, gFrames.virus[self.currentAnimation:getCurrentFrame()],
+			self.x, self.y, 0, scaleX, 1, self.currentAnimation.width/2, self.currentAnimation.height/2
+		)
+	end
 end
 
 function Virus.updateAll(dt)
