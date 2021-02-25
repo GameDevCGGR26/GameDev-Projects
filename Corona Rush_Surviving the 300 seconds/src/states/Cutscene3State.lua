@@ -35,12 +35,12 @@ function Cutscene3State:update(dt)
             x = x - 1
 
         elseif love.keyboard.wasPressed('s') then
-            next_text = 4
-            x = 4
+            next_text = 3
+            x = 3
         end
     end
 
-    if next_text == 5 then
+    if next_text == 4 then
         gStateMachine:change('end-credit')
     end
 end
