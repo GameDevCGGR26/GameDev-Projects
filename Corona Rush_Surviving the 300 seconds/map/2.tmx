@@ -35,7 +35,7 @@
   <object id="77" name="Enemy" type="enemy" x="418" y="24">
    <point/>
   </object>
-  <object id="120" name="Player" type="player" x="128.833" y="98.7727" width="25" height="45"/>
+  <object id="120" name="Player" type="player" x="128.969" y="102.455" width="25" height="45"/>
   <object id="123" name="Enemy" type="enemy" x="810.5" y="23">
    <point/>
   </object>
